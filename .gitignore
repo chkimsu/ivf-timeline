@@ -1,0 +1,14 @@
+# Claude Code local config & telemetry
+.claude/
+# Playwright MCP session logs, screenshots, snapshots
+.playwright-mcp/
+# Superpowers brainstorm scratch
+.superpowers/
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+# ad-hoc root-level PNG dumps
+/*.png
+*.log
