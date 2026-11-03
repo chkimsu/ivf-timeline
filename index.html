@@ -442,6 +442,20 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 /* 주제가 바뀌는 곳: 소제목 위에 가로선과 넓은 여백 */
 .tabp>h3,.hl>h3.hl-h2,.why-grid>div>h3:first-child{margin:64px 0 18px;padding-top:24px;border-top:2px solid var(--ink);font-size:20.5px;font-weight:800;line-height:1.35;letter-spacing:-.015em}
 @media(max-width:760px){.panel{padding:24px 16px 32px}.tabp>h3,.hl>h3.hl-h2,.why-grid>div>h3:first-child{margin-top:48px;padding-top:20px;font-size:19.5px}.hl{margin-top:56px}}
+/* 언제 무엇을 그림: 점선 칸은 알아보는 때, 옅은 칸은 예약이나 신청, 짙은 칸은 실제로 쓰는 때 */
+.g-bar.p-look{fill:var(--card);stroke:var(--ink);stroke-width:1.5;stroke-dasharray:5 4}
+.g-bar.p-book{fill:var(--a-bg);stroke:var(--a);stroke-width:1.5}
+.g-bar.p-use{fill:var(--a)}
+.g-bart.dk{fill:var(--ink)}
+.g-due{stroke:var(--b);stroke-width:2.5}
+.g-duet{fill:var(--b);font-size:12.5px;font-weight:750}
+.g-ev{stroke:var(--ink2);stroke-width:1.2;stroke-dasharray:2 4}
+.g-evt{fill:var(--ink);font-size:12.5px;font-weight:750}
+.g-pt{fill:var(--card);stroke:var(--a);stroke-width:2.5}
+.g-yr{fill:var(--ink);font-size:13px;font-weight:800}
+.g-l6{background:var(--a-bg);border:1.5px solid var(--a);box-sizing:border-box}
+.g-leg i.g-l7{width:4px;height:16px;background:var(--b)}
+.g-leg i.g-l8{width:0;height:16px;border-left:2px dotted var(--ink2)}
 </style>
 <script>try{var t0=localStorage.getItem('ivf-theme');if(t0==='light'||t0==='dark')document.documentElement.setAttribute('data-theme',t0);}catch(e){}</script>
 </head>
@@ -495,6 +509,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
   <button class="tab" type="button" role="tab" id="tab-meds" aria-controls="meds" aria-selected="false" tabindex="-1"><span class="no">5</span>약 안내</button>
   <button class="tab" type="button" role="tab" id="tab-support" aria-controls="support" aria-selected="false" tabindex="-1"><span class="no">6</span>지원금과 보험</button>
   <button class="tab" type="button" role="tab" id="tab-care" aria-controls="care" aria-selected="false" tabindex="-1"><span class="no">7</span>조리원과 어린이집</button>
+  <button class="tab" type="button" role="tab" id="tab-helper" aria-controls="helper" aria-selected="false" tabindex="-1"><span class="no">8</span>산후도우미</button>
 </div>
 
 <section class="panel tabp" id="timeline" role="tabpanel" aria-labelledby="tab-timeline" tabindex="0">
@@ -1155,6 +1170,11 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 
   <div class="callout"><b class="co-h">2027년 7월 1일 이후 출생아부터 제도가 바뀔 예정입니다</b>정부가 2026년 9월에 낸 2027년 예산안은 첫만남이용권, 부모급여, 아동수당을 「아이맞이지원금」과 「아동기본수당」으로 묶습니다. 6월 30일까지 태어나면 현행 제도 그대로입니다.<br>국회 심의가 남아 있어 12월에 금액과 날짜가 바뀔 수 있습니다. 1월생부터 넓히자는 논의도 있습니다.</div>
 
+  <h3>언제 신청하고 받나</h3>
+  <p class="birth-sub">38주 수술을 기준으로 그렸습니다. 38주에 태어나도 7월 1일 이후 출생이라, 태어난 뒤 받는 돈은 정부안 기준입니다.</p>
+  <div class="g-wrap"><svg id="pc-support" class="g-svg" role="img"></svg></div>
+  <div class="g-leg"><span><i class="g-l5"></i>알아보고 연락하는 때</span><span><i class="g-l6"></i>예약하거나 신청하는 때</span><span><i class="g-l1"></i>실제로 쓰거나 받는 때</span><span><i class="g-l7"></i>마감</span><span><i class="g-l8"></i>출산과 조리원 퇴소</span></div>
+
   <h3>태어난 뒤 받는 돈, 두 경우</h3>
   <table class="stk">
     <thead><tr><th>무엇</th><th>2027년 6월 30일까지 출생 (현행)</th><th>7월 1일 이후 출생 (정부안, 확정 전)</th></tr></thead>
@@ -1264,7 +1284,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
           <tr><td data-l="할 것">첫만남이용권</td><td data-l="언제">출생 뒤 1년 안에 신청하는 것이 안전합니다</td><td data-l="어디서">원스톱에 들어 있습니다. 포인트 사용 기한은 복지로에서 확인합니다</td></tr>
           <tr><td data-l="할 것">성남시 출산장려금</td><td data-l="언제">출생 뒤 3년 안. 부모 중 한 명이 출산일 기준 180일 이상 성남시에 주민등록</td><td data-l="어디서">동 행정복지센터. 첫째 30만 원</td></tr>
           <tr><td data-l="할 것">경기도 산후조리비</td><td data-l="언제">출생 뒤 12개월 안</td><td data-l="어디서">주민센터. 50만 원 지역화폐</td></tr>
-          <tr><td data-l="할 것">산모 신생아 건강관리 바우처</td><td data-l="언제">출산 예정일 40일 전부터 출산 뒤 30일까지. 두 분은 <span class="dd" data-k="SNB"></span></td><td data-l="어디서">보건소나 복지로. 기준중위소득 150% 이하가 기본이고 성남시 예외 기준은 보건소에 확인합니다</td></tr>
+          <tr><td data-l="할 것">산모 신생아 건강관리 바우처 (산후도우미)</td><td data-l="언제">출산 예정일 40일 전부터 출산 뒤 60일까지. 38주에 낳으면 <span class="dd" data-k="SNB"></span></td><td data-l="어디서">보건소나 복지로. 기준중위소득 150% 이하가 대상이고, 넘는 가정은 시군구 예외 지원이 있을 때만 받습니다. 자세한 것은 <a href="#helper">8 산후도우미</a> 탭에 있습니다</td></tr>
           <tr><td data-l="할 것">출산가구 전기요금 할인</td><td data-l="언제">출생 뒤 아무 때나. 36개월 미만까지</td><td data-l="어디서">한전(국번 없이 123)이나 한전 온라인. 월 30%, 16,000원 한도</td></tr>
           <tr><td data-l="할 것">산후조리원 세액공제</td><td data-l="언제">다음 해 연말정산</td><td data-l="어디서">홈택스. 출산 1회당 200만 원 한도의 15%, 소득 제한 없음. 영수증을 보관합니다</td></tr>
         </tbody>
@@ -1292,8 +1312,8 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
       <tr><td data-l="시기">피검사 양성 ~ 8주</td><td data-l="날짜" class="dt dd" data-k="TD1"></td><td data-l="할 일">국민행복카드 신청, 보건소 임산부 등록(엽산제), 조리원 전화 예약, 아내 회사에 알리기(12주 이내 단축근무)</td></tr>
       <tr><td data-l="시기">8~12주</td><td data-l="날짜" class="dt dd" data-k="TD2"></td><td data-l="할 일">태아보험 상담 시작, 분만 병원 정하기, 난임시술비를 뒤늦게 신청할 수 있는지 보건소에 문의</td></tr>
       <tr><td data-l="시기">13~22주</td><td data-l="날짜" class="dt dd" data-k="TD3"></td><td data-l="할 일">태아보험 가입 마무리(22주 6일), 철분제 받기(16주), 아이사랑포털에서 동네 어린이집 둘러보기, 직장어린이집 공지 확인</td></tr>
-      <tr><td data-l="시기">23~31주</td><td data-l="날짜" class="dt dd" data-k="TD4"></td><td data-l="할 일">임신성 당뇨 검사, 백일해 접종, 출산휴가와 육아휴직 계획을 회사와 상의, 산모 신생아 바우처 신청(예정일 40일 전부터)</td></tr>
-      <tr><td data-l="시기">32주 ~ 출산</td><td data-l="날짜" class="dt dd" data-k="TD5"></td><td data-l="할 일">근로시간 단축 다시 신청, 출산휴가 시작, 출산가방, 새 아파트에 들어갔으면 전입신고 확인</td></tr>
+      <tr><td data-l="시기">23~31주</td><td data-l="날짜" class="dt dd" data-k="TD4"></td><td data-l="할 일">임신성 당뇨 검사, 백일해 접종, 출산휴가와 육아휴직 계획을 회사와 상의, 산후도우미 업체 고르고 가예약</td></tr>
+      <tr><td data-l="시기">32주 ~ 출산</td><td data-l="날짜" class="dt dd" data-k="TD5"></td><td data-l="할 일">근로시간 단축 다시 신청, 출산휴가 시작, 산후도우미 바우처 신청(예정일 40일 전부터), 출산가방, 새 아파트에 들어갔으면 전입신고 확인</td></tr>
       <tr><td data-l="시기">출생 뒤 1개월</td><td data-l="날짜" class="dt">태어난 날부터</td><td data-l="할 일">출생신고와 행복출산 원스톱, 부모급여(60일 안), 피부양자 등록, 태아보험 이름 바꾸기, 어린이집 입소대기 신청, 전기요금 할인</td></tr>
     </tbody>
   </table>
@@ -1303,6 +1323,11 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 <section class="panel tabp" id="care" role="tabpanel" aria-labelledby="tab-care" tabindex="0" hidden>
   <h2><span class="no">7</span>조리원과 어린이집</h2>
   <p class="sec-desc">산후조리원은 임신 초기에 자리를 잡고, 어린이집은 태어난 뒤에 신청합니다. 둘 다 미리 알아 두면 당황할 일이 줄어듭니다. 조리원은 두 분이 말씀하신 판교 트리니티를 중심으로 적었고, 어린이집은 사는 동네와 2027년에 들어갈 새 아파트, 그리고 직장어린이집까지 넣었습니다.</p>
+
+  <h3>언제 연락하고, 예약하고, 쓰나</h3>
+  <p class="birth-sub">38주 수술과 조리원 4주를 기준으로 그렸습니다. 어린이집 입소는 2028년 3월 신학기로 잡았습니다. 산후도우미는 <a href="#helper">8 산후도우미</a> 탭에 자세히 있습니다.</p>
+  <div class="g-wrap"><svg id="pc-care" class="g-svg" role="img"></svg></div>
+  <div class="g-leg"><span><i class="g-l5"></i>알아보고 연락하는 때</span><span><i class="g-l6"></i>예약하거나 신청하는 때</span><span><i class="g-l1"></i>실제로 쓰거나 받는 때</span><span><i class="g-l7"></i>마감</span><span><i class="g-l8"></i>출산과 조리원 퇴소</span></div>
 
   <h3>판교 트리니티 산후조리원</h3>
   <dl class="read">
@@ -1406,6 +1431,78 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
   <p class="meta">어디서 확인했나: <a href="https://www.gov.kr/portal/rcvfvrSvc/dtlEx/PTR000050386">정부24 어린이집 입소 대기 신청</a>, <a href="https://www.childcare.go.kr">아이사랑포털</a>, <a href="https://trinitycare.co.kr/pge/">트리니티 판교점 홈페이지</a>, 육아크루 공시, 조리도리, 성남시 산후조리비 보도(2024년). 아파트 세대수와 입주 시기는 분양 안내 기준입니다.</p>
 </section>
 
+<section class="panel tabp" id="helper" role="tabpanel" aria-labelledby="tab-helper" tabindex="0" hidden>
+  <h2><span class="no">8</span>산후도우미</h2>
+  <p class="sec-desc">조리원에서 나온 뒤 집으로 와서 산모와 아기를 돌보는 사람을 흔히 산후도우미라고 부릅니다. 정부 제도의 이름은 「산모 신생아 건강관리 지원사업」이고, 오는 사람은 건강관리사라고 부릅니다. 금액과 기준은 2026년 보건소 안내로 적었습니다. 가격은 이용을 시작하는 날 기준이라, 2027년 8월에 시작하면 2027년 가격이 적용됩니다.</p>
+
+  <div class="callout warn"><b class="co-h">소득이 높으면 경기도에서는 바우처를 못 받을 수 있습니다</b>기준중위소득 150%를 넘는 경기도 가정을 돕던 경기도 추가 지원이 2026년 10월 1일 신청분부터 끝났다고 하남시와 고양시 보건소가 공지했습니다.<br>성남시가 따로 지원하는지는 확인하지 못했습니다. 복지 안내 사이트의 성남시 항목에는 2026년 12월 31일까지로 적혀 있지만 최신인지 알 수 없습니다.<br>수정구보건소(031-729-2498)나 분당구보건소(031-729-3974)에 묻는 것이 가장 빠릅니다.</div>
+
+  <h3>언제 알아보고, 예약하고, 쓰나</h3>
+  <p class="birth-sub">38주 수술과 조리원 4주를 기준으로 그렸습니다. 조리원에서 나온 다음 평일 <span id="hp-s"></span>부터 표준형 10일을 쓰면 <span id="hp-e"></span>에 끝나고, 바우처 기한 <span id="hp-v"></span> 안입니다. 수술일이 정해지면 업체에 알려 시작일만 옮기면 됩니다.</p>
+  <div class="g-wrap"><svg id="pc-helper" class="g-svg" role="img"></svg></div>
+  <div class="g-leg"><span><i class="g-l5"></i>알아보고 연락하는 때</span><span><i class="g-l6"></i>예약하거나 신청하는 때</span><span><i class="g-l1"></i>실제로 쓰거나 받는 때</span><span><i class="g-l7"></i>마감</span><span><i class="g-l8"></i>출산과 조리원 퇴소</span></div>
+
+  <h3>먼저 알아 둘 네 가지</h3>
+  <ul class="pts">
+    <li class="a"><b class="pt-h">정부가 사람을 보내는 것이 아닙니다</b>정부는 비용 일부를 바우처로 대 주고, 사람은 시군구에 등록된 제공기관이 보냅니다. 제공기관은 대부분 민간 업체와 비영리 단체입니다. 같은 업체에 바우처로도, 자비로도 맡길 수 있습니다.</li>
+    <li class="b"><b class="pt-h">소득에 따라 받는 몫이 다릅니다</b>기준중위소득 150% 이하가 기본 대상입니다. 넘는 가정(라형)은 시군구가 따로 정하는 예외 지원이라 사는 곳마다 다릅니다. 2027년 기준은 아직 나오지 않았습니다.</li>
+    <li class="b"><b class="pt-h">신청은 출산 예정일 40일 전부터</b><ul><li>신청 기간은 <span class="dd" data-k="SNB"></span>입니다(38주 출산 기준)</li><li>바우처는 출산일로부터 90일 안에 다 써야 합니다</li><li>출산 뒤로 미루면 판정과 계약을 기다리는 동안 쓸 날이 줄어듭니다</li></ul></li>
+    <li class="c"><b class="pt-h">관리사 예약은 일찍 합니다</b>찾는 사람이 많은 업체와 관리사는 예약이 빨리 찹니다. 임신 20~28주에 업체를 고르고 30주 전후에 시작일을 잡아 두는 것을 권합니다. 정식 계약은 바우처 판정을 받은 뒤에 합니다.</li>
+  </ul>
+
+  <h3>바우처로 쓰기와 자비로 쓰기</h3>
+  <table class="stk">
+    <thead><tr><th>무엇</th><th>정부 바우처로 쓰기</th><th>바우처 없이 자비로 쓰기</th></tr></thead>
+    <tbody>
+      <tr><td data-l="무엇">누가 오나</td><td data-l="정부 바우처로 쓰기">시군구에 등록된 제공기관의 건강관리사</td><td data-l="바우처 없이 자비로 쓰기">같은 업체나 다른 민간 업체의 관리사</td></tr>
+      <tr><td data-l="무엇">대상</td><td data-l="정부 바우처로 쓰기">기준중위소득 150% 이하. 넘으면 시군구 예외 지원이 있을 때만</td><td data-l="바우처 없이 자비로 쓰기">누구나</td></tr>
+      <tr><td data-l="무엇">비용</td><td data-l="정부 바우처로 쓰기">정해진 가격에서 정부 몫을 빼고 본인부담금만 냅니다. 국민행복카드로 결제합니다</td><td data-l="바우처 없이 자비로 쓰기">전액 본인이 냅니다. 업체마다 다르고 공식 자료가 없어 두세 곳 견적을 받습니다</td></tr>
+      <tr><td data-l="무엇">시간과 기간</td><td data-l="정부 바우처로 쓰기">평일 하루 9시간(쉬는 1시간 포함), 오전 9시에서 오후 6시 사이. 첫째는 5일, 10일, 15일 중 고릅니다</td><td data-l="바우처 없이 자비로 쓰기">업체와 정합니다. 입주형, 주말, 원하는 주 수까지</td></tr>
+      <tr><td data-l="무엇">기한</td><td data-l="정부 바우처로 쓰기">출산일로부터 90일 안에 다 씁니다</td><td data-l="바우처 없이 자비로 쓰기">없습니다</td></tr>
+    </tbody>
+  </table>
+
+  <h3>소득 구간과 본인부담금 (2026년, 첫째 아이 한 명)</h3>
+  <p class="birth-sub">가격은 세 구간이 같고, 정부 몫과 본인부담금만 다릅니다.</p>
+  <table class="stk">
+    <thead><tr><th>구간</th><th>누구</th><th>단축형 5일 (1주)</th><th>표준형 10일 (2주)</th><th>연장형 15일 (3주)</th></tr></thead>
+    <tbody>
+      <tr><td data-l="구간">가격</td><td data-l="누구">세 구간 같음</td><td data-l="단축형 5일 (1주)">732,000원</td><td data-l="표준형 10일 (2주)">1,464,000원</td><td data-l="연장형 15일 (3주)">2,196,000원</td></tr>
+      <tr><td data-l="구간">가형</td><td data-l="누구">수급자, 차상위계층</td><td data-l="단축형 5일 (1주)">본인 73,000원<br>정부 659,000원</td><td data-l="표준형 10일 (2주)">본인 299,000원<br>정부 1,165,000원</td><td data-l="연장형 15일 (3주)">본인 671,000원<br>정부 1,525,000원</td></tr>
+      <tr><td data-l="구간">통합형</td><td data-l="누구">기준중위소득 150% 이하</td><td data-l="단축형 5일 (1주)">본인 163,000원<br>정부 569,000원</td><td data-l="표준형 10일 (2주)">본인 462,000원<br>정부 1,002,000원</td><td data-l="연장형 15일 (3주)">본인 893,000원<br>정부 1,303,000원</td></tr>
+      <tr><td data-l="구간">라형</td><td data-l="누구">150% 초과. 시군구 예외 지원이 있을 때만</td><td data-l="단축형 5일 (1주)">본인 276,000원<br>정부 456,000원</td><td data-l="표준형 10일 (2주)">본인 700,000원<br>정부 764,000원</td><td data-l="연장형 15일 (3주)">본인 1,161,000원<br>정부 1,035,000원</td></tr>
+    </tbody>
+  </table>
+  <p class="meta">구로구보건소와 송파구보건소의 2026년 안내 값입니다. 150%를 넘고 예외 지원도 없으면 바우처를 쓸 수 없어 업체 요금을 그대로 냅니다. 견적을 견줄 때는 바우처 가격(10일 1,464,000원)이 기준이 됩니다. 둘째아와 쌍둥이는 기간과 금액이 다릅니다.</p>
+
+  <h3>우리 집은 어느 구간인가</h3>
+  <ul class="pts">
+    <li><b class="pt-h">건강보험료로 판정합니다</b>산모와 배우자의 건강보험료 본인부담금(장기요양보험료는 뺌)을 더해 봅니다. 맞벌이는 둘 중 적은 쪽을 절반으로 줄여 더합니다.<ul><li>아기를 포함한 3인 가구, 직장가입자 기준</li><li>2026년 150% 선은 월 290,169원입니다</li><li>2027년에는 기준중위소득이 올라 이 선도 올라갑니다</li></ul></li>
+    <li class="c"><b class="pt-h">휴직 중이면 판정이 달라집니다</b>신청할 때 휴직이 1개월 미만이면 휴직 직전 달 보험료로 봅니다. 1개월 이상이면 무급 휴직은 소득이 없는 것으로, 유급 휴직은 최근 급여에 3.545%를 곱한 값으로 봅니다.</li>
+    <li class="a"><b class="pt-h">두 분은 신청 날짜를 따져 볼 만합니다</b>남편은 7/2부터 무급 육아휴직입니다. 한 달이 지난 8/2 뒤에 신청하면 남편 몫을 소득 없음으로 볼 수 있습니다. 아내의 출산전후휴가를 어떻게 보는지와 판정에 며칠 걸리는지는 보건소에 먼저 묻습니다.</li>
+  </ul>
+
+  <h3>관리사가 하는 일과 안 하는 일</h3>
+  <ul class="pts">
+    <li class="a"><b class="pt-h">하는 일</b><ul><li>산모 건강관리: 영양 관리, 산후 체조 돕기</li><li>아기 돌보기: 목욕, 수유 돕기</li><li>산모 식사 준비</li><li>산모와 아기 빨래, 생활 공간 청소</li></ul></li>
+    <li class="c"><b class="pt-h">안 하는 일</b><ul><li>집 전체 대청소</li><li>이불 빨래, 묵은 빨래</li><li>손님 접대</li></ul>이 밖의 일은 업체와 계약할 때 미리 정합니다.</li>
+    <li><b class="pt-h">하루 일정</b>평일 하루 9시간이고 쉬는 1시간이 들어 있습니다. 오전 9시에서 오후 6시 사이에 이어서 옵니다. 표준형 10일이면 평일 2주입니다.</li>
+  </ul>
+
+  <h3>업체 고르기부터 끝날 때까지</h3>
+  <ul class="pts n">
+    <li><b class="pt-h">업체 목록 보기 (20주 무렵)</b>사회서비스 전자바우처 누리집(socialservice.or.kr)에서 성남시 제공기관을 찾습니다. 사는 시군구 밖의 기관도 쓸 수 있습니다.</li>
+    <li><b class="pt-h">두세 곳 상담</b><ul><li>관리사 경력과 배정 방식</li><li>마음에 안 들 때 바꿔 주는지</li><li>추가 요금이 붙는 일</li><li>원하는 날짜에 자리가 있는지</li></ul></li>
+    <li><b class="pt-h">시작일 잡기 (30주 전후)</b>출산 예정일과 조리원 퇴소 예정일을 알리고 가예약합니다.</li>
+    <li class="b"><b class="pt-h">바우처 신청 (예정일 40일 전부터)</b>복지로나 보건소에서 합니다. 임신확인서(출산 뒤에는 출생증명서)와 산모 신분증이 필요합니다. 가족이 대신 내면 대리인 신분증과 가족관계증명서를 더 냅니다.</li>
+    <li><b class="pt-h">판정 뒤 정식 계약</b>판정을 받은 뒤 등록된 제공기관과 계약합니다.</li>
+    <li><b class="pt-h">수술일이 정해지면 알리기</b>시작일을 조리원 퇴소 다음 평일로 맞춥니다.</li>
+    <li><b class="pt-h">국민행복카드로 결제</b>본인부담금을 카드로 냅니다. 바우처는 출산일로부터 90일이 지나면 사라집니다.</li>
+  </ul>
+  <p class="meta">어디서 확인했나: <a href="https://www.guro.go.kr/health/contents.do?key=1329">구로구보건소 2026년 안내</a>, <a href="https://www.songpa.go.kr/ehealth/contents.do?key=4569">송파구보건소</a>, <a href="https://www.hanam.go.kr/health/contents.do?key=956">하남시보건소</a>(경기도 추가 지원 종료, 맞벌이 판정), <a href="https://www.ddm.go.kr/health/contents.do?key=1260">동대문구보건소</a>(하는 일과 안 하는 일), <a href="https://www.socialservice.or.kr">사회서비스 전자바우처</a>, <a href="https://www.bokjiro.go.kr">복지로</a>. 2027년 기준은 2027년 초 보건소 안내로 다시 맞춥니다.</p>
+</section>
+
+
 </div>
 </div>
 <script>
@@ -1452,7 +1549,7 @@ function compute(){
     P4:fmtR(wk(7),add(wk(10),-1)), P5:fmtR(wk(10),add(wk(12),-1)), P6:fmt(wk(12))+' 이후',
     TD1:fmtR(B0,add(wk(8),-1)), TD2:fmtR(wk(8),add(wk(13),-1)), TD3:fmtR(wk(13),wk(22,6)),
     TD4:fmtR(wk(23),add(wk(32),-1)), TD5:fmtR(wk(32),EDD),
-    W16:fmt(wk(16)), W22E:fmt(wk(22,6)), SNB:fmtR(add(EDD,-40),add(EDD,30))
+    W16:fmt(wk(16)), W22E:fmt(wk(22,6)), SNB:fmtR(add(EDD,-40),add(wk(38),60))
   };
 }
 
@@ -1764,7 +1861,107 @@ function renderGantt(){
 }
 $$('.g-b[data-w]').forEach(function(b){ b.addEventListener('click',function(){ GW=+b.getAttribute('data-w'); $$('.g-b[data-w]').forEach(function(o){o.setAttribute('aria-pressed',o===b?'true':'false')}); renderGantt(); }); });
 $$('.g-b[data-p]').forEach(function(b){ b.addEventListener('click',function(){ GP=b.getAttribute('data-p'); $$('.g-b[data-p]').forEach(function(o){o.setAttribute('aria-pressed',o===b?'true':'false')}); renderGantt(); }); });
-var gTimer; window.addEventListener('resize',function(){ clearTimeout(gTimer); gTimer=setTimeout(renderGantt,120); });
+
+/* 언제 무엇을: 알아보는 때, 예약이나 신청하는 때, 실제로 쓰는 때를 가로 막대로 */
+function planChart(id,cfg){
+  var svg=document.getElementById(id); if(!svg) return;
+  var wrap=svg.parentNode, NS='http://www.w3.org/2000/svg';
+  if(!wrap.clientWidth && svg.getAttribute('width')) return; /* 숨은 탭은 열릴 때 다시 그린다 */
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+  var rows=cfg.rows, W=Math.max(960, wrap.clientWidth||0), LW=176, RW=24, TOP=52, ROWH=72, BOT=40;
+  var H=TOP+ROWH*rows.length+BOT, BOTY=TOP+ROWH*rows.length;
+  svg.setAttribute('width',W); svg.setAttribute('height',H); svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  var X0=cfg.from, X1=cfg.to, span=days(X0,X1);
+  function x(d){ return LW+(Math.max(0,Math.min(span,days(X0,d)))/span)*(W-LW-RW); }
+  function el(n,a,txt){ var e=document.createElementNS(NS,n); for(var k in a) e.setAttribute(k,a[k]); if(txt!=null) e.appendChild(document.createTextNode(txt)); svg.appendChild(e); return e; }
+  function cls(e,c){ e.setAttribute('class',c); return e; }
+  function tw(s){ var n=0; for(var i=0;i<s.length;i++) n+=(/[가-힣]/.test(s[i])?13.5:7.5); return n+12; }
+  /* 달 눈금. 한 달 칸이 좁으면 두 달에 한 번만 글자를 쓴다 */
+  var perMon=(W-LW-RW)/(span/30.44), step=perMon<52?2:1, k=0;
+  for(var m=new Date(X0.getFullYear(),X0.getMonth()+1,1); m<X1; m=new Date(m.getFullYear(),m.getMonth()+1,1), k++){
+    var mx=x(m);
+    cls(el('line',{x1:mx,y1:TOP-8,x2:mx,y2:BOTY}),'g-grid');
+    if(k%step===0) cls(el('text',{x:mx+4,y:TOP-14},(m.getMonth()+1)+'월'),'g-mon');
+    if(m.getMonth()===0||k===0) cls(el('text',{x:mx+4,y:TOP-32},m.getFullYear()+'년'),'g-yr');
+  }
+  rows.forEach(function(r,i){
+    var y=TOP+ROWH*i;
+    cls(el('line',{x1:LW,y1:y+ROWH-1,x2:W-RW,y2:y+ROWH-1}),'g-row');
+    cls(el('text',{x:0,y:y+(r.sub?ROWH/2-2:ROWH/2+5)},r.name),'g-name');
+    if(r.sub) cls(el('text',{x:0,y:y+ROWH/2+15},r.sub),'g-sub');
+  });
+  /* 세로 점선: 출산, 조리원 퇴소 같은 기준 날짜 */
+  (cfg.marks||[]).slice().sort(function(a,b){ return a.d-b.d; }).forEach(function(mk,i){
+    var mx=x(mk.d);
+    cls(el('line',{x1:mx,y1:TOP-4,x2:mx,y2:BOTY+4}),'g-ev');
+    cls(el('text',{x:mx,y:BOTY+18+(i%2)*15,'text-anchor':'middle'},mk.label),'g-evt');
+  });
+  rows.forEach(function(r,i){
+    var y=TOP+ROWH*i, by=y+24;
+    (r.items||[]).forEach(function(it){
+      if(it.t==='due'){
+        var dx=x(it.a);
+        cls(el('line',{x1:dx,y1:y+10,x2:dx,y2:y+ROWH-10}),'g-due');
+        cls(el('text',{x:dx+6,y:y+ROWH-12},it.label),'g-duet');
+        return;
+      }
+      if(it.t==='dot'){
+        var px=x(it.a);
+        cls(el('circle',{cx:px,cy:by+12,r:6}),'g-pt');
+        cls(el('text',{x:px,y:by-7,'text-anchor':'middle'},it.label),'g-lab');
+        return;
+      }
+      var xa=x(it.a), xb=Math.max(x(it.b),xa+4), w=xb-xa;
+      cls(el('rect',{x:xa,y:by,width:w,height:24}),'g-bar p-'+it.t);
+      var name=(w>=tw(it.label)||!it.short)?it.label:it.short;
+      var t=cls(el('text',{x:xa+8,y:by+17},name),'g-bart'+(it.t==='use'?'':' dk'));
+      if(w<tw(name)){ t.textContent=it.label; t.setAttribute('x',xa); t.setAttribute('y',by-7); t.setAttribute('class','g-bart out'); }
+    });
+  });
+  if(cfg.focus && wrap.clientWidth && wrap.clientWidth<W){ var want=x(cfg.focus)-wrap.clientWidth*0.2; wrap.scrollLeft=Math.max(0,Math.min(want,W-wrap.clientWidth)); }
+  svg.setAttribute('aria-label',cfg.aria);
+}
+function renderPlans(){
+  if(!L) return; /* 날짜를 아직 계산하기 전이면 그리지 않는다. renderAll 이 다시 부른다 */
+  var surg=wk(PLAN_W), inEnd=add(surg,6), careEnd=add(inEnd,28);
+  var hs=add(careEnd,1); while(!isWork(hs)) hs=add(hs,1);
+  var he=hs, n=1; while(n<10){ he=add(he,1); if(isWork(he)) n++; }
+  var vS=add(EDD,-40), vE=add(surg,60), vV=add(surg,90), wl=wifeActual(PLAN_W).leave;
+  var MK=[{d:surg,label:'출산 '+fmtS(surg)},{d:careEnd,label:'조리원 퇴소 '+fmtS(careEnd)}];
+  var sp=function(id,t){ var e=document.getElementById(id); if(e) e.textContent=t; };
+  sp('hp-s',fmt(hs)); sp('hp-e',fmt(he)); sp('hp-v',fmt(vV));
+  planChart('pc-support',{from:new Date(2026,10,1),to:new Date(2028,2,1),marks:MK,
+    aria:'지원금과 보험을 언제 신청하고 받는지 그린 그림. 국민행복카드는 임신 7~10주에 신청, 태아보험은 22주 6일까지 가입, 산후도우미 바우처는 '+fmtS(vS)+'부터 '+fmtS(vE)+'까지 신청, 출생신고는 출산 뒤 1개월 안',
+    rows:[
+      {name:'국민행복카드',sub:'임신 출산 진료비 100만 원',items:[{t:'book',a:wk(7),b:wk(10),label:'신청',short:'신청'},{t:'use',a:wk(10),b:new Date(2028,2,1),label:'병원과 약국에서 씀. 출산 뒤 2년까지',short:'씀'}]},
+      {name:'태아보험',items:[{t:'look',a:wk(13),b:wk(16),label:'상담',short:'상담'},{t:'book',a:wk(16),b:wk(22,6),label:'가입',short:'가입'},{t:'due',a:wk(22,6),label:'가입 마감 '+fmtS(wk(22,6))}]},
+      {name:'산후도우미 바우처',sub:'8 산후도우미 탭',items:[{t:'book',a:vS,b:add(vS,14),label:'신청',short:'신청'},{t:'use',a:hs,b:add(he,1),label:'도우미 10일',short:'10일'},{t:'due',a:vE,label:'신청 마감 '+fmtS(vE)}]},
+      {name:'출생신고, 원스톱',sub:'태어난 뒤 받는 돈 신청',items:[{t:'book',a:surg,b:add(surg,30),label:'출생신고 1개월 안',short:'신고'},{t:'due',a:add(surg,60),label:'60일 안 신청 '+fmtS(add(surg,60))}]},
+      {name:'태어난 뒤 받는 돈',sub:'7/1 이후 출생, 정부안',items:[{t:'use',a:surg,b:new Date(2028,2,1),label:'아동기본수당 매달, 아이맞이지원금 1년 동안 4번',short:'매달'}]},
+      {name:'남편 육아휴직 급여',sub:'6+6',items:[{t:'use',a:surg,b:add(surg,183),label:'첫 6개월 월 상한 250~450만 원',short:'6+6'}]},
+      {name:'아내 육아휴직 급여',sub:'6+6',items:[{t:'use',a:wl,b:add(wl,183),label:'첫 6개월 월 상한 250~450만 원',short:'6+6'}]}
+    ]});
+  planChart('pc-care',{from:new Date(2026,10,1),to:new Date(2028,3,1),marks:MK,
+    aria:'조리원, 산후도우미, 어린이집을 언제 연락하고 예약하고 쓰는지 그린 그림. 조리원은 피검사 양성 직후 전화하고 12주 전에 계약, '+fmtS(inEnd)+'부터 4주 입소. 어린이집은 출생신고 날 대기 신청, 2028년 3월 입소',
+    rows:[
+      {name:'산후조리원',sub:'판교 트리니티',items:[{t:'look',a:B0,b:add(B0,10),label:'전화, 견학',short:'전화'},{t:'book',a:add(B0,10),b:wk(12),label:'계약',short:'계약'},{t:'use',a:inEnd,b:careEnd,label:'입소 4주',short:'4주'}]},
+      {name:'산후도우미',sub:'8 산후도우미 탭',items:[{t:'look',a:wk(20),b:wk(28),label:'업체 고르기',short:'고르기'},{t:'book',a:wk(28),b:wk(32),label:'가예약',short:'예약'},{t:'use',a:hs,b:add(he,1),label:'집에서 10일',short:'10일'}]},
+      {name:'새 아파트',sub:'수정구 금토동',items:[{t:'book',a:new Date(2027,1,1),b:new Date(2027,2,1),label:'입주, 전입신고',short:'입주'}]},
+      {name:'동네 어린이집',sub:'아이사랑포털',items:[{t:'look',a:new Date(2027,0,4),b:new Date(2027,5,30),label:'후보 3곳 고르기',short:'고르기'},{t:'book',a:surg,b:add(surg,30),label:'대기 신청',short:'신청'},{t:'dot',a:new Date(2027,10,1),label:'순번 반영 11월 초'},{t:'use',a:new Date(2028,2,1),b:new Date(2028,3,1),label:'0세반 입소',short:'입소'}]},
+      {name:'직장어린이집',sub:'남편 회사',items:[{t:'look',a:new Date(2027,0,4),b:new Date(2027,5,30),label:'사내 공지 확인',short:'공지'},{t:'book',a:surg,b:add(surg,30),label:'신청',short:'신청'}]}
+    ]});
+  planChart('pc-helper',{from:new Date(2027,0,1),to:new Date(2027,10,1),marks:MK.concat([{d:EDD,label:'예정일 '+fmtS(EDD)}]),
+    aria:'산후도우미를 언제 알아보고 예약하고 쓰는지 그린 그림. 20~28주 업체 고르기, 28~32주 가예약, '+fmtS(vS)+'부터 바우처 신청, '+fmtS(hs)+'부터 '+fmtS(he)+'까지 표준형 10일',
+    rows:[
+      {name:'업체 알아보기',items:[{t:'look',a:wk(20),b:wk(28),label:'후기 보고 두세 곳 상담',short:'상담'}]},
+      {name:'시작일 가예약',items:[{t:'book',a:wk(28),b:wk(32),label:'가예약',short:'예약'}]},
+      {name:'바우처 신청',sub:'복지로나 보건소',items:[{t:'book',a:vS,b:add(vS,14),label:'신청',short:'신청'},{t:'due',a:vE,label:'신청 마감 '+fmtS(vE)}]},
+      {name:'정식 계약',sub:'판정을 받은 뒤',items:[{t:'book',a:add(vS,7),b:add(vS,28),label:'계약',short:'계약'}]},
+      {name:'산후조리원',items:[{t:'use',a:inEnd,b:careEnd,label:'4주',short:'4주'}]},
+      {name:'산후도우미',sub:'표준형 10일',items:[{t:'use',a:hs,b:add(he,1),label:fmtS(hs)+' ~ '+fmtS(he),short:'10일'},{t:'due',a:vV,label:'바우처 끝 '+fmtS(vV)}]}
+    ]});
+}
+var gTimer; window.addEventListener('resize',function(){ clearTimeout(gTimer); gTimer=setTimeout(function(){ renderGantt(); renderPlans(); },120); });
 
 var RISK=[
  {w:4,g:20,gm:false,e:12,em:false,src:'피검사 양성. 둘 다 추정값 (아기집이 보이기 전에 끝나는 아주 이른 유산 포함)'},
@@ -1846,7 +2043,7 @@ function watchChart(){
 }
 
 function fillDates(){ $$('.dd').forEach(function(s){ s.textContent=D[s.getAttribute('data-k')]||''; }); }
-function renderAll(){ compute(); var EV=events(); fillDates(); renderScale(); renderGantt(); renderTimeline(EV); renderRiskTable(); lastW=-1; renderChart(); }
+function renderAll(){ compute(); var EV=events(); fillDates(); renderScale(); renderGantt(); renderPlans(); renderTimeline(EV); renderRiskTable(); lastW=-1; renderChart(); }
 /* 탭 — 다섯 칸 가운데 하나만 보인다. 주소의 # 로도 열 수 있고, 안쪽 링크가 숨은 칸을 가리키면 그 칸을 먼저 연다 */
 var TABS=$$('.tabs .tab'), PANELS=$$('.tabp'), BOX=$('.tabbox');
 function showTab(id,focus,keepScroll){
@@ -1854,6 +2051,7 @@ function showTab(id,focus,keepScroll){
   TABS.forEach(function(b){ var on=b.getAttribute('aria-controls')===id; b.setAttribute('aria-selected',on?'true':'false'); b.tabIndex=on?0:-1; if(on) btn=b; });
   if(!btn) return false;
   PANELS.forEach(function(p){ p.hidden=(p.id!==id); });
+  if(L && typeof renderPlans==='function'){ renderPlans(); if(id==='timeline') renderGantt(); }
   if(focus) btn.focus();
   try{ history.replaceState(null,'','#'+id); }catch(e){}
   if(!keepScroll){ var top=BOX.getBoundingClientRect().top; if(top<0) window.scrollTo(0,window.pageYOffset+top); }
