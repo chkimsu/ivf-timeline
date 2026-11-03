@@ -14,6 +14,5 @@ Thumbs.db
 *.log
 # 회사 내부 자료. 공개 저장소에 올리지 않는다
 사내자료/
-ask/
 # playwright-cli 세션 기록
 .playwright-cli/
