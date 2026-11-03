@@ -10,6 +10,12 @@
 <meta property="og:description" content="이식일부터 출산 예정일까지의 일정과 시기별로 챙길 것을 한 페이지에 모았습니다.">
 <meta name="theme-color" content="#E8EAED" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#111316" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="임신 일정표">
+<meta name="theme-color" content="#E8EAED">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.svg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%231F5FBF'/%3E%3C/svg%3E">
 <title>시험관 임신 일정표</title>
 <style>
@@ -111,7 +117,35 @@ b,strong{font-weight:750}
 .scale-l{font-size:16px;font-weight:750;margin-top:11px}
 .scale-d{font-size:15px;color:var(--ink2);margin-top:6px;line-height:1.65}
 /* 출산과 조리원 — 위 요약 바로 아래 늘 보이는 칸. 파랑 굵은 띠로 다른 칸보다 먼저 눈에 들게 한다 */
-.birth{border-top:6px solid var(--a)}
+.birth{border-top:6px solid var(--a);margin:30px 0 34px;padding-top:22px}
+/* 한눈에 보는 일정표 — 가로 띠 그림. 좁으면 가로로 민다 */
+.gantt{margin:6px 0 10px}
+.g-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px}
+.g-h{font-size:20px;font-weight:800;margin:0;letter-spacing:-.02em}
+.g-sw{display:flex;gap:0;border:1.5px solid var(--ink)}
+.g-b{font:inherit;font-size:14.5px;font-weight:750;padding:6px 14px;background:var(--card);color:var(--ink);border:none;cursor:pointer}
+.g-b+.g-b{border-left:1.5px solid var(--ink)}
+.g-b[aria-pressed="true"]{background:var(--ink);color:var(--card)}
+.g-b:focus-visible{outline:2.5px solid var(--a);outline-offset:2px}
+.g-desc{color:var(--ink2);font-size:15.5px;margin:8px 0 10px;line-height:1.7}
+.g-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-top:2px solid var(--ink);padding-top:6px}
+.g-svg{display:block;font-family:var(--sans)}
+.g-grid{stroke:var(--hair2);stroke-width:1}
+.g-row{stroke:var(--hair);stroke-width:1}
+.g-mon{fill:var(--ink3);font-size:12.5px;font-weight:700}
+.g-name{fill:var(--ink);font-size:15px;font-weight:800}
+.g-bar.b{fill:var(--b)} .g-bar.k{fill:var(--ink)} .g-bar.a{fill:var(--a)}
+.g-bart{fill:var(--card);font-size:13.5px;font-weight:750} .g-bart.out{fill:var(--ink)}
+.g-sub{fill:var(--ink2);font-size:12.5px}
+.g-dot{fill:var(--card);stroke:var(--a);stroke-width:2.5} .g-dot.b{stroke:var(--b);fill:var(--b)}
+.g-rng{stroke:var(--a);stroke-width:2.5}
+.g-lab{fill:var(--ink);font-size:12.5px;font-weight:650}
+.g-today{stroke:var(--b);stroke-width:1.5;stroke-dasharray:4 4}
+.g-todayt{fill:var(--b);font-size:12.5px;font-weight:750}
+.g-leg{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:10px;font-size:13.5px;color:var(--ink2)}
+.g-leg i{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:6px}
+.g-l1{background:var(--a)} .g-l2{background:var(--b)} .g-l3{background:var(--ink)} .g-l4{width:0!important;border-left:2px dashed var(--b);height:14px}
+@media(max-width:760px){.birth{margin:24px 0 28px}.g-h{font-size:18px}}
 .birth-k{display:inline-block;font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--card);background:var(--a);padding:3px 10px;margin:0 0 12px}
 .birth h2{font-size:clamp(24px,2.3vw,32px);margin-bottom:8px}
 .birth-sub{color:var(--ink2);font-size:16.5px;margin:0 0 20px;max-width:84ch}
@@ -369,7 +403,36 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
   </div>
 </section>
 
-<section class="panel birth" id="birth" aria-labelledby="birth-h">
+
+
+<div class="tabbox">
+<div class="tabs" role="tablist" aria-label="내용 고르기">
+  <button class="tab" type="button" role="tab" id="tab-timeline" aria-controls="timeline" aria-selected="true"><span class="no">1</span>전체 일정</button>
+  <button class="tab" type="button" role="tab" id="tab-risk" aria-controls="risk" aria-selected="false" tabindex="-1"><span class="no">2</span>유산 위험</button>
+  <button class="tab" type="button" role="tab" id="tab-why" aria-controls="why" aria-selected="false" tabindex="-1"><span class="no">3</span>왜 안심인가</button>
+  <button class="tab" type="button" role="tab" id="tab-weekly" aria-controls="weekly" aria-selected="false" tabindex="-1"><span class="no">4</span>시기별 챙길 것</button>
+  <button class="tab" type="button" role="tab" id="tab-meds" aria-controls="meds" aria-selected="false" tabindex="-1"><span class="no">5</span>약 안내</button>
+  <button class="tab" type="button" role="tab" id="tab-support" aria-controls="support" aria-selected="false" tabindex="-1"><span class="no">6</span>지원금과 보험</button>
+  <button class="tab" type="button" role="tab" id="tab-care" aria-controls="care" aria-selected="false" tabindex="-1"><span class="no">7</span>조리원과 어린이집</button>
+</div>
+
+<section class="panel tabp" id="timeline" role="tabpanel" aria-labelledby="tab-timeline" tabindex="0">
+  <h2><span class="no">1</span>전체 일정</h2>
+  <p class="sec-desc">임신 주차는 이식한 날이 아니라 「마지막 생리 시작일」부터 셉니다. 시험관은 생리일이 따로 없어서, 5일 배아는 이식일에서 19일을, 6일 배아는 20일을 거슬러 올라간 날을 0주 0일로 둡니다. 그래서 이식한 날이 벌써 2주 5일입니다. 기간으로 적힌 일정은 병원마다 날짜가 조금씩 달라서 그렇습니다. 병원이 잡아 준 날이 있으면 그날이 맞습니다.</p>
+  <div class="gantt" id="gantt" aria-label="이식부터 조리원 퇴소까지 한눈에 보는 일정표">
+    <div class="g-head">
+      <h3 class="g-h">한눈에 보는 일정표</h3>
+      <div class="g-sw" role="group" aria-label="제왕절개 시기 고르기">
+        <button type="button" class="g-b" data-w="38" aria-pressed="true">38주 수술</button>
+        <button type="button" class="g-b" data-w="39" aria-pressed="false">39주 수술</button>
+      </div>
+    </div>
+    <p class="g-desc">왼쪽 끝이 배아 이식일, 오른쪽 끝이 조리원 퇴소일입니다. 줄 셋은 아기, 아내, 남편입니다. 세로 점선이 오늘입니다. 좁은 화면에서는 가로로 밀어 봅니다.</p>
+    <div class="g-wrap"><svg id="g-svg" class="g-svg" role="img"></svg></div>
+    <div class="g-leg"><span><i class="g-l1"></i>검사와 진료</span><span><i class="g-l2"></i>입원과 조리원</span><span><i class="g-l3"></i>남편 휴가</span><span><i class="g-l4"></i>오늘</span></div>
+  </div>
+
+<div class="birth" id="birth" aria-labelledby="birth-h">
   <div class="birth-k">제왕절개 예정</div>
   <h2 id="birth-h">출산과 산후조리원 날짜</h2>
   <p class="birth-sub">수술일은 분만 병원이 정합니다. 예정된 제왕절개는 보통 38주나 39주에 잡아서, 두 경우를 나란히 적었습니다. 조리원은 4주로 셌습니다.</p>
@@ -443,22 +506,8 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
     </div>
     <p class="meta">회사 규정과 고용노동부 질의응답을 기준으로 적었습니다. 신청 전에 근태 담당자에게 세 가지를 확인해 두면 안전합니다. 20일을 출산 전에 다 써도 되는지, 경조일에 출산 예정일을 넣으면 되는지, 출생 전에 육아휴직 신청서를 먼저 올릴 수 있는지입니다.</p>
   </div>
-</section>
-
-<div class="tabbox">
-<div class="tabs" role="tablist" aria-label="내용 고르기">
-  <button class="tab" type="button" role="tab" id="tab-timeline" aria-controls="timeline" aria-selected="true"><span class="no">1</span>전체 일정</button>
-  <button class="tab" type="button" role="tab" id="tab-risk" aria-controls="risk" aria-selected="false" tabindex="-1"><span class="no">2</span>유산 위험</button>
-  <button class="tab" type="button" role="tab" id="tab-why" aria-controls="why" aria-selected="false" tabindex="-1"><span class="no">3</span>왜 안심인가</button>
-  <button class="tab" type="button" role="tab" id="tab-weekly" aria-controls="weekly" aria-selected="false" tabindex="-1"><span class="no">4</span>시기별 챙길 것</button>
-  <button class="tab" type="button" role="tab" id="tab-meds" aria-controls="meds" aria-selected="false" tabindex="-1"><span class="no">5</span>약 안내</button>
-  <button class="tab" type="button" role="tab" id="tab-support" aria-controls="support" aria-selected="false" tabindex="-1"><span class="no">6</span>지원금과 보험</button>
-  <button class="tab" type="button" role="tab" id="tab-care" aria-controls="care" aria-selected="false" tabindex="-1"><span class="no">7</span>조리원과 어린이집</button>
 </div>
 
-<section class="panel tabp" id="timeline" role="tabpanel" aria-labelledby="tab-timeline" tabindex="0">
-  <h2><span class="no">1</span>전체 일정</h2>
-  <p class="sec-desc">임신 주차는 이식한 날이 아니라 「마지막 생리 시작일」부터 셉니다. 시험관은 생리일이 따로 없어서, 5일 배아는 이식일에서 19일을, 6일 배아는 20일을 거슬러 올라간 날을 0주 0일로 둡니다. 그래서 이식한 날이 벌써 2주 5일입니다. 기간으로 적힌 일정은 병원마다 날짜가 조금씩 달라서 그렇습니다. 병원이 잡아 준 날이 있으면 그날이 맞습니다.</p>
   <div class="tl" id="tl"></div>
 </section>
 
@@ -1173,23 +1222,111 @@ function renderScale(){
   $('#bt-edd').textContent='출산 예정일(40주)은 '+fmt(EDD,true)+'입니다. 자연분만 기준의 날이라 제왕절개는 이보다 1~2주 앞섭니다.'+
     (wk(38)>=JUL?' 38주에 수술해도 2027년 7월 1일 이후 출생이라, 6번 탭 지원금의 「7월 1일 이후 출생」 쪽이 해당됩니다.':'');
 
-  /* 남편 휴가 계획 — 근무일만 센다. 2027년 공휴일(어린이날, 부처님오신날, 광복절 대체휴일)을 뺀다 */
-  var HOL={'2027-5-5':1,'2027-5-13':1,'2027-8-16':1,'2027-10-3':1,'2027-10-4':1,'2027-10-9':1,'2027-10-11':1};
-  function isWork(d){return d.getDay()>0&&d.getDay()<6&&!HOL[d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()]}
-  function backWork(end,n){var x=end,c=0;while(true){if(isWork(x)){c++;if(c===n)return x;}x=add(x,-1);}}
-  function prevWork(d){var x=add(d,-1);while(!isWork(x))x=add(x,-1);return x}
   var LASTS=[];
   [38,39].forEach(function(w){
-    var s=wk(w), pe=prevWork(s), ps=backWork(pe,20), ve=prevWork(ps), vs=backWork(ve,15), last=prevWork(vs);
-    LASTS.push(last);
-    $('#hl-v'+w).textContent=fmtR(vs,ve);
-    $('#hl-w'+w).textContent=fmt(last);
-    $('#hl-p'+w).textContent=fmtR(ps,pe);
-    $('#hl-l'+w).textContent=fmt(s,true);
+    var h=husbandPlan(w);
+    LASTS.push(h.last);
+    $('#hl-v'+w).textContent=fmtR(h.vs,h.ve);
+    $('#hl-w'+w).textContent=fmt(h.last);
+    $('#hl-p'+w).textContent=fmtR(h.ps,h.pe);
+    $('#hl-l'+w).textContent=fmt(h.s,true);
   });
   $('#hl-last').textContent=fmt(LASTS[0],true)+' 또는 '+fmt(LASTS[1]);
   $('#hl-50').textContent=fmt(add(EDD,-50));
 }
+
+/* 남편 휴가 계획 — 근무일만 센다. 2027년 공휴일(어린이날, 부처님오신날, 광복절 대체휴일, 개천절과 추석, 한글날 대체휴일)을 뺀다 */
+var HOL={'2027-5-5':1,'2027-5-13':1,'2027-8-16':1,'2027-10-3':1,'2027-10-4':1,'2027-10-9':1,'2027-10-11':1};
+function isWork(d){return d.getDay()>0&&d.getDay()<6&&!HOL[d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()]}
+function backWork(end,n){var x=end,c=0;while(true){if(isWork(x)){c++;if(c===n)return x;}x=add(x,-1);}}
+function prevWork(d){var x=add(d,-1);while(!isWork(x))x=add(x,-1);return x}
+/* w주 0일 수술 기준. s 수술일, ps~pe 배우자 출산휴가 20일, vs~ve 연차 15일, last 마지막 출근일 */
+function husbandPlan(w){
+  var s=wk(w), pe=prevWork(s), ps=backWork(pe,20), ve=prevWork(ps), vs=backWork(ve,15), last=prevWork(vs);
+  return {s:s,pe:pe,ps:ps,ve:ve,vs:vs,last:last};
+}
+
+var GW=38;
+function renderGantt(){
+  var svg=$('#g-svg'); if(!svg) return;
+  var wrap=svg.parentNode;
+  var NS='http://www.w3.org/2000/svg';
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+  var W=Math.max(960, wrap.clientWidth||0), LW=64, RW=24, TOP=34, ROWH=78, ROWS=3;
+  var H=TOP+ROWH*ROWS+30;
+  svg.setAttribute('width',W); svg.setAttribute('height',H); svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  var h=husbandPlan(GW), surg=h.s, inEnd=add(surg,6), careEnd=add(inEnd,28);
+  var X0=T, X1=add(careEnd,10);
+  var span=days(X0,X1);
+  function x(d){return LW+(days(X0,d)/span)*(W-LW-RW)}
+  function el(n,a,txt){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(txt!=null)e.appendChild(document.createTextNode(txt));svg.appendChild(e);return e}
+  function cls(e,c){e.setAttribute('class',c);return e}
+  /* 달 눈금 */
+  var m=new Date(X0.getFullYear(),X0.getMonth()+1,1);
+  while(m<X1){
+    var mx=x(m);
+    cls(el('line',{x1:mx,y1:TOP-8,x2:mx,y2:H-22}),'g-grid');
+    cls(el('text',{x:mx+4,y:TOP-14},(m.getMonth()===0||m.getTime()===new Date(X0.getFullYear(),X0.getMonth()+1,1).getTime()?m.getFullYear()+'년 ':'')+(m.getMonth()+1)+'월'),'g-mon');
+    m=new Date(m.getFullYear(),m.getMonth()+1,1);
+  }
+  /* 줄 */
+  var names=['아기','아내','남편'];
+  for(var i=0;i<ROWS;i++){
+    var y=TOP+ROWH*i;
+    cls(el('line',{x1:LW,y1:y+ROWH-1,x2:W-RW,y2:y+ROWH-1}),'g-row');
+    cls(el('text',{x:0,y:y+ROWH/2+5},names[i]),'g-name');
+  }
+  function bar(row,a,b,label,c,sub){
+    var y=TOP+ROWH*row, xa=x(a), xb=Math.max(x(b),xa+3);
+    cls(el('rect',{x:xa,y:y+22,width:xb-xa,height:26}),'g-bar '+c);
+    var t=cls(el('text',{x:xa+8,y:y+40},label),'g-bart');
+    if(xb-xa<label.length*9+12){ t.setAttribute('x',(xa+xb)/2); t.setAttribute('y',y+16); t.setAttribute('text-anchor','middle'); t.setAttribute('class','g-bart out'); }
+    if(sub) cls(el('text',{x:xa,y:y+64},sub),'g-sub');
+  }
+  function dot(row,d,label,up,c){
+    var y=TOP+ROWH*row, dx=x(d), cy=y+35;
+    cls(el('circle',{cx:dx,cy:cy,r:6}),'g-dot '+(c||''));
+    cls(el('text',{x:dx,y:up?y+16:y+62,'text-anchor':'middle'},label),'g-lab');
+  }
+  function rng(row,a,b,label,up){
+    var y=TOP+ROWH*row, xa=x(a), xb=x(b), cy=y+35;
+    cls(el('line',{x1:xa,y1:cy,x2:xb,y2:cy}),'g-rng');
+    cls(el('line',{x1:xa,y1:cy-6,x2:xa,y2:cy+6}),'g-rng');
+    cls(el('line',{x1:xb,y1:cy-6,x2:xb,y2:cy+6}),'g-rng');
+    cls(el('text',{x:(xa+xb)/2,y:up?y+16:y+62,'text-anchor':'middle'},label),'g-lab');
+  }
+  /* 아기 줄 */
+  dot(0,T,'이식',true,'a');
+  dot(0,B0,'피검사',false,'a');
+  dot(0,wk(6,3),'심장박동',true,'a');
+  dot(0,wk(12),'12주 안정기',false,'a');
+  rng(0,wk(11),wk(13,6),'1차 기형아',true);
+  rng(0,wk(20),wk(22),'정밀 초음파',false);
+  rng(0,wk(24),wk(28),'당뇨 검사',true);
+  dot(0,wk(37),'만삭',false,'a');
+  dot(0,surg,GW+'주 수술',true,'b');
+  /* 아내 줄 */
+  bar(1,surg,inEnd,'입원','b');
+  bar(1,inEnd,careEnd,'산후조리원 4주','b',fmtS(inEnd)+' 입소, '+fmtS(careEnd)+' 퇴소');
+  cls(el('text',{x:x(surg)-6,y:TOP+ROWH+40,'text-anchor':'end'},'출산 '+fmtS(surg)),'g-lab');
+  /* 남편 줄 */
+  bar(2,h.vs,add(h.ve,1),'연차 15일','k',fmtS(h.vs)+'부터');
+  bar(2,h.ps,add(h.pe,1),'출산휴가 20일','k');
+  bar(2,surg,X1,'육아휴직','k',fmtS(surg)+' 시작');
+  cls(el('text',{x:x(h.vs)-6,y:TOP+ROWH*2+40,'text-anchor':'end'},'마지막 출근 '+fmtS(h.last)),'g-lab');
+  /* 오늘 */
+  var now=new Date(); now=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  if(now>=X0&&now<=X1){
+    var tx=x(now);
+    cls(el('line',{x1:tx,y1:TOP-8,x2:tx,y2:H-22}),'g-today');
+    cls(el('text',{x:tx,y:H-6,'text-anchor':'middle'},'오늘 '+fmtS(now)),'g-todayt');
+  }
+  /* 좁은 화면이면 오늘 자리가 보이게 민다 */
+  if(wrap.clientWidth<W){ var want=(now>=X0&&now<=X1?x(now):x(surg))-wrap.clientWidth*0.35; wrap.scrollLeft=Math.max(0,Math.min(want,W-wrap.clientWidth)); }
+  svg.setAttribute('aria-label','이식 '+fmt(T,true)+'부터 조리원 퇴소 '+fmt(careEnd,true)+'까지. '+GW+'주 수술 기준');
+}
+$$('.g-b').forEach(function(b){ b.addEventListener('click',function(){ GW=+b.getAttribute('data-w'); $$('.g-b').forEach(function(o){o.setAttribute('aria-pressed',o===b?'true':'false')}); renderGantt(); }); });
+var gTimer; window.addEventListener('resize',function(){ clearTimeout(gTimer); gTimer=setTimeout(renderGantt,120); });
 
 var RISK=[
  {w:4,g:20,gm:false,e:12,em:false,src:'피검사 양성. 둘 다 추정값 (아기집이 보이기 전에 끝나는 아주 이른 유산 포함)'},
@@ -1271,7 +1408,7 @@ function watchChart(){
 }
 
 function fillDates(){ $$('.dd').forEach(function(s){ s.textContent=D[s.getAttribute('data-k')]||''; }); }
-function renderAll(){ compute(); var EV=events(); fillDates(); renderScale(); renderTimeline(EV); renderRiskTable(); lastW=-1; renderChart(); }
+function renderAll(){ compute(); var EV=events(); fillDates(); renderScale(); renderGantt(); renderTimeline(EV); renderRiskTable(); lastW=-1; renderChart(); }
 /* 탭 — 다섯 칸 가운데 하나만 보인다. 주소의 # 로도 열 수 있고, 안쪽 링크가 숨은 칸을 가리키면 그 칸을 먼저 연다 */
 var TABS=$$('.tabs .tab'), PANELS=$$('.tabp'), BOX=$('.tabbox');
 function showTab(id,focus,keepScroll){

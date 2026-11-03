@@ -8,7 +8,7 @@
 ## 올리는 법
 
 1. GitHub 에서 새 저장소를 만듭니다. 무료 계정은 공개 저장소여야 Pages 가 켜집니다.
-2. 이 폴더가 그 저장소입니다. `index.html`, `.nojekyll`, `README.md`, `.gitignore` 가 들어 있습니다.
+2. 이 폴더가 그 저장소입니다. `index.html`, `manifest.json`, `icon.svg`, `.nojekyll`, `README.md`, `.gitignore` 가 들어 있습니다. `manifest.json` 과 `icon.svg` 는 폰 홈 화면에 추가했을 때 앱처럼 열리게 하는 파일입니다.
 3. 저장소의 Settings 에서 Pages 로 들어가, Source 를 「Deploy from a branch」로 두고 Branch 를 `main` 과 `/ (root)` 로 고릅니다.
 4. 1~2분 뒤 `https://chkimsu.github.io/ivf-timeline/` 로 열립니다.
 

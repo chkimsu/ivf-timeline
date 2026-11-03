@@ -1,0 +1,10 @@
+{
+  "name": "시험관 임신 일정표",
+  "short_name": "임신 일정표",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#E8EAED",
+  "theme_color": "#1F5FBF",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
