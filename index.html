@@ -940,7 +940,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
     <summary>1 이식 ~ 1차 피검사<span class="fold-n dd" data-k="P1"></span></summary>
     <div class="fold-b">
       <p>열흘이 가장 길게 느껴지는 때입니다. 이 기간에 두 분이 할 수 있는 일은 약 시간을 지키는 것 하나입니다. 나머지는 배아가 알아서 합니다. 그러니 평소처럼 지내셔도 됩니다.</p>
-      <div class="hosp"><b>병원</b> 1차 피검사(임신 호르몬 hCG 혈액검사) <span class="dd" data-k="B"></span>.<br>보통 이식 후 9~11일이고, 병원이 잡아 준 날이 맞습니다. 결과는 당일 오후나 다음 날 나옵니다.</div>
+      <div class="hosp"><b>병원</b> 1차 피검사(임신 호르몬 hCG 혈액검사) <span class="dd" data-k="B"></span>.<br>병원이 잡아 준 날로, 이식 8일째입니다. 결과는 당일 오후나 다음 날 나옵니다.</div>
       <div class="wk">
         <div><h4>예비 엄마가 챙길 것</h4><ul>
           <li>프로기노바 하루 2알, 크리논 아침 1개. 매일 같은 시간에 쓰시면 됩니다. 알람을 하나 맞춰 두면 마음이 편합니다.</li>
@@ -1510,7 +1510,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 'use strict';
 var $=function(s,r){return (r||document).querySelector(s)};
 var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
-var DEF={t:'2026-10-28',day:'5',ret:'',beta:''};
+var DEF={t:'2026-10-28',day:'5',ret:'',beta:'2026-11-05'};
 var S=DEF;
 
 var WD='일월화수목금토';
@@ -1561,7 +1561,7 @@ function events(){
     {ph:'시술 (지난 과정)',when:'채취 후 '+DAY+'일',g:'',t:'배반포 배양, 염색체 검사(PGT-A), 동결',n:DAY+'일 키운 배아의 바깥 세포 몇 개를 떼어 염색체 수를 셌습니다. 배아는 바로 얼렸습니다.',past:true},
     {ph:'시술 (지난 과정)',when:'결과 확인',g:'',t:'염색체 정상 배아 고르기',n:'염색체 수가 맞는 배아만 이식합니다. 유산의 가장 큰 원인인 염색체 이상을 미리 거른 것입니다.',past:true},
     {ph:'시술 (지난 과정)',at:T,g:gaS(T),t:'해동 후 배아 이식',n:'임신 주차는 마지막 생리일부터 세기 때문에, 이식한 날이 벌써 '+gaS(T)+'입니다.'},
-    {ph:'확인',at:B0,to:B1,g:gaS(B0)+'~'+gaS(B1),t:'1차 피검사 (임신 호르몬 hCG)',n:'이식 후 9~11일. 병원이 잡아 준 날이 맞습니다. 집 테스트기보다 이 결과가 기준입니다.'},
+    {ph:'확인',at:B0,to:B1,g:(days(B0,B1)?gaS(B0)+'~'+gaS(B1):gaS(B0)),t:'1차 피검사 (임신 호르몬 hCG)',n:(days(B0,B1)?'이식 후 9~11일. 병원이 잡아 준 날이 맞습니다.':'병원이 잡아 준 날로, 이식 '+days(T,B0)+'일째입니다.')+' 집 테스트기보다 이 결과가 기준입니다.'},
     {ph:'확인',at:add(B0,2),to:add(B1,2),g:'4주',t:'2차 피검사',n:'48시간 뒤에 수치가 1.5~2배로 올랐는지 봅니다. 수치 자체보다 오르는 속도가 중요합니다.'},
     {ph:'확인',at:wk(5),to:wk(6),g:'5~6주',t:'아기집(태낭) 초음파',n:'아기집이 자궁 안에 있는지 봅니다. 여기서 자궁외임신이 아닌 것이 확인됩니다.'},
     {ph:'확인',at:wk(6),to:wk(7),g:'6~7주',t:'심장박동 확인',n:'가장 큰 고비입니다. 6주 초반에는 안 보여서 1주 뒤 다시 보는 일이 흔합니다.'},
@@ -1608,8 +1608,8 @@ function ymd(d){return d.getFullYear()+'년, '+WD[d.getDay()]+'요일'}
 function renderScale(){
   $('#s-t').textContent=md(T);
   $('#s-t-d').textContent=ymd(T)+'. '+DAY+'일 배아라 이날이 벌써 임신 '+gaS(T)+'입니다';
-  $('#s-b').textContent=(B0.getMonth()===B1.getMonth())?((B0.getMonth()+1)+'월 '+B0.getDate()+'~'+B1.getDate()+'일'):(md(B0)+'~'+md(B1));
-  $('#s-b-d').textContent='이식 후 9~11일. 병원이 잡아 준 날이 있으면 그날이 맞습니다';
+  $('#s-b').textContent=!days(B0,B1)?md(B0):(B0.getMonth()===B1.getMonth())?((B0.getMonth()+1)+'월 '+B0.getDate()+'~'+B1.getDate()+'일'):(md(B0)+'~'+md(B1));
+  $('#s-b-d').textContent=days(B0,B1)?'이식 후 9~11일. 병원이 잡아 준 날이 있으면 그날이 맞습니다':'이식 '+days(T,B0)+'일째입니다. 병원이 잡아 준 날입니다';
   var W=wk(12);
   $('#s-w12').textContent=md(W);
   $('#s-w12-d').textContent=ymd(W)+'. 유산 위험이 1% 아래로 내려가는 때입니다';
