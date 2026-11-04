@@ -456,6 +456,52 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 .g-l6{background:var(--a-bg);border:1.5px solid var(--a);box-sizing:border-box}
 .g-leg i.g-l7{width:4px;height:16px;background:var(--b)}
 .g-leg i.g-l8{width:0;height:16px;border-left:2px dotted var(--ink2)}
+/* 2 유산 위험: 학회 발표 값 */
+.chart .ln-b{stroke:var(--b);stroke-width:2.5;fill:none;stroke-linejoin:round;stroke-linecap:round}
+.chart .pt.b{fill:var(--b)}
+.chip .key.b{border-top-color:var(--b)}
+.tip .k.b{border-top-color:var(--b)}
+/* 9 사진과 영상 */
+.al-bar{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 0}
+.al-bar[hidden]{display:none}
+.al-f{appearance:none;-webkit-appearance:none;font:inherit;font-size:15.5px;font-weight:700;line-height:1.3;padding:9px 16px;border:1px solid var(--hair);background:var(--card);color:var(--ink2);cursor:pointer;display:inline-flex;align-items:baseline;gap:7px}
+.al-f .n{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--ink3)}
+.al-f:hover{border-color:var(--a-bd);color:var(--a)}
+.al-f[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--card)}
+.al-f[aria-pressed="true"] .n{color:var(--card)}
+.al-f:focus-visible,.al-th:focus-visible,.al-x:focus-visible,.al-nav:focus-visible,.al-o:focus-visible{outline:2.5px solid var(--a);outline-offset:2px}
+.al-list{margin-top:34px}
+.al-item{display:grid;grid-template-columns:210px minmax(0,1fr);gap:30px;padding:26px 0 0;border-top:3px solid var(--ink)}
+.al-item+.al-item{margin-top:56px}
+.al-d{font-size:22px;font-weight:800;line-height:1.3;letter-spacing:-.02em}
+.al-y{font-size:15px;font-weight:600;color:var(--ink2);margin-top:2px}
+.al-ga{font-size:16.5px;font-weight:750;color:var(--a);margin-top:12px}
+.al-ga2{font-size:15.5px;font-weight:600;color:var(--ink2);margin-top:4px}
+.al-k{display:inline-block;font-size:13.5px;font-weight:750;line-height:1.4;padding:3px 10px;border:1px solid var(--c-bd);background:var(--c-bg);color:var(--c)}
+.al-t{font-size:20.5px;font-weight:800;line-height:1.4;letter-spacing:-.015em;margin:12px 0 8px}
+.al-n{font-size:16px;line-height:1.8;margin:0 0 20px;max-width:60em}
+.al-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.al-th{appearance:none;-webkit-appearance:none;position:relative;display:block;width:100%;aspect-ratio:1/1;padding:0;border:1px solid var(--hair);background:var(--sunk);cursor:zoom-in;overflow:hidden}
+.al-th img{display:block;width:100%;height:100%;object-fit:contain}
+.al-th:hover{border-color:var(--a)}
+.al-vb{position:absolute;left:10px;bottom:10px;padding:3px 9px;background:var(--ink);color:var(--card);font-size:13.5px;font-weight:750}
+.al-empty{font-size:16px;color:var(--ink2);margin:0;padding:24px 0}
+@media(max-width:760px){.al-item{grid-template-columns:1fr;gap:14px;padding-top:20px}.al-item+.al-item{margin-top:44px}.al-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.al-ga{margin-top:6px}}
+.al-dlg{padding:0;border:1px solid var(--hair);background:var(--card);color:var(--ink);width:min(1180px,96vw);max-width:96vw;max-height:94vh;overflow:hidden}
+.al-dlg[open]{display:flex;flex-direction:column}
+.al-dlg::backdrop{background:rgba(0,0,0,.78)}
+.al-dh{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--hair);background:var(--sunk)}
+.al-dt{font-size:17px;font-weight:800;line-height:1.45;min-width:0}
+.al-dt span{display:block;font-size:14.5px;font-weight:600;color:var(--ink2)}
+.al-dc{margin-left:auto;font-family:var(--mono);font-size:14.5px;font-weight:600;color:var(--ink2);white-space:nowrap}
+.al-x,.al-nav{appearance:none;-webkit-appearance:none;font:inherit;font-size:15px;font-weight:750;padding:9px 16px;border:1px solid var(--hair);background:var(--card);color:var(--ink);cursor:pointer;flex:none}
+.al-nav:disabled{color:var(--ink3);cursor:default}
+.al-dm{flex:1 1 auto;min-height:0;height:min(72vh,900px);display:flex;align-items:center;justify-content:center;background:var(--ground);touch-action:pan-y pinch-zoom}
+.al-dm img,.al-dm video{display:block;max-width:100%;max-height:100%;object-fit:contain}
+.al-df{display:flex;align-items:center;gap:14px;padding:14px 18px;border-top:1px solid var(--hair)}
+.al-dn{flex:1 1 auto;min-width:0;font-size:15px;line-height:1.6;color:var(--ink2)}
+.al-o{font-size:14.5px;font-weight:700;color:var(--a);white-space:nowrap}
+@media(max-width:760px){.al-dlg{width:100vw;max-width:100vw;height:100%;max-height:100%;margin:0;border:0}.al-dm{flex:1 1 0;height:auto}.al-df{flex-wrap:wrap}.al-dn{order:-1;flex-basis:100%}.al-o{margin-left:auto}}
 </style>
 <script>try{var t0=localStorage.getItem('ivf-theme');if(t0==='light'||t0==='dark')document.documentElement.setAttribute('data-theme',t0);}catch(e){}</script>
 </head>
@@ -510,6 +556,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
   <button class="tab" type="button" role="tab" id="tab-support" aria-controls="support" aria-selected="false" tabindex="-1"><span class="no">6</span>지원금과 보험</button>
   <button class="tab" type="button" role="tab" id="tab-care" aria-controls="care" aria-selected="false" tabindex="-1"><span class="no">7</span>조리원과 어린이집</button>
   <button class="tab" type="button" role="tab" id="tab-helper" aria-controls="helper" aria-selected="false" tabindex="-1"><span class="no">8</span>산후도우미</button>
+  <button class="tab" type="button" role="tab" id="tab-album" aria-controls="album" aria-selected="false" tabindex="-1"><span class="no">9</span>사진과 영상</button>
 </div>
 
 <section class="panel tabp" id="timeline" role="tabpanel" aria-labelledby="tab-timeline" tabindex="0">
@@ -779,13 +826,14 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 
 <section class="panel tabp" id="risk" role="tabpanel" aria-labelledby="tab-risk" tabindex="0" hidden>
   <h2><span class="no">2</span>유산 위험은 언제 줄어드나</h2>
-  <p class="sec-desc">숫자를 보면 걱정부터 앞서기 쉬워서 이 말을 먼저 적습니다. <b>피검사가 양성이면 열에 아홉 가까이는 출산까지 갑니다.</b> 아래 그래프는 남은 걱정이 검사를 하나씩 지날 때마다 얼마나 줄어드는지 그린 것입니다.</p>
+  <p class="sec-desc">숫자를 보면 걱정부터 앞서기 쉬워서 이 말을 먼저 적습니다. <b>피검사가 양성이면 열에 여덟에서 아홉은 출산까지 갑니다.</b> 아래 그래프는 남은 걱정이 검사를 하나씩 지날 때마다 얼마나 줄어드는지 그린 것입니다. PGT-A 정상 배아 숫자는 두 가지를 같이 적었습니다. 여러 연구를 모아 잡은 값과, 정상 배아 7,092건 이식을 센 학회 발표 값입니다.</p>
 
   <div class="callout"><b class="co-h">가장 큰 고비는 심장박동을 확인하는 6~7주입니다</b>그 뒤로는 빠르게 내려가서 8주면 1~2%, 12주를 넘기면 1% 아래입니다.<br>많은 부부가 12주에 주변에 알리는 이유가 이것입니다.</div>
 
   <div class="chart" id="chart" aria-describedby="risk-note"></div>
   <div class="legend" aria-hidden="true">
     <span class="chip"><span class="key a est"></span>PGT-A 정상 배아 (두 분의 경우, 대부분 추정값)</span>
+    <span class="chip"><span class="key b"></span>PGT-A 정상 배아 학회 발표 (7,092건 측정값)</span>
     <span class="chip"><span class="key"></span>일반 임신 (6~10주는 연구 측정값)</span>
     <span class="chip"><span class="pt-s"></span>속이 찬 점 = 측정값</span>
     <span class="chip"><span class="pt-s hollow"></span>속이 빈 점 = 추정값</span>
@@ -798,21 +846,21 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
       <div class="step-n">1단계</div>
       <div class="step-t">피검사 양성</div>
       <div class="step-w"><span class="dd" data-k="B"></span>, 4주</div>
-      <div class="step-r"><span class="k">PGT-A 배아</span><span class="v">약 12%</span><span class="k">일반 임신</span><span class="v">약 20%</span></div>
-      <div class="step-d">배아가 자리를 잡았다는 뜻입니다. 남은 12% 중 절반쯤은 아기집이 보이기도 전에 끝나는 아주 이른 유산입니다. 그래서 다음 단계만 지나도 숫자가 또 크게 줄어듭니다.</div>
+      <div class="step-r"><span class="k">PGT-A 배아</span><span class="v">약 12%</span><span class="k">PGT-A 배아, 학회 발표</span><span class="v">20.6%</span><span class="k">일반 임신</span><span class="v">약 20%</span></div>
+      <div class="step-d">배아가 자리를 잡았다는 뜻입니다. 이 숫자에는 아기집이 보이기도 전에 끝나는 아주 이른 유산이 들어 있습니다. 그래서 다음 단계만 지나도 숫자가 또 줄어듭니다.</div>
     </div>
     <div class="step" data-stage="1">
       <div class="step-n">2단계</div>
       <div class="step-t">아기집 확인</div>
       <div class="step-w"><span class="dd" data-k="SAC"></span>, 5~6주</div>
-      <div class="step-r"><span class="k">PGT-A 배아</span><span class="v">약 10%</span><span class="k">일반 임신</span><span class="v">약 15%</span></div>
+      <div class="step-r"><span class="k">PGT-A 배아</span><span class="v">약 10%</span><span class="k">PGT-A 배아, 학회 발표</span><span class="v">17.5%</span><span class="k">일반 임신</span><span class="v">약 15%</span></div>
       <div class="step-d">자궁 안에 제대로 자리 잡은 것을 눈으로 본 것입니다. 자궁외임신 걱정은 여기서 내려놓으셔도 됩니다.</div>
     </div>
     <div class="step" data-stage="2">
       <div class="step-n">3단계</div>
       <div class="step-t">심장박동 확인</div>
       <div class="step-w"><span class="dd" data-k="HB"></span>, 6~7주</div>
-      <div class="step-r"><span class="k">PGT-A 배아</span><span class="v">약 2~4%</span><span class="k">일반 임신</span><span class="v">4~9%</span></div>
+      <div class="step-r"><span class="k">PGT-A 배아</span><span class="v">약 2~4%</span><span class="k">PGT-A 배아, 학회 발표</span><span class="v">10.1%</span><span class="k">일반 임신</span><span class="v">4~9%</span></div>
       <div class="step-d">가장 큰 고비를 지난 것입니다. 일반 임신도 여기서부터는 7주 4.2%, 8주 1.5%로 쭉 내려갑니다.</div>
     </div>
     <div class="step" data-stage="3">
@@ -829,7 +877,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
     <div class="fold-b">
       <div class="tw">
         <table class="stk" id="risk-table">
-          <thead><tr><th>주차</th><th>날짜</th><th>PGT-A 정상 배아</th><th>일반 임신</th><th>어디서 온 값인가</th></tr></thead>
+          <thead><tr><th>주차</th><th>날짜</th><th>PGT-A 정상 배아</th><th>PGT-A 학회 발표</th><th>일반 임신</th><th>어디서 온 값인가</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -837,7 +885,9 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
       <ul>
         <li>일반 임신의 6~10주 값은 임신부 696명을 끝까지 따라가며 센 연구(Tong 2008) 값입니다. 심장박동이 보인 뒤부터 센 것이라 6주 9.4%, 7주 4.2%, 8주 1.5%, 9주 0.5%, 10주 0.7%입니다.</li>
         <li>PGT-A 정상 배아는 아기집을 확인한 뒤에 유산되는 비율이 연구마다 7~13%, 대개 10% 안팎입니다. 검사하지 않은 배아는 같은 조건에서 10~20%입니다.</li>
-        <li>PGT-A 배아만 따로 놓고 심장박동 뒤의 유산율을 센 연구는 찾지 못했습니다. 시험관 임신 전체로는 심장박동 뒤 7.7%이고 그 대부분이 염색체 이상 때문이라, 염색체를 미리 거른 배아는 그보다 낮다고 보고 2~4%로 잡았습니다.</li>
+        <li>「PGT-A 정상 배아」 칸의 심장박동 뒤 값 2~4%는 추정값입니다. 시험관 임신 전체의 심장박동 뒤 유산율 7.7%에서, 염색체를 미리 거른 만큼 낮춰 잡았습니다.</li>
+        <li>「PGT-A 학회 발표」 칸은 미국의 한 난임 병원 그룹이 2020년 미국생식의학회에서 발표한 값입니다. 2016~2018년에 PGT-A 정상 배아 하나를 동결 이식한 7,092건을 셌습니다. 피검사 양성 뒤 20.6%, 아기집 뒤 17.5%, 심장박동 뒤 10.1%였습니다. 혈액 hCG 2.5만 넘어도 양성으로 세서 아주 이른 유산이 많이 들어가 있습니다. <a href="https://www.rmany.com/media/pages/research/published-works/ac15acbb82-1675377198/pregnancy-loss-rates-by-developmental-stage-after-single-euploid-frozen-thawed-embryo-transfer.pdf">발표 자료</a></li>
+        <li>학회 발표 숫자는 전에 유산한 적이 없는 사람의 값입니다. 유산 경험이 있으면 피검사 양성 뒤 값이 더 높게 나옵니다. 한 번이면 25.7%, 두 번 이상이면 36.0%입니다. 논문이 아닌 학회 발표이고, 발표 원문은 열어 보지 못해 요약에 나온 숫자를 옮겼습니다.</li>
         <li>4주(피검사 양성) 값에는 아기집이 보이기 전에 끝나는 아주 이른 유산까지 들어 있습니다. 2차 피검사에서 수치가 두 배 가까이 올랐으면 이 위험은 이미 많이 빠진 뒤입니다.</li>
         <li>나이, 이전 유산 횟수, 자궁 상태에 따라 사람마다 다릅니다. 담당 선생님이 말씀하신 숫자가 있으면 그쪽이 이 표보다 정확합니다.</li>
       </ul>
@@ -877,7 +927,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
         <table class="stk">
           <thead><tr><th>36세 기준</th><th>검사 안 한 배아</th><th>PGT-A 정상 배아</th></tr></thead>
           <tbody>
-            <tr><td data-l="36세 기준">아기집 확인 뒤 유산율</td><td data-l="검사 안 한 배아">15~20%</td><td data-l="PGT-A 정상 배아">약 10%</td></tr>
+            <tr><td data-l="36세 기준">아기집 확인 뒤 유산율</td><td data-l="검사 안 한 배아">15~20%</td><td data-l="PGT-A 정상 배아">약 10% (학회 발표 17.5%)</td></tr>
             <tr><td data-l="36세 기준">이식 1번당 임신 지속률 (35~40세)</td><td data-l="검사 안 한 배아">37%</td><td data-l="PGT-A 정상 배아">51%</td></tr>
             <tr><td data-l="36세 기준">나이가 들수록 유산율이 오르나</td><td data-l="검사 안 한 배아">오릅니다</td><td data-l="PGT-A 정상 배아">거의 오르지 않습니다</td></tr>
             <tr><td data-l="36세 기준">한 번에 넣는 배아 수</td><td data-l="검사 안 한 배아">1~2개</td><td data-l="PGT-A 정상 배아">1개면 됩니다</td></tr>
@@ -897,7 +947,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
   </div>
   <ul class="pts">
     <li><b class="pt-h">100번 중 30~40번은 착상이 안 됩니다</b>염색체가 정상이어도 착상은 자궁내막 상태와 배아의 시기가 맞아야 하는 일입니다. 건강한 부부의 자연 임신도 한 달 성공 확률이 20~30%입니다. 「50% 이상」에서 빠지는 가장 큰 부분이 이것이고, 염색체와는 상관없습니다.</li>
-    <li class="a"><b class="pt-h">양성 뒤 유산은 열에 한 번꼴입니다</b>피검사 양성 60~70번 중 유산은 6~8번입니다. 이것이 이 페이지의 「약 12%」입니다. 양성이 나오면 열에 아홉 가까이는 출산까지 갑니다.</li>
+    <li class="a"><b class="pt-h">양성 뒤 유산은 열에 한두 번입니다</b>피검사 양성 60~70번 중 유산은 6~8번입니다. 이것이 이 페이지의 「약 12%」입니다. 정상 배아 7,092건 이식을 센 학회 발표는 아주 이른 유산까지 세어 20.6%입니다. 양성이 나오면 열에 여덟에서 아홉은 출산까지 갑니다.</li>
     <li><b class="pt-h">「50% 이상」도 좋은 숫자입니다</b>검사 안 한 배아는 같은 나이에서 37%입니다. 36세 자연 임신의 한 달 성공률과 견주면 두 배입니다.</li>
     <li><b class="pt-h">양성이 나오면 셈이 바뀝니다</b>착상이 안 되는 30~40번은 이미 두 분과 상관없는 일이 되고, 남는 것은 유산 6~8번뿐입니다. 같은 출산 횟수를 어디서부터 세느냐에 따라 숫자가 달라지고, 아래 표가 그 차이입니다.</li>
   </ul>
@@ -1502,9 +1552,30 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
   <p class="meta">어디서 확인했나: <a href="https://www.guro.go.kr/health/contents.do?key=1329">구로구보건소 2026년 안내</a>, <a href="https://www.songpa.go.kr/ehealth/contents.do?key=4569">송파구보건소</a>, <a href="https://www.hanam.go.kr/health/contents.do?key=956">하남시보건소</a>(경기도 추가 지원 종료, 맞벌이 판정), <a href="https://www.ddm.go.kr/health/contents.do?key=1260">동대문구보건소</a>(하는 일과 안 하는 일), <a href="https://www.socialservice.or.kr">사회서비스 전자바우처</a>, <a href="https://www.bokjiro.go.kr">복지로</a>. 2027년 기준은 2027년 초 보건소 안내로 다시 맞춥니다.</p>
 </section>
 
+<section class="panel tabp" id="album" role="tabpanel" aria-labelledby="tab-album" tabindex="0" hidden>
+  <h2><span class="no">9</span>사진과 영상</h2>
+  <p class="sec-desc">병원에서 받은 사진, 집에서 찍은 사진, 초음파 영상을 날짜별로 한곳에 모읍니다. 가장 최근 것이 맨 위에 옵니다. 사진을 누르면 크게 볼 수 있습니다.</p>
+  <div class="al-bar" id="al-bar" role="group" aria-label="종류별로 보기"></div>
+  <div class="al-list" id="al-list"></div>
+  <p class="meta">올리기 전에 찍은 기기, 시각, 위치 같은 사진 속 정보는 지웠습니다. 병원 서류가 함께 찍힌 사진은 서류가 보이지 않게 잘라 냈습니다.</p>
+</section>
 
 </div>
 </div>
+<dialog class="al-dlg" id="al-dlg" aria-labelledby="al-dt">
+  <div class="al-dh">
+    <div class="al-dt" id="al-dt"></div>
+    <div class="al-dc" id="al-dc"></div>
+    <button class="al-x" type="button" id="al-x">닫기</button>
+  </div>
+  <div class="al-dm" id="al-dm"></div>
+  <div class="al-df">
+    <button class="al-nav" type="button" id="al-prev">이전</button>
+    <div class="al-dn" id="al-dn"></div>
+    <a class="al-o" id="al-o" href="album/" target="_blank" rel="noopener">원본 크기로 열기</a>
+    <button class="al-nav" type="button" id="al-next">다음</button>
+  </div>
+</dialog>
 <script>
 (function(){
 'use strict';
@@ -1964,9 +2035,9 @@ function renderPlans(){
 var gTimer; window.addEventListener('resize',function(){ clearTimeout(gTimer); gTimer=setTimeout(function(){ renderGantt(); renderPlans(); },120); });
 
 var RISK=[
- {w:4,g:20,gm:false,e:12,em:false,src:'피검사 양성. 둘 다 추정값 (아기집이 보이기 전에 끝나는 아주 이른 유산 포함)'},
- {w:5,g:15,gm:false,e:10,em:true,src:'아기집 확인. PGT-A 값은 여러 연구의 유산율 7~13%의 가운데 값, 일반 임신은 추정'},
- {w:6,g:9.4,gm:true,e:4,em:false,src:'심장박동 확인. 일반 임신은 Tong 2008에서 센 값, PGT-A는 추정'},
+ {w:4,g:20,gm:false,e:12,em:false,r:20.6,src:'피검사 양성. PGT-A 와 일반 임신은 추정값 (아기집이 보이기 전에 끝나는 아주 이른 유산 포함), 학회 발표는 혈액 hCG 2.5 이상을 모두 양성으로 센 측정값'},
+ {w:5,g:15,gm:false,e:10,em:true,r:17.5,src:'아기집 확인. PGT-A 값은 여러 연구의 유산율 7~13%의 가운데 값, 학회 발표는 측정값, 일반 임신은 추정'},
+ {w:6,g:9.4,gm:true,e:4,em:false,r:10.1,src:'심장박동 확인. 일반 임신은 Tong 2008에서 센 값, PGT-A는 추정, 학회 발표는 측정값'},
  {w:7,g:4.2,gm:true,e:2,em:false,src:'일반 임신은 Tong 2008, PGT-A는 추정'},
  {w:8,g:1.5,gm:true,e:1,em:false,src:'졸업 시기. 일반 임신은 Tong 2008, PGT-A는 추정'},
  {w:9,g:0.5,gm:true,e:0.5,em:false,src:'일반 임신은 Tong 2008, PGT-A는 추정'},
@@ -1981,6 +2052,7 @@ function renderRiskTable(){
     function td(s,cls,l){var c=document.createElement('td'); if(cls) c.className=cls; c.setAttribute('data-l',l); c.textContent=s; tr.appendChild(c);}
     td(p.w+'주','dt','주차'); td(fmtR(wk(p.w),wk(p.w,6)),'dt','날짜');
     td((p.em?'':'약 ')+p.e+'%'+(p.em?' (측정)':' (추정)'),'num','PGT-A 정상 배아');
+    td(p.r!=null?p.r+'% (측정)':'자료 없음','num','PGT-A 학회 발표');
     td((p.gm?'':'약 ')+p.g+'%'+(p.gm?' (측정)':' (추정)'),'num','일반 임신');
     td(p.src,'','어디서 온 값인가');
     tb.appendChild(tr);
@@ -2010,8 +2082,12 @@ function renderChart(){
     svg.appendChild(el('line',{'class':'ln-c'+((a.gm&&b.gm)?'':' est'),x1:x(a.w),y1:y(a.g),x2:x(b.w),y2:y(b.g)}));
     svg.appendChild(el('line',{'class':'ln-a'+((a.em&&b.em)?'':' est'),x1:x(a.w),y1:y(a.e),x2:x(b.w),y2:y(b.e)}));}
   RISK.forEach(function(p){svg.appendChild(el('circle',{'class':'pt c'+(p.gm?'':' hollow'),cx:x(p.w),cy:y(p.g),r:4.5})); svg.appendChild(el('circle',{'class':'pt a'+(p.em?'':' hollow'),cx:x(p.w),cy:y(p.e),r:4.5}));});
+  var RB=RISK.filter(function(p){return p.r!=null});
+  for(var j=1;j<RB.length;j++) svg.appendChild(el('line',{'class':'ln-b',x1:x(RB[j-1].w),y1:y(RB[j-1].r),x2:x(RB[j].w),y2:y(RB[j].r)}));
+  RB.forEach(function(p){svg.appendChild(el('circle',{'class':'pt b',cx:x(p.w),cy:y(p.r),r:4.5}));});
   svg.appendChild(txt(x(4)+10,y(20)-9,'일반 임신 약 20%',{'class':'lab'}));
   svg.appendChild(txt(x(4)+10,y(12)-9,'PGT-A 정상 배아 약 12%',{'class':'lab'}));
+  svg.appendChild(txt(x(5)+10,y(17.5)-10,'학회 발표 17.5%',{'class':'lab'}));
   var hl=el('g',{}); svg.appendChild(hl);
   var ov=el('rect',{x:m.l,y:m.t-10,width:pw,height:ph+10,fill:'transparent'}); ov.style.cursor='crosshair'; svg.appendChild(ov);
   host.appendChild(svg);
@@ -2021,10 +2097,12 @@ function renderChart(){
     hl.appendChild(el('line',{'class':'xh',x1:x(p.w),x2:x(p.w),y1:m.t,y2:m.t+ph}));
     hl.appendChild(el('circle',{'class':'ring',cx:x(p.w),cy:y(p.g),r:8}));
     hl.appendChild(el('circle',{'class':'ring',cx:x(p.w),cy:y(p.e),r:8}));
+    if(p.r!=null) hl.appendChild(el('circle',{'class':'ring',cx:x(p.w),cy:y(p.r),r:8}));
     tip.textContent='';
     var wv=document.createElement('div'); wv.className='w'; wv.textContent=p.w+'주'; var ws=document.createElement('span'); ws.textContent=fmtR(wk(p.w),wk(p.w,6)); wv.appendChild(ws); tip.appendChild(wv);
     function row(cls,est,name,val){var r=document.createElement('div');r.className='r';var k=document.createElement('span');k.className='k'+cls+(est?' est':'');var n=document.createElement('span');n.className='n';n.textContent=name;var v=document.createElement('span');v.className='v';v.textContent=val;r.appendChild(k);r.appendChild(n);r.appendChild(v);tip.appendChild(r);}
     row(' a',!p.em,'PGT-A 정상 배아',(p.em?'':'약 ')+p.e+'%'+(p.em?'':' 추정'));
+    if(p.r!=null) row(' b',false,'PGT-A 학회 발표',p.r+'%');
     row('',!p.gm,'일반 임신',(p.gm?'':'약 ')+p.g+'%'+(p.gm?'':' 추정'));
     tip.hidden=false;
     var r=svg.getBoundingClientRect(); var sc=r.width/W; var left=x(p.w)*sc+14; var tw=tip.offsetWidth; if(left+tw>r.width-4) left=x(p.w)*sc-tw-14; tip.style.left=Math.max(0,left)+'px'; tip.style.top=(m.t*sc+8)+'px';
@@ -2042,9 +2120,99 @@ function watchChart(){
   new ResizeObserver(kick).observe($('#chart'));
 }
 
+/* 9 사진과 영상. 아래 목록은 tools/album.py 가 날짜순으로 고쳐 쓴다. 손으로 고쳐도 된다.
+   d 날짜, k 종류, t 제목, n 설명, m 파일 (f 큰 사진이나 영상, th 작은 사진, w 와 h 크기, v 영상이면 1, dur 영상 길이 초, alt 사진 설명) */
+var ALBUM=/*ALBUM*/[
+{"d": "2026-10-28", "k": "배아", "t": "이식한 배아", "n": "이식하는 날 병원에서 받은 배아 사진을 찍은 것입니다. 5일 키운 배반포이고, PGT-A 검사에서 정상이 나온 배아입니다.", "m": [{"f": "album/2026-10-28-embryo-1.jpg", "th": "album/th/2026-10-28-embryo-1.jpg", "w": 1216, "h": 1600, "alt": "이식한 배아를 현미경으로 찍은 흑백 사진. 둥근 배반포가 가운데에 있습니다."}, {"f": "album/2026-10-28-embryo-2.jpg", "th": "album/th/2026-10-28-embryo-2.jpg", "w": 1190, "h": 1600, "alt": "이식한 배아를 현미경으로 찍은 흑백 사진. 둥근 배반포가 가운데에 있습니다."}]},
+{"d": "2026-11-04", "k": "테스트기", "t": "집 임신테스트기", "n": "이식 7일째 아침 첫 소변으로 한 집 테스트기입니다. 오른쪽에 진한 C 대조선이 있고, 왼쪽 T 자리에 아주 희미한 선이 보입니다. 결과는 피검사 수치로 확인합니다.", "m": [{"f": "album/2026-11-04-test-1.jpg", "th": "album/th/2026-11-04-test-1.jpg", "w": 1600, "h": 1200, "alt": "임신테스트기 결과 창. 오른쪽에 진한 대조선이 있고 왼쪽 T 자리에 아주 희미한 선이 있습니다."}, {"f": "album/2026-11-04-test-2.jpg", "th": "album/th/2026-11-04-test-2.jpg", "w": 1600, "h": 1200, "alt": "임신테스트기 결과 창. 오른쪽에 진한 대조선이 있고 왼쪽 T 자리에 아주 희미한 선이 있습니다."}]}
+]/*/ALBUM*/;
+var AL_ORDER=['배아','테스트기','피검사','초음파','입체초음파','영상','태동','만삭','출산','아기','기타'];
+var alFilter='전체', alFlat=[], alIdx=0;
+function mmss(s){s=Math.round(s||0);return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2)}
+function alDay(d){return md(d)+' ('+WD[d.getDay()]+')'}
+function renderAlbum(){
+  var host=$('#al-list'), bar=$('#al-bar'); if(!host||!L) return;
+  var items=ALBUM.slice().sort(function(a,b){return a.d<b.d?1:(a.d>b.d?-1:0)});
+  var cnt={}; items.forEach(function(it){cnt[it.k]=(cnt[it.k]||0)+1});
+  var kinds=Object.keys(cnt).sort(function(a,b){var x=AL_ORDER.indexOf(a),y=AL_ORDER.indexOf(b);return (x<0?99:x)-(y<0?99:y)});
+  if(alFilter!=='전체'&&!cnt[alFilter]) alFilter='전체';
+  bar.textContent='';
+  ['전체'].concat(kinds).forEach(function(k){
+    var b=document.createElement('button'); b.type='button'; b.className='al-f'; b.setAttribute('aria-pressed',k===alFilter?'true':'false');
+    b.appendChild(document.createTextNode(k));
+    var c=document.createElement('span'); c.className='n'; c.textContent=(k==='전체'?items.length:cnt[k]); b.appendChild(c);
+    b.addEventListener('click',function(){ alFilter=k; renderAlbum(); });
+    bar.appendChild(b);
+  });
+  bar.hidden=kinds.length<2;
+  host.textContent=''; alFlat=[];
+  var shown=items.filter(function(it){return alFilter==='전체'||it.k===alFilter}), seen={};
+  if(!shown.length){ var e=document.createElement('p'); e.className='al-empty'; e.textContent='아직 올린 사진이 없습니다.'; host.appendChild(e); return; }
+  shown.forEach(function(it){
+    var d=pd(it.d); if(!d) return;
+    var art=document.createElement('article'); art.className='al-item';
+    art.id='al-'+it.d+(seen[it.d]?'-'+(seen[it.d]+1):''); seen[it.d]=(seen[it.d]||0)+1;
+    var w=document.createElement('div'); w.className='al-when';
+    function line(cls,s){var x=document.createElement('div'); x.className=cls; x.textContent=s; w.appendChild(x);}
+    line('al-d',alDay(d)); line('al-y',d.getFullYear()+'년');
+    if(d>=L) line('al-ga','임신 '+gaS(d));
+    var n=days(T,d); if(n>=0&&n<=30) line('al-ga2',n===0?'이식한 날':'이식 '+n+'일째');
+    art.appendChild(w);
+    var mn=document.createElement('div'); mn.className='al-main';
+    var k=document.createElement('div'); k.className='al-k'; k.textContent=it.k; mn.appendChild(k);
+    var h=document.createElement('h3'); h.className='al-t'; h.textContent=it.t; mn.appendChild(h);
+    if(it.n){ var p=document.createElement('p'); p.className='al-n'; p.textContent=it.n; mn.appendChild(p); }
+    var gr=document.createElement('div'); gr.className='al-grid';
+    (it.m||[]).forEach(function(m,j){
+      var idx=alFlat.length; alFlat.push({it:it,m:m,d:d});
+      var b=document.createElement('button'); b.type='button'; b.className='al-th';
+      b.setAttribute('aria-label',(m.v?'영상 ':'사진 ')+(j+1)+' 크게 보기. '+it.t);
+      var im=document.createElement('img'); im.src=m.th||m.f; im.alt=m.alt||it.t; im.loading='lazy'; im.decoding='async'; im.draggable=false;
+      b.appendChild(im);
+      if(m.v){ var vb=document.createElement('span'); vb.className='al-vb'; vb.textContent='영상 '+mmss(m.dur); b.appendChild(vb); }
+      b.addEventListener('click',function(){ alOpen(idx); });
+      gr.appendChild(b);
+    });
+    mn.appendChild(gr); art.appendChild(mn); host.appendChild(art);
+  });
+}
+var DLG=$('#al-dlg');
+function alShow(i){
+  if(!alFlat.length) return;
+  alIdx=(i+alFlat.length)%alFlat.length; var x=alFlat[alIdx], m=x.m, it=x.it;
+  var dt=$('#al-dt'); dt.textContent=it.t;
+  var sp=document.createElement('span'); sp.textContent=alDay(x.d)+(x.d>=L?', 임신 '+gaS(x.d):''); dt.appendChild(sp);
+  $('#al-dc').textContent=(alIdx+1)+' / '+alFlat.length;
+  var box=$('#al-dm'); box.textContent='';
+  if(m.v){ var v=document.createElement('video'); v.controls=true; v.setAttribute('playsinline',''); v.preload='metadata'; if(m.th) v.poster=m.th; v.src=m.f; box.appendChild(v); }
+  else { var im=document.createElement('img'); im.src=m.f; im.alt=m.alt||it.t; im.draggable=false; box.appendChild(im); }
+  $('#al-dn').textContent=it.n||'';
+  var o=$('#al-o'); o.href=m.f; o.textContent=m.v?'영상 파일 열기':'원본 크기로 열기';
+  var one=alFlat.length<2; $('#al-prev').disabled=one; $('#al-next').disabled=one;
+}
+function alOpen(i){ alShow(i); if(DLG.showModal){ if(!DLG.open) DLG.showModal(); } else DLG.setAttribute('open',''); }
+function alClose(){ if(DLG.close) DLG.close(); else DLG.removeAttribute('open'); }
+if(DLG){
+  $('#al-x').addEventListener('click',alClose);
+  $('#al-prev').addEventListener('click',function(){ alShow(alIdx-1); });
+  $('#al-next').addEventListener('click',function(){ alShow(alIdx+1); });
+  DLG.addEventListener('close',function(){ $('#al-dm').textContent=''; });
+  DLG.addEventListener('click',function(ev){ if(ev.target===DLG) alClose(); });
+  DLG.addEventListener('keydown',function(ev){
+    if(ev.target.tagName==='VIDEO') return;
+    if(ev.key==='ArrowRight'){ ev.preventDefault(); alShow(alIdx+1); } else if(ev.key==='ArrowLeft'){ ev.preventDefault(); alShow(alIdx-1); }
+  });
+  var sx=null, sy=0;
+  $('#al-dm').addEventListener('pointerdown',function(ev){ sx=ev.clientX; sy=ev.clientY; });
+  $('#al-dm').addEventListener('pointerup',function(ev){
+    if(sx===null) return; var dx=ev.clientX-sx, dy=ev.clientY-sy; sx=null;
+    if(Math.abs(dx)>60&&Math.abs(dy)<80&&alFlat.length>1) alShow(alIdx+(dx<0?1:-1));
+  });
+}
+
 function fillDates(){ $$('.dd').forEach(function(s){ s.textContent=D[s.getAttribute('data-k')]||''; }); }
-function renderAll(){ compute(); var EV=events(); fillDates(); renderScale(); renderGantt(); renderPlans(); renderTimeline(EV); renderRiskTable(); lastW=-1; renderChart(); }
-/* 탭 — 다섯 칸 가운데 하나만 보인다. 주소의 # 로도 열 수 있고, 안쪽 링크가 숨은 칸을 가리키면 그 칸을 먼저 연다 */
+function renderAll(){ compute(); var EV=events(); fillDates(); renderScale(); renderGantt(); renderPlans(); renderTimeline(EV); renderRiskTable(); lastW=-1; renderChart(); renderAlbum(); }
+/* 탭 — 여러 칸 가운데 하나만 보인다. 주소의 # 로도 열 수 있고, 안쪽 링크가 숨은 칸을 가리키면 그 칸을 먼저 연다 */
 var TABS=$$('.tabs .tab'), PANELS=$$('.tabp'), BOX=$('.tabbox');
 function showTab(id,focus,keepScroll){
   var btn=null;
