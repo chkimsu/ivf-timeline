@@ -456,11 +456,18 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 .g-l6{background:var(--a-bg);border:1.5px solid var(--a);box-sizing:border-box}
 .g-leg i.g-l7{width:4px;height:16px;background:var(--b)}
 .g-leg i.g-l8{width:0;height:16px;border-left:2px dotted var(--ink2)}
-/* 2 유산 위험: 학회 발표 값 */
-.chart .ln-b{stroke:var(--b);stroke-width:2.5;fill:none;stroke-linejoin:round;stroke-linecap:round}
-.chart .pt.b{fill:var(--b)}
-.chip .key.b{border-top-color:var(--b)}
-.tip .k.b{border-top-color:var(--b)}
+/* 점선 밑줄 숫자: 마우스를 올리거나 누르면 다른 자료가 뜬다 */
+.hv{position:relative;display:inline-block;border-bottom:2px dotted var(--ink3);cursor:pointer;line-height:1.35}
+.hv:focus{outline:none}
+.hv:focus-visible{outline:2.5px solid var(--a);outline-offset:3px}
+.hv-tip{display:none;position:absolute;z-index:6;top:calc(100% + 8px);right:-10px;width:min(340px,82vw);padding:14px 16px 10px;background:var(--card);border:1px solid var(--hair);border-top:3px solid var(--ink);font-family:var(--sans);font-size:14.5px;font-weight:500;line-height:1.65;color:var(--ink);text-align:left;white-space:normal;letter-spacing:0;cursor:auto}
+.hv:hover .hv-tip,.hv:focus-visible .hv-tip,.hv.on .hv-tip{display:block}
+.hv-h{display:block;font-size:15px;font-weight:800;margin:0 0 6px}
+.hv-p{display:block;color:var(--ink2);margin:0 0 6px}
+.hv-rs{display:block;margin:8px 0 10px;border-top:1px solid var(--hair2)}
+.hv-r{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:5px 0;border-bottom:1px solid var(--hair2)}
+.hv-n{font-family:var(--mono);font-weight:700;color:var(--ink);white-space:nowrap}
+.steps>.step:has(.hv:hover),.steps>.step:has(.hv.on),.steps>.step.hv-up{z-index:2}
 /* 9 사진과 영상 */
 .al-bar{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 0}
 .al-bar[hidden]{display:none}
@@ -826,14 +833,13 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 
 <section class="panel tabp" id="risk" role="tabpanel" aria-labelledby="tab-risk" tabindex="0" hidden>
   <h2><span class="no">2</span>유산 위험은 언제 줄어드나</h2>
-  <p class="sec-desc">숫자를 보면 걱정부터 앞서기 쉬워서 이 말을 먼저 적습니다. <b>피검사가 양성이면 열에 여덟에서 아홉은 출산까지 갑니다.</b> 아래 그래프는 남은 걱정이 검사를 하나씩 지날 때마다 얼마나 줄어드는지 그린 것입니다. PGT-A 정상 배아 숫자는 두 가지를 같이 적었습니다. 여러 연구를 모아 잡은 값과, 정상 배아 7,092건 이식을 센 학회 발표 값입니다.</p>
+  <p class="sec-desc">숫자를 보면 걱정부터 앞서기 쉬워서 이 말을 먼저 적습니다. <b>피검사가 양성이면 열에 아홉 가까이는 출산까지 갑니다.</b> 아래 그래프는 남은 걱정이 검사를 하나씩 지날 때마다 얼마나 줄어드는지 그린 것입니다.</p>
 
   <div class="callout"><b class="co-h">가장 큰 고비는 심장박동을 확인하는 6~7주입니다</b>그 뒤로는 빠르게 내려가서 8주면 1~2%, 12주를 넘기면 1% 아래입니다.<br>많은 부부가 12주에 주변에 알리는 이유가 이것입니다.</div>
 
   <div class="chart" id="chart" aria-describedby="risk-note"></div>
   <div class="legend" aria-hidden="true">
     <span class="chip"><span class="key a est"></span>PGT-A 정상 배아 (두 분의 경우, 대부분 추정값)</span>
-    <span class="chip"><span class="key b"></span>PGT-A 정상 배아 학회 발표 (7,092건 측정값)</span>
     <span class="chip"><span class="key"></span>일반 임신 (6~10주는 연구 측정값)</span>
     <span class="chip"><span class="pt-s"></span>속이 찬 점 = 측정값</span>
     <span class="chip"><span class="pt-s hollow"></span>속이 빈 점 = 추정값</span>
@@ -846,21 +852,21 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
       <div class="step-n">1단계</div>
       <div class="step-t">피검사 양성</div>
       <div class="step-w"><span class="dd" data-k="B"></span>, 4주</div>
-      <div class="step-r"><span class="k">PGT-A 배아</span><span class="v">약 12%</span><span class="k">PGT-A 배아, 학회 발표</span><span class="v">20.6%</span><span class="k">일반 임신</span><span class="v">약 20%</span></div>
+      <div class="step-r"><span class="k">PGT-A 배아</span><span class="v"><span class="hv" tabindex="0" role="button" aria-expanded="false" aria-label="약 12%. 누르면 다른 자료가 나옵니다" aria-describedby="hv-b">약 12%<span class="hv-tip" role="tooltip" id="hv-b"><b class="hv-h">다른 자료로는 20.6%입니다</b><span class="hv-p">정상 배아 하나를 동결 이식한 7,092건을 센 미국 한 난임 병원 그룹의 학회 발표(2020)입니다.</span><span class="hv-p">혈액 hCG 2.5만 넘어도 양성으로 셌습니다. 곧 끝날 아주 약한 반응까지 들어 있고, 출산 때까지 생긴 일도 모두 셌습니다. 그래서 이 카드의 값보다 높게 나옵니다.</span></span></span></span><span class="k">일반 임신</span><span class="v">약 20%</span></div>
       <div class="step-d">배아가 자리를 잡았다는 뜻입니다. 이 숫자에는 아기집이 보이기도 전에 끝나는 아주 이른 유산이 들어 있습니다. 그래서 다음 단계만 지나도 숫자가 또 줄어듭니다.</div>
     </div>
     <div class="step" data-stage="1">
       <div class="step-n">2단계</div>
       <div class="step-t">아기집 확인</div>
       <div class="step-w"><span class="dd" data-k="SAC"></span>, 5~6주</div>
-      <div class="step-r"><span class="k">PGT-A 배아</span><span class="v">약 10%</span><span class="k">PGT-A 배아, 학회 발표</span><span class="v">17.5%</span><span class="k">일반 임신</span><span class="v">약 15%</span></div>
+      <div class="step-r"><span class="k">PGT-A 배아</span><span class="v"><span class="hv" tabindex="0" role="button" aria-expanded="false" aria-label="약 10%. 누르면 다른 자료가 나옵니다" aria-describedby="hv-sac">약 10%<span class="hv-tip" role="tooltip" id="hv-sac"><b class="hv-h">다른 자료로는 17.5%입니다</b><span class="hv-p">같은 학회 발표의 값입니다. 출산 때까지 생긴 일을 모두 셌습니다. 아기집을 본 100명으로 나누면 이렇습니다.</span><span class="hv-rs"><span class="hv-r"><span>난임 병원 졸업(8~10주) 전 유산</span><span class="hv-n">약 12~13명</span></span><span class="hv-r"><span>졸업 뒤 출산 전 유산</span><span class="hv-n">약 5명</span></span><span class="hv-r"><span>출산</span><span class="hv-n">약 82~83명</span></span></span><span class="hv-p">초기 유산만 보면 약 12%입니다. 여러 연구의 범위(7~13%) 안에 들어갑니다. 발표 요약에 적힌 숫자로 나눈 값입니다.</span></span></span></span><span class="k">일반 임신</span><span class="v">약 15%</span></div>
       <div class="step-d">자궁 안에 제대로 자리 잡은 것을 눈으로 본 것입니다. 자궁외임신 걱정은 여기서 내려놓으셔도 됩니다.</div>
     </div>
     <div class="step" data-stage="2">
       <div class="step-n">3단계</div>
       <div class="step-t">심장박동 확인</div>
       <div class="step-w"><span class="dd" data-k="HB"></span>, 6~7주</div>
-      <div class="step-r"><span class="k">PGT-A 배아</span><span class="v">약 2~4%</span><span class="k">PGT-A 배아, 학회 발표</span><span class="v">10.1%</span><span class="k">일반 임신</span><span class="v">4~9%</span></div>
+      <div class="step-r"><span class="k">PGT-A 배아</span><span class="v"><span class="hv" tabindex="0" role="button" aria-expanded="false" aria-label="약 2~4%. 누르면 다른 자료가 나옵니다" aria-describedby="hv-hb">약 2~4%<span class="hv-tip" role="tooltip" id="hv-hb"><b class="hv-h">다른 자료로는 10.1%입니다</b><span class="hv-p">같은 학회 발표의 값이고, 이것도 출산 때까지 셌습니다. 심장박동을 본 100명으로 나누면 이렇습니다.</span><span class="hv-rs"><span class="hv-r"><span>난임 병원 졸업(8~10주) 전 유산</span><span class="hv-n">약 5명</span></span><span class="hv-r"><span>졸업 뒤 출산 전 유산</span><span class="hv-n">약 5명</span></span><span class="hv-r"><span>출산</span><span class="hv-n">약 90명</span></span></span><span class="hv-p">초기만 보면 약 5%로, 이 카드의 2~4%보다 조금 높습니다. 2~4%는 직접 센 자료 없이 잡은 추정값입니다.</span></span></span></span><span class="k">일반 임신</span><span class="v">4~9%</span></div>
       <div class="step-d">가장 큰 고비를 지난 것입니다. 일반 임신도 여기서부터는 7주 4.2%, 8주 1.5%로 쭉 내려갑니다.</div>
     </div>
     <div class="step" data-stage="3">
@@ -877,7 +883,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
     <div class="fold-b">
       <div class="tw">
         <table class="stk" id="risk-table">
-          <thead><tr><th>주차</th><th>날짜</th><th>PGT-A 정상 배아</th><th>PGT-A 학회 발표</th><th>일반 임신</th><th>어디서 온 값인가</th></tr></thead>
+          <thead><tr><th>주차</th><th>날짜</th><th>PGT-A 정상 배아</th><th>일반 임신</th><th>어디서 온 값인가</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -886,8 +892,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
         <li>일반 임신의 6~10주 값은 임신부 696명을 끝까지 따라가며 센 연구(Tong 2008) 값입니다. 심장박동이 보인 뒤부터 센 것이라 6주 9.4%, 7주 4.2%, 8주 1.5%, 9주 0.5%, 10주 0.7%입니다.</li>
         <li>PGT-A 정상 배아는 아기집을 확인한 뒤에 유산되는 비율이 연구마다 7~13%, 대개 10% 안팎입니다. 검사하지 않은 배아는 같은 조건에서 10~20%입니다.</li>
         <li>「PGT-A 정상 배아」 칸의 심장박동 뒤 값 2~4%는 추정값입니다. 시험관 임신 전체의 심장박동 뒤 유산율 7.7%에서, 염색체를 미리 거른 만큼 낮춰 잡았습니다.</li>
-        <li>「PGT-A 학회 발표」 칸은 미국의 한 난임 병원 그룹이 2020년 미국생식의학회에서 발표한 값입니다. 2016~2018년에 PGT-A 정상 배아 하나를 동결 이식한 7,092건을 셌습니다. 피검사 양성 뒤 20.6%, 아기집 뒤 17.5%, 심장박동 뒤 10.1%였습니다. 혈액 hCG 2.5만 넘어도 양성으로 세서 아주 이른 유산이 많이 들어가 있습니다. <a href="https://www.rmany.com/media/pages/research/published-works/ac15acbb82-1675377198/pregnancy-loss-rates-by-developmental-stage-after-single-euploid-frozen-thawed-embryo-transfer.pdf">발표 자료</a></li>
-        <li>학회 발표 숫자는 전에 유산한 적이 없는 사람의 값입니다. 유산 경험이 있으면 피검사 양성 뒤 값이 더 높게 나옵니다. 한 번이면 25.7%, 두 번 이상이면 36.0%입니다. 논문이 아닌 학회 발표이고, 발표 원문은 열어 보지 못해 요약에 나온 숫자를 옮겼습니다.</li>
+        <li>다른 자료로, 미국의 한 난임 병원 그룹이 2020년 학회에서 발표한 값이 있습니다. PGT-A 정상 배아 하나를 동결 이식한 7,092건을 출산 때까지 따라가며 셌습니다. 위 단계 카드에서 점선 밑줄이 있는 숫자를 누르면 그 값과 설명이 나옵니다. 발표 원문은 열지 못해 요약에 적힌 숫자를 옮겼습니다. <a href="https://www.rmany.com/media/pages/research/published-works/ac15acbb82-1675377198/pregnancy-loss-rates-by-developmental-stage-after-single-euploid-frozen-thawed-embryo-transfer.pdf">발표 자료</a></li>
         <li>4주(피검사 양성) 값에는 아기집이 보이기 전에 끝나는 아주 이른 유산까지 들어 있습니다. 2차 피검사에서 수치가 두 배 가까이 올랐으면 이 위험은 이미 많이 빠진 뒤입니다.</li>
         <li>나이, 이전 유산 횟수, 자궁 상태에 따라 사람마다 다릅니다. 담당 선생님이 말씀하신 숫자가 있으면 그쪽이 이 표보다 정확합니다.</li>
       </ul>
@@ -927,7 +932,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
         <table class="stk">
           <thead><tr><th>36세 기준</th><th>검사 안 한 배아</th><th>PGT-A 정상 배아</th></tr></thead>
           <tbody>
-            <tr><td data-l="36세 기준">아기집 확인 뒤 유산율</td><td data-l="검사 안 한 배아">15~20%</td><td data-l="PGT-A 정상 배아">약 10% (학회 발표 17.5%)</td></tr>
+            <tr><td data-l="36세 기준">아기집 확인 뒤 유산율</td><td data-l="검사 안 한 배아">15~20%</td><td data-l="PGT-A 정상 배아">약 10%</td></tr>
             <tr><td data-l="36세 기준">이식 1번당 임신 지속률 (35~40세)</td><td data-l="검사 안 한 배아">37%</td><td data-l="PGT-A 정상 배아">51%</td></tr>
             <tr><td data-l="36세 기준">나이가 들수록 유산율이 오르나</td><td data-l="검사 안 한 배아">오릅니다</td><td data-l="PGT-A 정상 배아">거의 오르지 않습니다</td></tr>
             <tr><td data-l="36세 기준">한 번에 넣는 배아 수</td><td data-l="검사 안 한 배아">1~2개</td><td data-l="PGT-A 정상 배아">1개면 됩니다</td></tr>
@@ -947,7 +952,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
   </div>
   <ul class="pts">
     <li><b class="pt-h">100번 중 30~40번은 착상이 안 됩니다</b>염색체가 정상이어도 착상은 자궁내막 상태와 배아의 시기가 맞아야 하는 일입니다. 건강한 부부의 자연 임신도 한 달 성공 확률이 20~30%입니다. 「50% 이상」에서 빠지는 가장 큰 부분이 이것이고, 염색체와는 상관없습니다.</li>
-    <li class="a"><b class="pt-h">양성 뒤 유산은 열에 한두 번입니다</b>피검사 양성 60~70번 중 유산은 6~8번입니다. 이것이 이 페이지의 「약 12%」입니다. 정상 배아 7,092건 이식을 센 학회 발표는 아주 이른 유산까지 세어 20.6%입니다. 양성이 나오면 열에 여덟에서 아홉은 출산까지 갑니다.</li>
+    <li class="a"><b class="pt-h">양성 뒤 유산은 열에 한 번꼴입니다</b>피검사 양성 60~70번 중 유산은 6~8번입니다. 이것이 이 페이지의 「약 12%」입니다. 양성이 나오면 열에 아홉 가까이는 출산까지 갑니다.</li>
     <li><b class="pt-h">「50% 이상」도 좋은 숫자입니다</b>검사 안 한 배아는 같은 나이에서 37%입니다. 36세 자연 임신의 한 달 성공률과 견주면 두 배입니다.</li>
     <li><b class="pt-h">양성이 나오면 셈이 바뀝니다</b>착상이 안 되는 30~40번은 이미 두 분과 상관없는 일이 되고, 남는 것은 유산 6~8번뿐입니다. 같은 출산 횟수를 어디서부터 세느냐에 따라 숫자가 달라지고, 아래 표가 그 차이입니다.</li>
   </ul>
@@ -2035,9 +2040,9 @@ function renderPlans(){
 var gTimer; window.addEventListener('resize',function(){ clearTimeout(gTimer); gTimer=setTimeout(function(){ renderGantt(); renderPlans(); },120); });
 
 var RISK=[
- {w:4,g:20,gm:false,e:12,em:false,r:20.6,src:'피검사 양성. PGT-A 와 일반 임신은 추정값 (아기집이 보이기 전에 끝나는 아주 이른 유산 포함), 학회 발표는 혈액 hCG 2.5 이상을 모두 양성으로 센 측정값'},
- {w:5,g:15,gm:false,e:10,em:true,r:17.5,src:'아기집 확인. PGT-A 값은 여러 연구의 유산율 7~13%의 가운데 값, 학회 발표는 측정값, 일반 임신은 추정'},
- {w:6,g:9.4,gm:true,e:4,em:false,r:10.1,src:'심장박동 확인. 일반 임신은 Tong 2008에서 센 값, PGT-A는 추정, 학회 발표는 측정값'},
+ {w:4,g:20,gm:false,e:12,em:false,src:'피검사 양성. 둘 다 추정값 (아기집이 보이기 전에 끝나는 아주 이른 유산 포함)'},
+ {w:5,g:15,gm:false,e:10,em:true,src:'아기집 확인. PGT-A 값은 여러 연구의 유산율 7~13%의 가운데 값, 일반 임신은 추정'},
+ {w:6,g:9.4,gm:true,e:4,em:false,src:'심장박동 확인. 일반 임신은 Tong 2008에서 센 값, PGT-A는 추정'},
  {w:7,g:4.2,gm:true,e:2,em:false,src:'일반 임신은 Tong 2008, PGT-A는 추정'},
  {w:8,g:1.5,gm:true,e:1,em:false,src:'졸업 시기. 일반 임신은 Tong 2008, PGT-A는 추정'},
  {w:9,g:0.5,gm:true,e:0.5,em:false,src:'일반 임신은 Tong 2008, PGT-A는 추정'},
@@ -2052,7 +2057,6 @@ function renderRiskTable(){
     function td(s,cls,l){var c=document.createElement('td'); if(cls) c.className=cls; c.setAttribute('data-l',l); c.textContent=s; tr.appendChild(c);}
     td(p.w+'주','dt','주차'); td(fmtR(wk(p.w),wk(p.w,6)),'dt','날짜');
     td((p.em?'':'약 ')+p.e+'%'+(p.em?' (측정)':' (추정)'),'num','PGT-A 정상 배아');
-    td(p.r!=null?p.r+'% (측정)':'자료 없음','num','PGT-A 학회 발표');
     td((p.gm?'':'약 ')+p.g+'%'+(p.gm?' (측정)':' (추정)'),'num','일반 임신');
     td(p.src,'','어디서 온 값인가');
     tb.appendChild(tr);
@@ -2082,12 +2086,8 @@ function renderChart(){
     svg.appendChild(el('line',{'class':'ln-c'+((a.gm&&b.gm)?'':' est'),x1:x(a.w),y1:y(a.g),x2:x(b.w),y2:y(b.g)}));
     svg.appendChild(el('line',{'class':'ln-a'+((a.em&&b.em)?'':' est'),x1:x(a.w),y1:y(a.e),x2:x(b.w),y2:y(b.e)}));}
   RISK.forEach(function(p){svg.appendChild(el('circle',{'class':'pt c'+(p.gm?'':' hollow'),cx:x(p.w),cy:y(p.g),r:4.5})); svg.appendChild(el('circle',{'class':'pt a'+(p.em?'':' hollow'),cx:x(p.w),cy:y(p.e),r:4.5}));});
-  var RB=RISK.filter(function(p){return p.r!=null});
-  for(var j=1;j<RB.length;j++) svg.appendChild(el('line',{'class':'ln-b',x1:x(RB[j-1].w),y1:y(RB[j-1].r),x2:x(RB[j].w),y2:y(RB[j].r)}));
-  RB.forEach(function(p){svg.appendChild(el('circle',{'class':'pt b',cx:x(p.w),cy:y(p.r),r:4.5}));});
   svg.appendChild(txt(x(4)+10,y(20)-9,'일반 임신 약 20%',{'class':'lab'}));
   svg.appendChild(txt(x(4)+10,y(12)-9,'PGT-A 정상 배아 약 12%',{'class':'lab'}));
-  svg.appendChild(txt(x(5)+10,y(17.5)-10,'학회 발표 17.5%',{'class':'lab'}));
   var hl=el('g',{}); svg.appendChild(hl);
   var ov=el('rect',{x:m.l,y:m.t-10,width:pw,height:ph+10,fill:'transparent'}); ov.style.cursor='crosshair'; svg.appendChild(ov);
   host.appendChild(svg);
@@ -2097,12 +2097,10 @@ function renderChart(){
     hl.appendChild(el('line',{'class':'xh',x1:x(p.w),x2:x(p.w),y1:m.t,y2:m.t+ph}));
     hl.appendChild(el('circle',{'class':'ring',cx:x(p.w),cy:y(p.g),r:8}));
     hl.appendChild(el('circle',{'class':'ring',cx:x(p.w),cy:y(p.e),r:8}));
-    if(p.r!=null) hl.appendChild(el('circle',{'class':'ring',cx:x(p.w),cy:y(p.r),r:8}));
     tip.textContent='';
     var wv=document.createElement('div'); wv.className='w'; wv.textContent=p.w+'주'; var ws=document.createElement('span'); ws.textContent=fmtR(wk(p.w),wk(p.w,6)); wv.appendChild(ws); tip.appendChild(wv);
     function row(cls,est,name,val){var r=document.createElement('div');r.className='r';var k=document.createElement('span');k.className='k'+cls+(est?' est':'');var n=document.createElement('span');n.className='n';n.textContent=name;var v=document.createElement('span');v.className='v';v.textContent=val;r.appendChild(k);r.appendChild(n);r.appendChild(v);tip.appendChild(r);}
     row(' a',!p.em,'PGT-A 정상 배아',(p.em?'':'약 ')+p.e+'%'+(p.em?'':' 추정'));
-    if(p.r!=null) row(' b',false,'PGT-A 학회 발표',p.r+'%');
     row('',!p.gm,'일반 임신',(p.gm?'':'약 ')+p.g+'%'+(p.gm?'':' 추정'));
     tip.hidden=false;
     var r=svg.getBoundingClientRect(); var sc=r.width/W; var left=x(p.w)*sc+14; var tw=tip.offsetWidth; if(left+tw>r.width-4) left=x(p.w)*sc-tw-14; tip.style.left=Math.max(0,left)+'px'; tip.style.top=(m.t*sc+8)+'px';
@@ -2248,6 +2246,19 @@ document.addEventListener('click',function(ev){
 });
 window.addEventListener('hashchange',function(){ openTarget((location.hash||'').slice(1),false); });
 openTarget((location.hash||'').slice(1),false);
+
+/* 점선 밑줄 숫자 — 누르면 다른 자료가 열리고, 다른 곳을 누르면 닫힌다 */
+function hvSet(h,on){ h.classList.toggle('on',on); h.setAttribute('aria-expanded',on?'true':'false'); var st=h.closest('.step'); if(st) st.classList.toggle('hv-up',on); }
+document.addEventListener('click',function(ev){
+  var h=ev.target.closest?ev.target.closest('.hv'):null;
+  $$('.hv.on').forEach(function(x){ if(x!==h) hvSet(x,false); });
+  if(h&&!ev.target.closest('.hv-tip')) hvSet(h,!h.classList.contains('on'));
+});
+document.addEventListener('keydown',function(ev){
+  var h=(ev.target.classList&&ev.target.classList.contains('hv'))?ev.target:null;
+  if(h&&(ev.key==='Enter'||ev.key===' ')){ ev.preventDefault(); hvSet(h,!h.classList.contains('on')); }
+  else if(ev.key==='Escape') $$('.hv.on').forEach(function(x){ hvSet(x,false); });
+});
 
 /* 화면 밝기 — 고른 값을 뿌리에 찍고 기억한다. 고르지 않았으면 기기 설정을 따른다 */
 var ROOT=document.documentElement, TKEY='ivf-theme';
