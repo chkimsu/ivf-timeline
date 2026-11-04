@@ -818,7 +818,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
       <table class="hl-t hl-t4 cards">
         <thead><tr><th>휴가</th><th>얼마나</th><th>조건</th><th>언제까지 신청 (법)</th><th>급여</th><th>계획</th></tr></thead>
         <tbody>
-          <tr><td data-l="휴가">임신기 근로시간 단축</td><td data-l="얼마나">하루 2시간</td><td data-l="조건"><ul class="cl"><li>임신 12주까지(<span id="lt-12"></span>까지)와 32주부터(<span id="lt-32"></span>부터)</li><li>유산 위험 진단서가 있으면 전 기간</li></ul></td><td data-l="언제까지 신청 (법)">시작 3일 전까지. 진단서나 임신확인서 첨부</td><td data-l="급여">깎이지 않음</td><td data-l="계획">지금 바로 쓸 수 있는 것</td></tr>
+          <tr><td data-l="휴가">임신기 근로시간 단축</td><td data-l="얼마나">하루 2시간. 8시간 근무면 6시간만 일합니다</td><td data-l="조건"><ul class="cl"><li>임신 12주까지(<span id="lt-12"></span>까지)와 32주부터(<span id="lt-32"></span>부터)</li><li>12주 끝을 12주 0일(<span id="lt-12a"></span>)로 보는 해설도 있어 며칠 차이는 회사에 확인합니다</li><li>유산 위험 진단서가 있으면 전 기간</li><li>초기 구간이 짧아서 임신확인서를 일찍 받을수록 오래 씁니다</li></ul></td><td data-l="언제까지 신청 (법)">시작 3일 전까지. 진단서나 임신확인서 첨부</td><td data-l="급여">깎이지 않음</td><td data-l="계획">지금 바로 쓸 수 있는 것</td></tr>
           <tr><td data-l="휴가">태아검진 시간</td><td data-l="얼마나">정기 검진에 드는 시간</td><td data-l="조건"><ul class="cl"><li>28주까지 4주에 1회</li><li>29~36주 2주에 1회</li><li>37주부터 매주 1회</li></ul></td><td data-l="언제까지 신청 (법)">기한 없음. 회사에 청구</td><td data-l="급여">깎이지 않음</td><td data-l="계획">검진 날마다</td></tr>
           <tr><td data-l="휴가">출산전후휴가</td><td data-l="얼마나">90일. 쌍둥이는 120일</td><td data-l="조건"><ul class="cl"><li>출산 뒤 45일 이상을 남기고 출산일이 기간 안에 있어야 함</li><li>원칙은 한 번에</li><li>유산 경험, 만 40세 이상, 유산 위험 진단서가 있으면 출산 전 부분을 나눠 씀</li></ul></td><td data-l="언제까지 신청 (법)">법에 기한 없음. 회사 규정을 따름</td><td data-l="급여"><ul class="cl"><li>처음 60일은 회사, 마지막 30일은 고용보험(월 220만 원 상한)</li><li>우선지원대상기업이면 90일 모두 고용보험</li></ul></td><td data-l="계획"><span id="lt-ms"></span></td></tr>
           <tr><td data-l="휴가">육아휴직</td><td data-l="얼마나">1년. 부모 둘 다 3개월 이상 쓰면 1년 6개월</td><td data-l="조건">임신 중에도 쓸 수 있음. 임신 중 사용분은 나누는 횟수에 들지 않음</td><td data-l="언제까지 신청 (법)">시작일 30일 전까지. 예정일보다 일찍 태어난 경우 등은 7일 전</td><td data-l="급여">고용보험. 둘 다 쓰면 6+6으로 첫 6개월 월 상한 250~450만 원</td><td data-l="계획"><span id="lt-wl"></span>부터</td></tr>
@@ -826,6 +826,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
       </table>
     </div>
     <p class="meta">근로기준법과 남녀고용평등법의 2026년 기준입니다. 아내 회사의 연차 수, 자체 휴가, 신청 절차는 그 회사 인사 담당자에게 확인합니다.</p>
+    <p class="meta">다른 회사의 예로 카카오는 사내 안내에 「12주 이내 또는 36주 이후, 하루 2시간」이라고 적었습니다(<a href="https://www.kakaocorp.com/page/detail/10862">2024년 1월 글</a>). 법이 2025년 2월 23일부터 36주를 32주로 넓혔습니다. 회사 안내가 옛 기준으로 남아 있어도 법 기준인 32주부터 쓸 수 있습니다.</p>
       </div>
     </details>
   </div>
@@ -1734,7 +1735,7 @@ function renderScale(){
   $('#wl-last').textContent=fmt(wifePlan(PLAN_W).last,true);
   renderFast();
   $('#wl-12').textContent=fmt(wk(12,6)); $('#wl-32').textContent=fmt(wk(32));
-  var W8=wifePlan(38); $('#lt-12').textContent=fmt(wk(12,6)); $('#lt-32').textContent=fmt(wk(32)); $('#lt-ms').textContent=fmtR(W8.ms,W8.me); $('#lt-wl').textContent=fmt(W8.leave);
+  var W8=wifePlan(38); $('#lt-12').textContent=fmt(wk(12,6)); $('#lt-12a').textContent=fmt(wk(12)); $('#lt-32').textContent=fmt(wk(32)); $('#lt-ms').textContent=fmtR(W8.ms,W8.me); $('#lt-wl').textContent=fmt(W8.leave);
   /* 육아휴직 급여 쉽게 보기 */
   var SIX=[250,250,300,350,400,450,160,160,160,160,160,160], BASE=[250,250,250,200,200,200,160,160,160,160,160,160];
   var bars=$('#ez-bars');
