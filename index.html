@@ -116,6 +116,7 @@ b,strong{font-weight:750}
 .scale-n{font-family:var(--mono);font-size:clamp(34px,3.2vw,46px);line-height:1;font-weight:600;letter-spacing:-.05em;color:var(--ink);word-break:keep-all}
 .scale-l{font-size:16px;font-weight:750;margin-top:11px}
 .scale-d{font-size:15px;color:var(--ink2);margin-top:6px;line-height:1.65}
+.scale-n.a{color:var(--a)}
 /* 출산과 조리원 — 위 요약 바로 아래 늘 보이는 칸. 파랑 굵은 띠로 다른 칸보다 먼저 눈에 들게 한다 */
 .birth{border-top:6px solid var(--a);margin:56px 0 48px;padding-top:28px}
 /* 한눈에 보는 일정표 — 가로 띠 그림. 좁으면 가로로 민다 */
@@ -234,6 +235,10 @@ b,strong{font-weight:750}
   .scale-n{font-size:clamp(24px,6.6vw,34px)}
   .scale-l{font-size:15px;margin-top:8px}
   .scale-d{font-size:14px;line-height:1.6}
+  /* 칸이 셋인 눈금줄은 좁은 화면에서 한 줄에 하나씩 */
+  .scale.s3{grid-template-columns:1fr}
+  .scale.s3 .scale-i{border-left:none;padding-left:0;border-bottom:1px solid var(--hair2)}
+  .scale.s3 .scale-i:last-child{border-bottom:none}
 }
 
 /* 세로 일정표 — 날짜, 점과 선, 내용 세 칸 */
@@ -834,7 +839,46 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 
 <section class="panel tabp" id="risk" role="tabpanel" aria-labelledby="tab-risk" tabindex="0" hidden>
   <h2><span class="no">2</span>유산 위험은 언제 줄어드나</h2>
-  <p class="sec-desc">숫자를 보면 걱정부터 앞서기 쉬워서 이 말을 먼저 적습니다. <b>피검사가 양성이면 열에 아홉 가까이는 출산까지 갑니다.</b> 아래 그래프는 남은 걱정이 검사를 하나씩 지날 때마다 얼마나 줄어드는지 그린 것입니다.</p>
+  <p class="sec-desc">숫자를 보면 걱정부터 앞서기 쉬워서 이 말을 먼저 적습니다. <b>두 분은 1차 피검사 93으로, 출산까지 갈 확률이 약 85%입니다.</b> 검사를 하나씩 지날 때마다 이 숫자는 올라갑니다. 아래 그래프는 남은 걱정이 얼마나 줄어드는지 그린 것입니다.</p>
+
+  <h3>1차 수치 93으로 다시 센 확률</h3>
+  <div class="scale s3">
+    <div class="scale-i">
+      <div class="scale-n a">85%</div>
+      <div class="scale-l">지금, 1차 93</div>
+      <div class="scale-d">출산까지 갈 확률입니다</div>
+    </div>
+    <div class="scale-i">
+      <div class="scale-n">89%</div>
+      <div class="scale-l">아기집이 보이면</div>
+      <div class="scale-d">첫 초음파 <span class="dd" data-k="SAC"></span></div>
+    </div>
+    <div class="scale-i">
+      <div class="scale-n">93% 넘게</div>
+      <div class="scale-l">심장박동이 보이면</div>
+      <div class="scale-d">심장박동 초음파 <span class="dd" data-k="HB"></span></div>
+    </div>
+  </div>
+  <ul class="pts">
+    <li class="a"><b class="pt-h">같은 경우 6,410번을 셌습니다</b>미국의 한 난임 병원이 PGT-A 정상 배아 하나를 이식해 양성이 나온 6,410번을 출산까지 따라갔습니다. 이식 9일째 수치가 100을 넘은 경우는 88%가 출산했습니다.</li>
+    <li><b class="pt-h">하루 차이는 이렇게 맞췄습니다</b>병원은 하루 이른 8일째에 쟀습니다. 수치는 하루에 1.3배에서 1.7배쯤 오르니, 93은 9일째로 치면 117에서 154쯤입니다. 100은 넘지만 그 안에서는 낮은 쪽이라, 88%보다 조금 낮게 85%로 잡았습니다.</li>
+    <li><b class="pt-h">2차가 잘 올라도 85%는 크게 안 바뀝니다</b>남은 걱정은 대부분 아기집을 본 뒤의 유산이라 피검사로는 보이지 않습니다. 2차 피검사는 덜 오르는 경우를 일찍 알아보는 검사입니다. 덜 오르면 숫자가 내려가고, 얼마나인지는 병원이 2차와 3차를 같이 보고 알려 줍니다.</li>
+  </ul>
+  <details class="fold">
+    <summary>숫자가 어디서 왔나<span class="fold-n">연구 6개</span></summary>
+    <div class="fold-b">
+      <ul>
+        <li>85%: 미국 한 난임 병원의 PGT-A 정상 배아 이식 6,410번입니다. 9일째 100을 넘은 4,005번 중 88%가 출산했습니다. 아기집을 본 뒤 유산은 10.4%, 자궁외임신은 0.1%였습니다. <a href="https://doi.org/10.1016/j.fertnstert.2026.04.025">Clarke 외, Fertility and Sterility 2026</a></li>
+        <li>하루에 오르는 정도: 병원이 말한 「3일에 두 배」는 하루 1.26배입니다. 출산까지 간 PGT 임신은 이틀에 2.73배, 하루로 치면 1.65배 올랐습니다. <a href="https://doi.org/10.1007/s00404-025-08057-9">Ozer 외, Archives of Gynecology and Obstetrics 2025</a></li>
+        <li>8일째 수치: 일본 한 병원의 동결 이식 중 8일째에 잰 1,139번입니다. 46.6 이상이면 75%가 출산했고, 그보다 낮으면 2%였습니다. 병원이 말한 「50 이상이면 안정권」과 거의 같은 선입니다. PGT-A 정상 배아만 모은 자료가 아니라 출산 비율이 더 낮게 나옵니다. <a href="https://doi.org/10.1016/j.xfre.2025.10.002">Kidera 외, F&amp;S Reports 2025</a></li>
+        <li>89%: 9일째 100을 넘은 경우 중 아기집까지 본 경우만 다시 센 값입니다. 출산 88%를, 출산 88%와 아기집 뒤 유산 10.4%를 더한 값으로 나눴습니다. Clarke 외 2026의 숫자입니다</li>
+        <li>93% 넘게: 동결 이식 뒤 심장박동을 본 288번 중 268번이 출산했습니다. 염색체 검사를 안 한 배아가 섞인 자료라, PGT-A 정상 배아는 이보다 높을 것으로 봅니다. <a href="https://doi.org/10.1007/s10815-024-03164-z">Trautner 외, Journal of Assisted Reproduction and Genetics 2024</a></li>
+        <li>나이는 따로 빼지 않았습니다. PGT-A 정상 배아 이식 8,175번을 나이별로 보니, 양성이 나온 뒤 출산까지 가는 비율은 나이에 따라 다르지 않았습니다. <a href="https://doi.org/10.1007/s10815-020-01739-0">Reig 외, Journal of Assisted Reproduction and Genetics 2020</a></li>
+        <li>2차가 잘 오를 때: 배아 하나를 이식해 수치가 100을 넘고 이틀에 두 배로 오른 경우 85.4%가 출산했습니다. <a href="https://doi.org/10.1007/s10815-022-02606-w">Hughes 외, Journal of Assisted Reproduction and Genetics 2022</a></li>
+      </ul>
+      <p class="meta">여러 사람의 평균입니다. 이전 유산이나 자궁 상태 같은 두 분만의 사정은 들어 있지 않습니다. 가장 크게 어림한 곳은 8일째 수치를 9일째로 바꾼 부분입니다. 가장 느리게 올려 잡아도 100을 넘어서, 결과는 크게 달라지지 않습니다. 담당 선생님 말씀이 이 숫자보다 우선입니다.</p>
+    </div>
+  </details>
 
   <div class="callout"><b class="co-h">가장 큰 고비는 심장박동을 확인하는 6~7주입니다</b>그 뒤로는 빠르게 내려가서 8주면 1~2%, 12주를 넘기면 1% 아래입니다.<br>많은 부부가 12주에 주변에 알리는 이유가 이것입니다.</div>
 
@@ -854,7 +898,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
       <div class="step-t">피검사 양성</div>
       <div class="step-w"><span class="dd" data-k="B"></span>, 4주</div>
       <div class="step-r"><span class="k">PGT-A 배아</span><span class="v"><span class="hv" tabindex="0" role="button" aria-expanded="false" aria-label="약 12%. 누르면 다른 자료가 나옵니다" aria-describedby="hv-b">약 12%<span class="hv-tip" role="tooltip" id="hv-b"><b class="hv-h">다른 자료로는 20.6%입니다</b><span class="hv-p">정상 배아 하나를 동결 이식한 7,092건을 센 미국 한 난임 병원 그룹의 학회 발표(2020)입니다.</span><span class="hv-p">혈액 hCG 2.5만 넘어도 양성으로 셌습니다. 곧 끝날 아주 약한 반응까지 들어 있고, 출산 때까지 생긴 일도 모두 셌습니다. 그래서 이 카드의 값보다 높게 나옵니다.</span></span></span></span><span class="k">일반 임신</span><span class="v">약 20%</span></div>
-      <div class="step-d">배아가 자리를 잡았다는 뜻입니다. 이 숫자에는 아기집이 보이기도 전에 끝나는 아주 이른 유산이 들어 있습니다. 그래서 다음 단계만 지나도 숫자가 또 줄어듭니다.</div>
+      <div class="step-d">배아가 자리를 잡았다는 뜻입니다. 이 숫자에는 아기집이 보이기도 전에 끝나는 아주 이른 유산이 들어 있습니다. 그래서 다음 단계만 지나도 숫자가 또 줄어듭니다. 두 분은 1차 93으로 다시 세면 약 15%입니다.</div>
     </div>
     <div class="step" data-stage="1">
       <div class="step-n">2단계</div>
@@ -953,7 +997,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
   </div>
   <ul class="pts">
     <li><b class="pt-h">100번 중 30~40번은 착상이 안 됩니다</b>염색체가 정상이어도 착상은 자궁내막 상태와 배아의 시기가 맞아야 하는 일입니다. 건강한 부부의 자연 임신도 한 달 성공 확률이 20~30%입니다. 「50% 이상」에서 빠지는 가장 큰 부분이 이것이고, 염색체와는 상관없습니다.</li>
-    <li class="a"><b class="pt-h">양성 뒤 유산은 열에 한 번꼴입니다</b>피검사 양성 60~70번 중 유산은 6~8번입니다. 이것이 이 페이지의 「약 12%」입니다. 양성이 나오면 열에 아홉 가까이는 출산까지 갑니다.</li>
+    <li class="a"><b class="pt-h">양성 뒤 유산은 열에 한 번꼴입니다</b>피검사 양성 60~70번 중 유산은 6~8번입니다. 이것이 이 페이지의 「약 12%」입니다. 수치가 잘 나온 양성이면 열에 아홉 가까이는 출산까지 갑니다. 두 분은 1차 93으로 다시 세면 약 85%입니다. 자세한 것은 2 유산 위험 탭에 있습니다.</li>
     <li><b class="pt-h">「50% 이상」도 좋은 숫자입니다</b>검사 안 한 배아는 같은 나이에서 37%입니다. 36세 자연 임신의 한 달 성공률과 견주면 두 배입니다.</li>
     <li><b class="pt-h">양성이 나오면 셈이 바뀝니다</b>착상이 안 되는 30~40번은 이미 두 분과 상관없는 일이 되고, 남는 것은 유산 6~8번뿐입니다. 같은 출산 횟수를 어디서부터 세느냐에 따라 숫자가 달라지고, 아래 표가 그 차이입니다.</li>
   </ul>
