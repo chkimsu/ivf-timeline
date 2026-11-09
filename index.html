@@ -293,6 +293,14 @@ html.side-closed .side-open{display:block}
   .ev-m::after{top:16px}
   .ev-t{font-size:17px}
 }
+/* 육아휴직 신청 순서 — 전체 일정의 세로 선 부품을 쓰고 표시 칸에 단계 번호를 넣는다. 선은 첫 번호에서 시작해 끝 번호에서 멈춘다 */
+.ap-tl{margin:0 0 14px}
+.ap-tl .ev-m::after{display:none}
+.ap-tl .ev:first-child .ev-m::before{top:21px}
+.ap-tl .ev:last-child .ev-m::before{bottom:auto;height:21px}
+.ap-tl .ev-b{padding-bottom:20px}
+.ap-k{position:absolute;left:1px;top:10px;z-index:1;box-sizing:border-box;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;line-height:1;color:var(--a);background:var(--card);border:1.5px solid var(--a)}
+@media(max-width:640px){.ap-k{top:11px}}
 
 /* 차트 — 선 2px, 점 r4.5 와 흰 테두리, 눈금선은 머리카락 두께 */
 .chart{position:relative;margin-top:14px;min-width:0}
@@ -745,6 +753,13 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 
     <h3 class="hl-h2" id="apply">육아휴직 사전 신청과 사후 신청</h3>
     <p class="birth-sub">육아휴직 신청서는 출산 뒤에만 올릴 수 있습니다. 회사 규정의 「사전 신청」은 출산 전이 아니라 휴직 시작일 전이라는 뜻입니다. 시작일을 출생일로 잡으면 두 규칙을 같이 지킬 수 없습니다. 근태 담당은 이 경우 사후 신청으로 하라고 답했습니다.</p>
+    <div class="tl ap-tl" role="list" aria-label="육아휴직 신청 순서">
+      <div class="ev" role="listitem"><div class="ev-d">2027년 4월 중</div><div class="ev-m"><span class="ap-k">1</span></div><div class="ev-b"><div class="ev-t">리더, 차상위 리더와 면담</div><div class="ev-n">휴가에 이어 육아휴직을 쓸 계획을 미리 알립니다. 근태 담당이 그렇게 안내했습니다.</div></div></div>
+      <div class="ev" role="listitem"><div class="ev-d"><span id="ap-s"></span><span class="ga">출생 당일</span></div><div class="ev-m"><span class="ap-k">2</span></div><div class="ev-b"><div class="ev-t">수술과 출생, 육아휴직 시작</div><div class="ev-n">이날이 육아휴직 시작일입니다. 바로 다음 날로 잡아도 됩니다. 신청서는 아직 올릴 수 없습니다.</div></div></div>
+      <div class="ev" role="listitem"><div class="ev-d">출생 뒤 바로<span class="ga">예: <span class="ap-dd"></span></span></div><div class="ev-m"><span class="ap-k">3</span></div><div class="ev-b"><div class="ev-t">출생신고와 서류 발급</div><div class="ev-n">출생신고를 하고 가족관계증명서나 주민등록등본을 뗍니다. 4번에서 자녀 정보를 등록할 때 붙이는 서류입니다.</div></div></div>
+      <div class="ev" role="listitem"><div class="ev-d">서류가 나오는 대로<span class="ga">예: <span class="ap-dd"></span>, 서류 받은 날</span></div><div class="ev-m"><span class="ap-k">4</span></div><div class="ev-b"><div class="ev-t">자녀 정보 등록과 신청서 상신</div><div class="ev-n">인사 시스템에 자녀 정보를 등록하고 육아휴직 신청서를 올립니다. 회사 모바일 앱으로도 됩니다. 시작일 칸에는 출생일(<span class="ap-sd"></span>)을 그대로 적습니다. 신청한 날이 시작일보다 뒤라서 사후 신청입니다.</div></div></div>
+    </div>
+    <p class="birth-sub">「사전 신청」은 2번의 시작일보다 앞에 신청서를 올린다는 뜻입니다. 그런데 신청서는 3번의 서류가 있어야 올라가므로 4번처럼 시작일 뒤에 올리는 사후 신청을 합니다.</p>
     <div class="tbl-wrap">
       <table class="hl-t">
         <thead><tr><th>규칙</th><th>뜻</th><th>출처</th></tr></thead>
@@ -755,12 +770,6 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
         </tbody>
       </table>
     </div>
-    <ul class="pts n">
-      <li><b class="pt-h">7/2 수술, 출생</b>이날이 육아휴직 시작일입니다. 신청서는 아직 못 올립니다.</li>
-      <li><b class="pt-h">예: 7/5 서류 발급</b>출생신고를 하고 가족관계증명서나 주민등록등본을 뗍니다.</li>
-      <li><b class="pt-h">같은 날 신청서 상신</b>가족 정보를 등록하고 휴직 신청서를 올립니다. 시작일 칸에는 7/2를 적습니다. 신청한 날이 시작일보다 뒤라서 사후 신청입니다.</li>
-    </ul>
-
     <h3 class="hl-h2">수술일이 정해지는 때</h3>
     <ul class="pts n">
       <li><b class="pt-h">34~36주 진료에서 정해집니다</b>예정 제왕절개의 수술일은 보통 이때 잡아 줍니다. 두 분은 <span id="hl-d1"></span>쯤입니다. 37주 진료에서 확정하는 병원도 있습니다.</li>
@@ -2253,6 +2262,10 @@ function renderScale(){
   $('#hl-k3b').textContent=fmt(EDD);
   $('#hl-k3c').textContent=fmtR(H8.ps,H8.pe);
   $('#hl-k4b').textContent=fmt(H8.s);
+  /* 육아휴직 신청 순서 그림 — 2번 시작일, 3번과 4번의 예시 날짜(출생 3일 뒤) */
+  $('#ap-s').textContent=fmt(H8.s);
+  $$('.ap-sd').forEach(function(x){x.textContent=fmtS(H8.s)});
+  $$('.ap-dd').forEach(function(x){x.textContent=fmtS(add(H8.s,3))});
   $('#lt-e50').textContent=fmt(add(EDD,-50)); $('#lt-edd').textContent=fmt(EDD);
   $('#lt-k3').textContent=fmt(prevWork(H8.ps)); $('#lt-s').textContent=fmt(H8.s);
   [38,39].forEach(function(w){
