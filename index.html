@@ -236,6 +236,9 @@ html.side-closed .side-open{display:block}
 .hl-t5 td:nth-child(2){font-weight:700;color:var(--ink);white-space:nowrap}
 .hl-t6 th:first-child,.hl-t6 td:first-child{width:16%}
 .hl-t6 td:nth-child(2),.hl-t6 td:nth-child(3),.hl-t6 td:nth-child(4){color:var(--ink);font-weight:650}
+/* 경우별 몫 표 — 셋째 칸(몫)이 넷째 칸 긴 글에 밀려 낱말 가운데서 끊기지 않게 */
+.hl-t7 td:nth-child(2){width:24%}
+.hl-t7 td:nth-child(3){width:16%;color:var(--ink);font-weight:650;word-break:keep-all}
 @media(max-width:760px){
   .hl-t thead{display:none}
   .hl-t,.hl-t tbody,.hl-t tr,.hl-t td{display:block;width:auto}
@@ -994,6 +997,58 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
     </table>
   </div>
   <p class="meta">같은 단계별 표를 세 출발점에서 셌습니다. 위 두 줄은 피검사 수치가 낮은 임신까지 섞인 평균이라 두 분보다 낮게 나옵니다. 두 분 줄은 1차와 2차를 함께 넣은 계산기의 93%에서 출발했습니다.</p>
+
+  <h3>심장박동이 안 보이는 경우</h3>
+  <p class="birth-sub">11월 30일 전후로 생길 수 있는 경우를 두 표로 나눴습니다. 두 표를 합쳐도 두 분은 100번 중 5번 안팎이고 심장박동 전이 2번쯤, 심장박동 뒤가 3번쯤입니다. 미국산부인과학회는 유산이 거의 모든 경우 엄마 탓이 아니고 대개 우연히 생긴다고 안내합니다.</p>
+  <div class="tbl-wrap">
+    <table class="hl-t hl-t7">
+      <thead><tr><th>경우</th><th>초음파에서 보이는 것</th><th>두 분에게 생길 몫</th><th>그다음</th></tr></thead>
+      <tbody>
+        <tr><td data-l="경우">소리만 안 들려줌</td><td data-l="초음파에서 보이는 것">화면에 깜빡이는 심장이나 심장박동 그래프가 보입니다</td><td data-l="두 분에게 생길 몫">유산이 아닙니다</td><td data-l="그다음">국제 초음파 학회는 10주까지 도플러(심장 소리를 내는 기능)를 일상적으로 쓰지 말라고 권합니다. 그래서 소리 없이 화면으로만 보여 주는 병원이 있습니다</td></tr>
+        <tr><td data-l="경우">무배아 임신(고사난자)</td><td data-l="초음파에서 보이는 것">아기집과 난황은 있는데 아기가 생기지 않았습니다</td><td data-l="두 분에게 생길 몫">100번 중 1번쯤</td><td data-l="그다음">병원이 진단 기준에 맞는지 보고 필요하면 며칠 뒤 한 번 더 봅니다</td></tr>
+        <tr><td data-l="경우">배아 정지(계류유산)</td><td data-l="초음파에서 보이는 것">아기는 보이는데 심장이 뛰지 않습니다</td><td data-l="두 분에게 생길 몫">100번 중 0.7번쯤</td><td data-l="그다음">무배아 임신과 같습니다</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="meta">유산으로 진단되면 기다리기, 약, 수술(흡입술) 가운데 고릅니다. 수술 때 나온 조직으로 염색체 검사를 하면 PGT-A가 놓친 이상이 있었는지 알 수 있어 다음 이식을 정할 때 씁니다.</p>
+
+  <h3>심장박동을 본 뒤 출산하지 못하는 경우</h3>
+  <div class="tbl-wrap">
+    <table class="hl-t hl-t7">
+      <thead><tr><th>시기</th><th>경우</th><th>두 분에게 생길 몫</th><th>미리 보이는 신호와 원인</th></tr></thead>
+      <tbody>
+        <tr><td data-l="시기">졸업 전<br>8~10주</td><td data-l="경우">심장이 멈추는 초기 유산(계류유산)</td><td data-l="두 분에게 생길 몫">100번 중 1.5번</td><td data-l="미리 보이는 신호와 원인">심장박동이 날짜보다 느림, 아기가 날짜보다 작음, 아기집 옆에 피가 고임(융모막하 출혈). 이런 것이 보이면 병원이 1~2주 뒤 다시 봅니다</td></tr>
+        <tr><td data-l="시기">졸업 뒤<br>20주까지</td><td data-l="경우">중기 유산</td><td data-l="두 분에게 생길 몫">100번 중 1번 남짓</td><td data-l="미리 보이는 신호와 원인">자궁경부무력증, 감염, 자궁근종 같은 자궁 쪽 원인. 자궁 모양이 정상인 시험관 임신 2,901번 중 12~23주에 유산한 경우가 2.1%였고 쌍둥이와 근종이 있으면 더 많았습니다</td></tr>
+        <tr><td data-l="시기">20주 뒤</td><td data-l="경우">사산</td><td data-l="두 분에게 생길 몫">1,000번 중 3~4번</td><td data-l="미리 보이는 신호와 원인">태반 문제, 임신중독증, 태아 성장 지연. 북유럽 세 나라 출생 459만 명에서 0.37%였고 동결 이식도 자연 임신과 비슷했습니다</td></tr>
+        <tr><td data-l="시기">검사 때</td><td data-l="경우">염색체 이상이나 구조 이상 발견</td><td data-l="두 분에게 생길 몫">드뭅니다</td><td data-l="미리 보이는 신호와 원인">NIPT, 1차 기형아 검사, 정밀 초음파에서 PGT-A가 놓친 이상이 보이는 경우입니다. 그래서 PGT-A를 했어도 이 검사들을 받습니다. 정상 배아만 센 숫자가 없어 몫은 적지 않았습니다</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="meta">졸업 전 1.5번과 졸업 뒤 1.7번은 위 「심장박동 확률」 계산의 3%를 나눈 값입니다. 졸업 뒤 1.7번은 중기 유산과 사산을 합친 몫입니다.</p>
+  <ul class="pts">
+    <li class="a"><b class="pt-h">정상 배아도 유산하는 이유</b>PGT-A는 태반이 될 바깥 세포 몇 개만 떼어 검사합니다. 그래서 아기가 될 안쪽 세포와 결과가 다를 수 있습니다(모자이크). 검사 방식에 따라 3배수체 같은 이상은 찾지 못하는 경우도 있습니다. 정상 판정을 받고 유산한 배아 38개의 원래 검사 시료를 더 정밀한 방법으로 다시 보니 37%에서 이상이 나왔고 출산한 배아 38개는 16%였습니다. 지금보다 덜 정밀한 방법으로 검사하던 때의 배아들입니다. 나머지는 자궁 쪽 원인이거나 원인을 찾지 못합니다.</li>
+    <li class="a"><b class="pt-h">일상생활은 원인이 아닙니다</b>미국산부인과학회 안내문은 일, 운동, 스트레스, 다툼, 성관계, 입덧이 유산을 일으키지 않는다고 적었습니다. 넘어지거나 놀란 일 뒤에 유산하면 그 일 때문이라고 여기기 쉬운데 대부분은 때가 겹쳤을 뿐이라는 설명입니다.</li>
+    <li><b class="pt-h">피 비침</b>같은 안내문은 임신 초기에 조금 비치는 것이 흔하고 꼭 유산을 뜻하지 않는다고 했습니다. 양이 많거나 생리통 같은 통증과 함께 오면 바로 병원에 연락합니다. 아기집 옆에 피가 고인 것이 보이면 유산이 조금 더 많습니다. 여러 연구를 모아 보니 8.9%가 17.6%로 늘었습니다. 검사 안 한 임신까지 섞인 숫자입니다.</li>
+    <li class="c"><b class="pt-h">11월 30일에 물어볼 것</b>심장박동 수, 아기 크기(머리엉덩길이)가 날짜에 맞는지, 아기집 옆에 피가 고인 곳이 있는지 물어 적어 둡니다. 다음 진료 숫자와 비교할 수 있습니다. 심장박동은 5~6주에 1분에 100번쯤에서 8~9주에 140번쯤으로 빨라집니다.</li>
+    <li class="c"><b class="pt-h">분만 병원에 알려 둘 것</b>프로기노바와 크리논으로 자궁을 준비한 동결 이식은 자연 주기로 한 동결 이식보다 임신중독증이 2배쯤 잦다는 연구가 있습니다. 분만 병원 첫 진료 때 이 이력을 말해 둡니다.</li>
+  </ul>
+  <details class="fold">
+    <summary>이 두 절의 출처<span class="fold-n">자료 10개</span></summary>
+    <div class="fold-b">
+      <ul>
+        <li>두 분 몫: 위 「심장박동 확률」 계산과 같은 단계별 표에서 나눴습니다. 그 표에서 난황을 본 뒤 심장박동 전에 출산하지 못한 경우는 60%가 아기가 보이기 전(무배아 임신), 40%가 아기가 보인 뒤(배아 정지)였습니다. <a href="https://www.rmany.com/media/pages/research/published-works/ac15acbb82-1675377198/pregnancy-loss-rates-by-developmental-stage-after-single-euploid-frozen-thawed-embryo-transfer.pdf">Aharon 외, 미국생식의학회 2020 학회 발표</a></li>
+        <li>심장 소리: 국제 초음파 학회와 세계 초음파 연맹은 10주 6일까지 도플러를 일상적으로 쓰지 말고 필요할 때만 짧게 쓰라고 권합니다. <a href="https://wfumb.org/wp-content/uploads/2024/09/WFUMB_Safety_Statement-WFUMBISUOG-Statement-on-the-Safe-Use-of-Doppler-Ultrasound-During-11-14-week-scans-or-earlier-in-pregnancy-.pdf">WFUMB와 ISUOG 도플러 안전 권고</a></li>
+        <li>유산 진단 기준: 난황을 본 지 11일이 넘어도 심장박동이 있는 아기가 안 보이거나, 아기 길이가 7mm 이상인데 심장박동이 없으면 유산으로 진단합니다. 7~10일이면 의심 단계라 다시 봅니다. 11월 30일은 난황을 본 지 14일째입니다. <a href="https://doi.org/10.1056/NEJMra1302417">Doubilet 외, New England Journal of Medicine 2013</a></li>
+        <li>정상 배아의 유산: 정상 판정 뒤 동결 이식해 유산한 38번과 출산한 38번의 원래 검사 시료를 다시 검사했습니다. 유산한 쪽은 모자이크 31.6%, 3배수체 같은 이상 5.2%로 36.8%였고 출산한 쪽은 15.8%였습니다. <a href="https://doi.org/10.1016/j.fertnstert.2016.08.017">Maxwell 외, Fertility and Sterility 2016</a></li>
+        <li>일상생활과 피 비침: 미국산부인과학회 환자 안내문입니다. <a href="https://www.acog.org/womens-health/faqs/early-pregnancy-loss">ACOG, Early Pregnancy Loss</a></li>
+        <li>아기집 옆 출혈: 연구 7개, 출혈이 있던 1,735명과 없던 70,703명을 모았습니다. 유산이 8.9%에서 17.6%로 늘었습니다. <a href="https://doi.org/10.1097/AOG.0b013e31821568de">Tuuli 외, Obstetrics and Gynecology 2011</a></li>
+        <li>느린 심장박동: 5~8주 태아 65명의 심장박동을 측정했더니 1분에 85번 아래였던 5명은 모두 유산했습니다. 작은 연구입니다. <a href="https://doi.org/10.7863/jum.1989.8.10.561">Laboda 외, Journal of Ultrasound in Medicine 1989</a></li>
+        <li>중기 유산: 자궁 모양이 정상이고 12주에 심장박동이 있던 시험관 임신 2,901번 중 60번(2.1%)이 12~23주에 유산했습니다. 쌍둥이, 자궁근종, 비만이면 더 많았고 나이와 시험관 시술 방식은 상관이 없었습니다. <a href="https://doi.org/10.1097/AOG.0000000000000667">Hawkins Bressler 외, Obstetrics and Gynecology 2015</a></li>
+        <li>사산: 덴마크, 노르웨이, 스웨덴에서 태어난 아기 하나 출생 459만 명 중 0.37%였습니다. 동결 이식과 자연 임신의 사산 비율이 비슷했습니다. <a href="https://doi.org/10.1016/j.fertnstert.2022.10.020">Westvik-Johari 외, Fertility and Sterility 2023</a></li>
+        <li>임신중독증: 연구 23개를 모았습니다. 호르몬 약으로 준비한 동결 이식이 자연 주기 동결 이식보다 임신중독증이 2배쯤 잦았고 배반포 이식만 보면 2.2배쯤이었습니다. 관찰 연구라 약이 원인인지는 확실하지 않습니다. <a href="https://doi.org/10.3389/fendo.2023.1186068">Zhao 외, Frontiers in Endocrinology 2023</a></li>
+      </ul>
+    </div>
+  </details>
 
   <h3>출산 확률 계산기</h3>
   <p class="birth-sub">위 93%를 낸 계산기입니다. 연구진이 공개한 <a href="https://epsilonkappa-analytics.shinyapps.io/iHOPE/">iHOPE 계산기</a>에 피검사 두 번의 수치와 잰 날을 넣으면 출산까지 갈 확률이 나옵니다. 화면은 영어입니다. 이름 같은 개인 정보는 묻지 않습니다.</p>
