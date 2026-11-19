@@ -128,7 +128,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
   font-size:12.5px;font-weight:700;line-height:1.25;letter-spacing:-.02em;color:var(--ink3);white-space:nowrap}
 .nav-tab svg{width:22px;height:22px;flex:none}
 .nav-tab:hover{color:var(--a)}
-.nav-tab[aria-selected="true"]{background:var(--a-tint);color:var(--a)}
+.nav-tab[aria-selected="true"]{background:var(--a-bg);color:var(--a);font-weight:800}
 .nav-tab:focus-visible,.sub-tab:focus-visible,.nav-logo:focus-visible{outline:2.5px solid var(--a);outline-offset:-2px}
 .subbar{position:sticky;top:0;z-index:80;background:var(--ground);padding:10px 0}
 .subbar[hidden],.sub-tabs[hidden]{display:none}
@@ -155,7 +155,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .tabp{scroll-margin-top:var(--stick)}
 .tabp [id]{scroll-margin-top:calc(var(--stick) + 12px)}
 .tabp[hidden]{display:none}
-.tabp:focus-visible{outline:2.5px solid var(--a);outline-offset:6px;border-radius:var(--r-lg)}
+.tabp:focus-visible{outline:2px solid var(--a-bd);outline-offset:6px;border-radius:var(--r-lg)}
 @media print{.nav,.subbar,.theme{display:none}body{padding-bottom:0}.tabp[hidden]{display:block}}
 
 
@@ -196,7 +196,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .home-h{display:block;font-size:17px;line-height:1.4;font-weight:800;letter-spacing:-.01em;margin:6px 6px 10px}
 .gl-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .gl-list li{margin:0;display:flex;align-items:center;gap:14px;background:var(--card);border-radius:var(--r-lg);box-shadow:var(--edge);
-  padding:12px 18px 12px 14px;font-size:17px;line-height:1.45}
+  padding:12px 18px 12px 14px;font-size:19px;line-height:1.45}
 .gl-badge{flex:none;width:54px;height:54px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;
   font-size:19px;font-weight:800;line-height:1;letter-spacing:-.02em;background:var(--a-bg);color:var(--a)}
 .gl-badge small{font-size:11.5px;font-weight:700;letter-spacing:-.02em;margin-bottom:2px}
@@ -204,7 +204,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .gl-list li:nth-child(3n) .gl-badge{background:var(--g-bg);color:var(--g)}
 .gl-main{min-width:0;display:flex;flex-direction:column;gap:1px}
 .gl-what{font-weight:800;letter-spacing:-.015em;word-break:keep-all}
-.gl-sub{font-size:15px;line-height:1.5;color:var(--ink2)}
+.gl-sub{font-size:16.5px;line-height:1.5;color:var(--ink2)}
 .gl-time{white-space:nowrap}
 .gl-where:not(:empty)::before{content:", "}
 .gl-tag{display:inline-block;font-size:13px;font-weight:800;line-height:1.4;padding:1px 10px;margin-left:8px;vertical-align:2px;border-radius:var(--r-pill);background:var(--c-bg);color:var(--c)}
@@ -217,13 +217,17 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .gl-list li.next .gl-tag{background:var(--y);color:var(--card)}
 .gl-foot{font-size:15.5px;line-height:1.7;color:var(--ink2);margin:14px 6px 0}
 @media(min-width:900px){
+  /* 제목은 위쪽 띠의 이름이 보여 준다. h1 은 읽기 도구에만 남기고 밝기 단추는 위쪽 띠의 것만 쓴다 */
+  .home-head{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+  .home-head .theme{display:none}
+}
+/* 두 칸은 1100px 부터다. 그보다 좁으면 왼쪽 칸에서 두 자리 주수(「38주 2일」)가 고리와 겹친다 */
+@media(min-width:1100px){
   /* 셋째 줄(할 일)이 남는 높이를 받는다. 그래야 오른쪽 목록이 길어도 오늘 칸과 다음 일정 칸 사이가 벌어지지 않는다 */
   .home{grid-template-columns:minmax(0,5fr) minmax(0,7fr);grid-template-rows:auto auto 1fr;gap:16px 22px;align-items:start;
     grid-template-areas:"today list" "next list" "todo list" "sub sub" "meta meta"}
-  /* 제목은 위쪽 띠의 이름이 보여 준다. h1 은 읽기 도구에만 남긴다 */
-  .home-head{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
   .today{grid-area:today;padding:26px 28px}
-  .today-n{font-size:60px}
+  .today-n{font-size:clamp(48px,4.2vw,60px)}
   .today .ring{width:118px;height:118px}
   .ring-t b{font-size:22px}
   .ring-t small{font-size:13px}
@@ -249,7 +253,8 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .g-b[aria-pressed="true"]{background:var(--ink);color:var(--card)}
 .g-b:focus-visible{outline:2.5px solid var(--a);outline-offset:2px}
 .g-desc{color:var(--ink2);font-size:15.5px;margin:8px 0 10px;line-height:1.7}
-.g-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--card);border-radius:var(--r-lg);box-shadow:var(--edge);padding:16px 18px 10px;margin:12px 0 2px}
+/* 틀의 안쪽 여백은 투명 테두리로 준다. 그리는 스크립트가 clientWidth 로 폭을 재는데 padding 은 거기에 들어가고 테두리는 빠진다 */
+.g-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--card);border-radius:var(--r-lg);box-shadow:var(--edge);border:solid transparent;border-width:16px 18px 10px;margin:12px 0 2px}
 .g-svg{display:block;font-family:var(--sans)}
 .g-grid{stroke:var(--hair2);stroke-width:1}
 .g-row{stroke:var(--hair);stroke-width:1}
@@ -268,7 +273,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .g-l1{background:var(--a)} .g-l2{background:var(--b)} .g-l3{background:var(--ink)} .g-l5{background:var(--card);border:1.5px dashed var(--ink);box-sizing:border-box}
 @media(max-width:760px){.birth{margin:24px 0 28px}.g-h{font-size:18px}}
 .birth-k{display:inline-block;font-size:13px;font-weight:800;letter-spacing:.04em;color:var(--card);background:var(--a);border-radius:var(--r-pill);padding:3px 12px;margin:0 0 12px}
-.birth h2{font-size:clamp(23px,2.2vw,28px);margin-bottom:8px}
+.birth h2{font-size:clamp(24px,2.3vw,32px);margin-bottom:8px}
 .birth-sub{color:var(--ink2);font-size:16.5px;margin:0 4px 22px}
 .bt{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--edge);padding:4px 22px}
 .bt-row{display:grid;grid-template-columns:minmax(150px,.7fr) repeat(3,1fr);border-top:1px solid var(--hair2)}
@@ -401,7 +406,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 @media(max-width:640px){.ap-k{top:11px}}
 
 /* 차트 — 선 2px, 점 r4.5 와 흰 테두리, 눈금선은 머리카락 두께 */
-.chart{position:relative;margin-top:14px;min-width:0;background:var(--card);border-radius:var(--r-lg);box-shadow:var(--edge);padding:18px 16px 10px}
+.chart{position:relative;margin-top:14px;min-width:0;background:var(--card);border-radius:var(--r-lg);box-shadow:var(--edge);border:solid transparent;border-width:18px 16px 10px}
 .chart svg{display:block;width:100%;height:auto;max-width:100%;overflow:visible}
 .chart text{font-family:var(--sans);fill:var(--ink3);font-size:13.5px;font-variant-numeric:tabular-nums}
 .chart text.lab{font-family:var(--sans);fill:var(--ink2);font-weight:700;font-size:13.5px;paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round}
@@ -450,17 +455,18 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .tw{overflow-x:auto;margin:18px 0 12px;padding-bottom:2px}
 .tbl-wrap{overflow-x:auto;padding-bottom:2px}
 table{border-collapse:separate;border-spacing:0;width:100%;font-size:15.5px;background:var(--card);border-radius:var(--r-lg);box-shadow:var(--edge);overflow:hidden}
-th{text-align:left;font-size:13.5px;font-weight:800;letter-spacing:.02em;line-height:1.5;color:var(--ink2);vertical-align:bottom;padding:12px 18px;background:var(--sunk);white-space:nowrap}
+th{text-align:left;font-size:14.5px;font-weight:800;letter-spacing:.02em;line-height:1.5;color:var(--ink2);vertical-align:bottom;padding:12px 18px;background:var(--sunk);white-space:nowrap}
 td{font-size:15.5px;line-height:1.8;vertical-align:top;padding:15px 18px;border-top:1px solid var(--hair2)}
 tbody tr:first-child td{border-top:0}
 /* 날짜와 숫자 칸 — 한글이 섞여 있어 고정폭 글꼴을 쓰지 않는다. 숫자 폭만 맞춘다 */
 td.num,td.dt{font-size:15.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
 td.num{text-align:right}
 td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
+/* 표의 첫 칸(이름표)은 낱말 가운데서 끊지 않는다 */
+table.stk td:first-child{word-break:keep-all;overflow-wrap:anywhere}
 /* 긴 글이 든 열의 최소폭 — 글자 15.5px 로 한 줄 20자와 좌우 여백. 좁은 칸에 긴 글이 갇히지 않게 한다 */
 /* 표가 세로 카드로 펴지는 폭에서는 걸지 않는다. 걸면 좁은 화면에서 가로로 밀린다 */
 @container (min-width:1041px){#cert-todo + p + table.stk td:nth-child(3){min-width:348px}}
-@container (min-width:701px){#hospital>table.stk:has(th:nth-child(3):last-child) td:nth-child(n+2){min-width:348px}}
 /* 흰 카드(펼쳐보기) 안에 든 표와 카드는 아래 턱 대신 가는 테두리로 구분한다 */
 .fold-b table,.fold-b .pts>li,.fold-b .wk>div,.fold-b .step,.fold-b .med{box-shadow:0 0 0 1px var(--hair)}
 
@@ -473,7 +479,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 .fold[open]>summary::before{content:"\25BE"}
 .fold>summary:hover{color:var(--a)}
 .fold>summary:focus-visible{outline:2.5px solid var(--a);outline-offset:-3px}
-.fold-n{font-size:14px;font-weight:700;color:var(--ink3);margin-left:auto;flex:none}
+.fold-n{font-size:14.5px;font-weight:700;color:var(--ink3);margin-left:auto;flex:none}
 .fold-b{padding:6px 22px 24px;border-top:1px solid var(--hair2);container-type:inline-size}
 /* 의사별 펼쳐보기 — 병원 펼쳐보기 안에 한 번 더 접는다. 맨 위 한 줄 요약, 이름과 뜻, 날짜가 붙은 원문 인용 순서다 */
 .fold .fold.dr{margin:12px 0;box-shadow:0 0 0 1px var(--hair)}
@@ -692,18 +698,19 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
   table.stk.kv td:nth-child(2){padding-top:0}
   table.stk td.num,table.stk td.dt{font-size:16px}
 }
-/* 칸이 넷 이상인 표는 놓인 칸이 1040px 아래면 세로 카드로 편다. 태블릿 폭에서 네 칸을 나란히 두면 긴 글이 든 칸이 좁아진다 */
+/* 칸이 넷 이상인 표와 분만 병원의 비교 표(칸마다 글이 길다)는 놓인 칸이 1040px 아래면 세로 카드로 편다.
+   태블릿 폭에서 나란히 두면 긴 글이 든 칸이 좁아지고 첫 칸이 한 글자씩 세로로 선다 */
 @container (max-width:1040px){
-  table.stk:has(th:nth-child(4)),table.stk:has(th:nth-child(4)) tbody,table.stk:has(th:nth-child(4)) tr,table.stk:has(th:nth-child(4)) td{display:block}
-  table.stk:has(th:nth-child(4)) thead{display:none}
-  table.stk:has(th:nth-child(4)){background:none;box-shadow:none;border-radius:0;overflow:visible}
-  table.stk:has(th:nth-child(4)) tr{background:var(--card);border-radius:var(--r-md);box-shadow:var(--edge);padding:16px 18px 14px;margin:0 0 10px}
-  table.stk:has(th:nth-child(4)) td{padding:5px 0;border:0;font-size:16px;line-height:1.7;white-space:normal;text-align:left;min-width:0}
-  table.stk:has(th:nth-child(4)) td::before{content:attr(data-l);display:block;font-size:12.5px;font-weight:800;letter-spacing:.05em;color:var(--ink3);margin-bottom:1px}
-  table.stk:has(th:nth-child(4)) td:first-child{font-size:17px;font-weight:800;padding-top:0}
-  table.stk:has(th:nth-child(4)) td:first-child::before{display:none}
-  table.stk:has(th:nth-child(4)) td.num,table.stk:has(th:nth-child(4)) td.dt{font-size:16px}
-  .fold-b table.stk:has(th:nth-child(4)) tr{box-shadow:0 0 0 1px var(--hair)}
+  :is(table.stk:has(th:nth-child(4)),#hospital>table.stk),:is(table.stk:has(th:nth-child(4)),#hospital>table.stk) tbody,:is(table.stk:has(th:nth-child(4)),#hospital>table.stk) tr,:is(table.stk:has(th:nth-child(4)),#hospital>table.stk) td{display:block}
+  :is(table.stk:has(th:nth-child(4)),#hospital>table.stk) thead{display:none}
+  :is(table.stk:has(th:nth-child(4)),#hospital>table.stk){background:none;box-shadow:none;border-radius:0;overflow:visible}
+  :is(table.stk:has(th:nth-child(4)),#hospital>table.stk) tr{background:var(--card);border-radius:var(--r-md);box-shadow:var(--edge);padding:16px 18px 14px;margin:0 0 10px}
+  :is(table.stk:has(th:nth-child(4)),#hospital>table.stk) td{padding:5px 0;border:0;font-size:16px;line-height:1.7;white-space:normal;text-align:left;min-width:0}
+  :is(table.stk:has(th:nth-child(4)),#hospital>table.stk) td::before{content:attr(data-l);display:block;font-size:12.5px;font-weight:800;letter-spacing:.05em;color:var(--ink3);margin-bottom:1px}
+  :is(table.stk:has(th:nth-child(4)),#hospital>table.stk) td:first-child{font-size:17px;font-weight:800;padding-top:0}
+  :is(table.stk:has(th:nth-child(4)),#hospital>table.stk) td:first-child::before{display:none}
+  :is(table.stk:has(th:nth-child(4)),#hospital>table.stk) td.num,:is(table.stk:has(th:nth-child(4)),#hospital>table.stk) td.dt{font-size:16px}
+  .fold-b :is(table.stk:has(th:nth-child(4)),#hospital>table.stk) tr{box-shadow:0 0 0 1px var(--hair)}
 }
 </style>
 <script>try{var t0=localStorage.getItem('ivf-theme');if(t0==='light'||t0==='dark')document.documentElement.setAttribute('data-theme',t0);}catch(e){}</script>
@@ -3910,15 +3917,23 @@ function openTarget(id,fromClick){
   var pnl=tgt.closest('.tabp'); if(!pnl) return false;
   showTab(pnl.id,false,tgt!==pnl);
   for(var d=tgt; d && d!==pnl; d=d.parentElement){ if(d.tagName==='DETAILS') d.open=true; }
-  if(tgt!==pnl) tgt.scrollIntoView();
+  if(tgt!==pnl){
+    /* showTab 이 주소를 화면 이름으로 바꿔 놓는다. 그대로 두면 브라우저가 로드 끝에 화면 맨 위로 다시 옮긴다.
+       주소를 가리킨 자리 이름으로 되돌려 그 자리에 머물게 한다 */
+    try{ history.replaceState(null,'','#'+id); }catch(e){}
+    tgt.scrollIntoView();
+  }
   return true;
 }
 document.addEventListener('click',function(ev){
   var a=ev.target.closest?ev.target.closest('a[href^="#"]'):null; if(!a) return;
   if(openTarget(a.getAttribute('href').slice(1),true)) ev.preventDefault();
 });
-window.addEventListener('hashchange',function(){ openTarget((location.hash||'').slice(1),false); });
+window.addEventListener('hashchange',function(){ openTarget((location.hash||'').slice(1),false); setTimeout(dropPanelFocus,0); });
 openTarget((location.hash||'').slice(1),false);
+/* 주소의 # 로 화면에 바로 들어오면 브라우저가 그 화면 칸에 초점을 준다. 화면 전체에 테두리가 둘리지 않게 초점을 뗀다 */
+function dropPanelFocus(){ var a=document.activeElement; if(a&&a.classList&&a.classList.contains('tabp')) a.blur(); }
+window.addEventListener('load',function(){ setTimeout(dropPanelFocus,0); });
 
 /* 점선 밑줄 숫자 — 누르면 다른 자료가 열리고, 다른 곳을 누르면 닫힌다 */
 function hvSet(h,on){ h.classList.toggle('on',on); h.setAttribute('aria-expanded',on?'true':'false'); var st=h.closest('.step'); if(st) st.classList.toggle('hv-up',on); }

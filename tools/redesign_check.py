@@ -237,11 +237,21 @@ def links(pw, path):
             fails.append('링크 %s: 눌러도 가리키는 자리가 안 보인다' % href)
         elif r['top'] < page.evaluate(JS_STICK) - 1:
             fails.append('링크 %s: 가리키는 자리가 위에 붙은 메뉴에 가려진다 (top %.0f)' % (href, r['top']))
-    for pid in SCREENS + ['todo', 'cert-todo', 'pgt-screen']:
-        p = open_page(pw, path, hash=pid)
-        r = p.evaluate(JS_TARGET, pid)
-        if r.get('missing') or r['hidden'] or r['h'] <= 0:
-            fails.append('주소 #%s: 바로 열었을 때 그 자리가 안 보인다' % pid)
+        elif r['top'] > page.evaluate("() => innerHeight") - 20:
+            fails.append('링크 %s: 눌러도 그 자리로 가지 않는다 (top %.0f)' % (href, r['top']))
+    # 주소에 # 를 붙여 새로 열었을 때. 브라우저가 로드 끝에 한 번 더 자리를 옮기므로 조금 기다린 뒤 본다
+    ids = SCREENS + sorted(set(h[1:] for h in hrefs) | {'todo', 'cert-todo', 'pgt-screen'} - set(SCREENS))
+    for size in ('phone', 'pc'):
+        for pid in ids:
+            p = open_page(pw, path, size=size, hash=pid)
+            p.wait_for_timeout(350)
+            r = p.evaluate(JS_TARGET, pid)
+            if r.get('missing') or r['hidden'] or r['h'] <= 0:
+                fails.append('%s 주소 #%s: 바로 열었을 때 그 자리가 안 보인다' % (size, pid))
+            elif r['top'] < p.evaluate(JS_STICK) - 1 or r['top'] > p.evaluate("() => innerHeight") - 20:
+                fails.append('%s 주소 #%s: 바로 열었을 때 그 자리로 가지 않는다 (top %.0f)' % (size, pid, r['top']))
+            p.context.close()
+            pw.contexts.remove(p.context)
     return fails
 
 
@@ -285,6 +295,17 @@ def overflow(pw, path):
                 d = page.evaluate("() => document.documentElement.scrollWidth - document.documentElement.clientWidth")
                 if d > 0:
                     fails.append('%s %s #%s: 가로로 %dpx 밀린다' % (name, scheme, pid, d))
+    # 이름 붙은 폭 사이에서만 나는 밀림을 잡는다. 펼쳐보기를 닫은 채로 한 번, 다 연 채로 한 번
+    js = "() => document.documentElement.scrollWidth - document.documentElement.clientWidth"
+    for w in range(320, 1441, 40):
+        page = open_page(pw, path, size=(w, 900))
+        for pid in SCREENS:
+            go(page, pid)
+            d = page.evaluate(js)
+            page.evaluate("() => document.querySelectorAll('details').forEach(x => { x.open = true; })")
+            d2 = page.evaluate(js)
+            if d > 0 or d2 > 0:
+                fails.append('폭 %d #%s: 가로로 %dpx 밀린다 (펼쳐보기를 열면 %dpx)' % (w, pid, d, d2))
     return fails
 
 
@@ -546,6 +567,19 @@ def charts(pw, path):
         page.wait_for_timeout(200)
         if page.evaluate(JS_SVG, sel) < 1:
             fails.append('%s: 탭으로 열었을 때 그림이 그려지지 않았다' % name)
+        over = page.evaluate("""sel => [...document.querySelectorAll(sel)].map(s => s.closest('.g-wrap')).filter(Boolean)
+          .map(w => w.scrollWidth - w.clientWidth).filter(d => d > 1)""", sel)
+        if over:
+            fails.append('%s: PC 에서 그림이 틀보다 %spx 넓어 틀 안에서 가로로 밀린다' % (name, over))
+    # 위험 그래프는 폭에 맞춰 줄어든다. 틀의 여백이 재는 폭에 들어가면 글자가 13.5px 보다 작아진다
+    JS_SCALE = """() => { const s = document.querySelector('#risk .chart svg'); if (!s) return null;
+      const t = s.querySelector('text'); return t ? parseFloat(getComputedStyle(t).fontSize) * s.getBoundingClientRect().width / s.viewBox.baseVal.width : null; }"""
+    for size in ('phone', 'pc'):
+        p = open_page(pw, path, size=size, hash='risk')
+        p.wait_for_timeout(200)
+        px = p.evaluate(JS_SCALE)
+        if px is None or px < 13.4:
+            fails.append('%s: 위험 그래프 글자가 %s px 로 그려진다 (13.5px 보다 작으면 안 된다)' % (size, px))
     return fails
 
 
@@ -696,7 +730,8 @@ JS_SQUARES = """skip => {
     if (tags.includes(e.tagName) || e.closest('svg') || e.matches(skip) || !e.getClientRects().length) return;
     const r = e.getBoundingClientRect(); if (r.width < 80 || r.height < 32) return;
     const c = getComputedStyle(e), sides = ['Top', 'Right', 'Bottom', 'Left'];
-    const w = sides.map(k => c['border' + k + 'Style'] === 'none' ? 0 : parseFloat(c['border' + k + 'Width']));
+    const clear = k => /rgba\\(\\d+, \\d+, \\d+, 0\\)|transparent/.test(c['border' + k + 'Color']);
+    const w = sides.map(k => (c['border' + k + 'Style'] === 'none' || clear(k)) ? 0 : parseFloat(c['border' + k + 'Width']));
     const bg = (c.backgroundColor !== 'rgba(0, 0, 0, 0)' && c.backgroundColor !== 'transparent') || c.backgroundImage !== 'none';
     const boxed = w.filter(x => x > 0).length >= 3;
     let why = null;
@@ -779,6 +814,69 @@ def album_marks(pw, path):
     return [] if n == 1 else ['사진 목록 표시(/*ALBUM*/ … /*/ALBUM*/)가 %d번 나온다. tools/album.py 가 이 표시로 목록을 찾는다' % n]
 
 
+# ---------- 검토에서 나온 것 ----------
+@check('focus')
+def focus(pw, path):
+    fails = []
+    # PC 홈에서 Tab 키가 안 보이는 것에 멈추면 안 된다
+    p = open_page(pw, path, size='pc')
+    for i in range(12):
+        p.keyboard.press('Tab')
+        # 잘라서 감춘 칸 안의 단추는 제 크기를 그대로 갖는다. 그 자리를 찍어 실제로 그 단추가 나오는지 본다
+        r = p.evaluate("""() => { const a = document.activeElement; if (!a || a === document.body) return null;
+          a.scrollIntoView({block: 'center'});
+          const b = a.getBoundingClientRect(), hit = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2);
+          return {seen: !!hit && (hit === a || a.contains(hit) || hit.contains(a)), t: (a.textContent || '').trim().slice(0, 12), c: a.className}; }""")
+        if r and not r['seen']:
+            fails.append('PC 홈: Tab %d번째가 안 보이는 것에 멈춘다 (「%s」 %s)' % (i + 1, r['t'], r['c']))
+    # 주소의 # 로 화면에 바로 들어왔을 때 화면 전체에 테두리가 둘리면 안 된다
+    for size in ('phone', 'pc'):
+        p = open_page(pw, path, size=size, hash='timeline')
+        p.wait_for_timeout(350)
+        st = p.evaluate("() => getComputedStyle(document.getElementById('timeline')).outlineStyle")
+        if st != 'none':
+            fails.append('%s: #timeline 으로 바로 들어오면 화면 전체에 테두리가 둘린다 (%s)' % (size, st))
+    # 고른 탭은 색 말고 굵기로도 구분된다
+    p = open_page(pw, path, size='phone')
+    r = p.evaluate("""() => ({on: getComputedStyle(document.querySelector('.nav-tab[aria-selected="true"]')).fontWeight,
+      off: getComputedStyle(document.querySelector('.nav-tab[aria-selected="false"]')).fontWeight})""")
+    if not (int(r['on']) >= 800 and int(r['off']) <= 700):
+        fails.append('고른 탭과 안 고른 탭의 굵기가 %s, %s (800 이상과 700 이하여야 한다)' % (r['on'], r['off']))
+    return fails
+
+
+@check('two_digit_week')
+def two_digit_week(pw, path):
+    """주수가 두 자리가 되면 큰 글자가 고리와 겹치지 않아야 한다. 38주 2일로 본다."""
+    fails = []
+    for size in ((360, 640), 'phone', (900, 800), (960, 800), (1100, 800), 'pc'):
+        p = open_page(pw, path, size=size, when='2027-07-04T09:00:00+09:00')
+        # 글자가 칸 밖으로 넘칠 수 있으니 칸이 아니라 글자 자체의 자리를 잰다
+        r = p.evaluate("""() => { const e = document.getElementById('gl-ga'), rg = document.createRange(); rg.selectNodeContents(e);
+          const n = rg.getBoundingClientRect(), g = document.querySelector('.today .ring').getBoundingClientRect();
+          return {t: e.textContent, gap: g.left - n.right}; }""")
+        if r['t'] != '38주 2일':
+            fails.append('%s: 주수가 「%s」' % (size, r['t']))
+        elif r['gap'] < 4:
+            fails.append('%s: 「38주 2일」이 고리와 %.0fpx 겹친다' % (size, 4 - r['gap']))
+    return fails
+
+
+@check('sizes')
+def sizes(pw, path):
+    """글자가 개편 전보다 작아지지 않았나. 왼쪽은 개편 전 값이다."""
+    fails = []
+    want = (('support', 'th', 14.5), ('support', '.fold-n', 14.5), ('top', '.gl-what', 19), ('top', '.gl-sub', 16.5),
+            ('timeline', '.birth h2', 32), ('support', 'td', 14.5), ('weekly', '.sec-desc', 16.5))
+    p = open_page(pw, path, size='pc')
+    for pid, sel, px in want:
+        go(p, pid)
+        got = p.evaluate("([id, s]) => { const e = document.querySelector('#' + id + ' ' + s); return e ? parseFloat(getComputedStyle(e).fontSize) : null; }", [pid, sel])
+        if got is None or got < px - 0.01:
+            fails.append('#%s %s 글자가 %s px (개편 전 %s px)' % (pid, sel, got, px))
+    return fails
+
+
 def shots(args):
     """눈으로 볼 화면을 찍는다."""
     out = ROOT / '.superpowers' / 'shots'
@@ -790,6 +888,7 @@ def shots(args):
             page = open_page(pw, args.page, size=size, scheme=args.scheme)
             for pid in (args.names or SCREENS):
                 go(page, pid)
+                page.evaluate("() => { if (document.activeElement) document.activeElement.blur(); }")
                 page.wait_for_timeout(150)
                 f = out / ('%s-%s-%s-%s.png' % (args.shots, pid, sz, args.scheme))
                 page.screenshot(path=str(f), full_page=args.full)
