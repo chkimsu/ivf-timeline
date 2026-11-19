@@ -555,6 +555,89 @@ def print_(pw, path):
     return fails
 
 
+# ---------- 홈 ----------
+JS_BOX = """sel => { const e = document.querySelector(sel); if (!e || e.hidden || !e.getClientRects().length) return null;
+  const r = e.getBoundingClientRect(); return {l: r.left, r: r.right, t: r.top, b: r.bottom}; }"""
+JS_ARC = "() => { const e = document.getElementById('h-ring-arc'); return e ? parseFloat(e.getAttribute('stroke-dasharray')) : null; }"
+
+
+@check('home')
+def home(pw, path):
+    fails = []
+    p = open_page(pw, path)
+    for sel, want in (('#h-edd', '예정일 2027년 7월 16일(금)'), ('#h-ring-n', '6주'), ('#h-left', '10일 남았습니다'),
+                      ('#h-nt', '심장박동 확인'), ('.home-h', '큰 일정')):
+        got = norm(p.evaluate(JS_SEL, sel))
+        if got != want:
+            fails.append('%s 글이 「%s」 (기대 「%s」)' % (sel, got, want))
+    arc = p.evaluate(JS_ARC)
+    if arc is None or abs(arc - 45.24) > 0.5:
+        fails.append('고리의 호 길이가 %s (기대 45.24)' % arc)
+    if '40주 가운데' not in (p.evaluate(JS_SEL, '#h-ring') or ''):
+        fails.append('고리에 「40주 가운데」가 없다')
+    if p.evaluate("() => { const e = document.getElementById('h-ring'); return e && e.getAttribute('aria-label'); }") != '40주 가운데 6주':
+        fails.append('고리의 aria-label 이 「40주 가운데 6주」가 아니다')
+    if '11월 30일(월)' not in (p.evaluate(JS_SEL, '#h-nd') or ''):
+        fails.append('다음 일정 날짜에 「11월 30일(월)」이 없다')
+    b = {k: p.evaluate(JS_BOX, sel) for k, sel in (('today', '.today'), ('next', '#h-next'), ('list', '#gl-list'), ('todo', '#todo'))}
+    if not all(b.values()):
+        return fails + ['홈의 칸이 안 보인다: %s' % [k for k, v in b.items() if not v]]
+    if not b['list']['l'] > b['today']['r']:
+        fails.append('PC: 큰 일정이 오늘 칸 오른쪽에 있지 않다')
+    if not b['todo']['l'] < b['list']['l']:
+        fails.append('PC: 할 일 표가 왼쪽 칸에 있지 않다')
+    p = open_page(pw, path, size='phone')
+    b = {k: p.evaluate(JS_BOX, sel) for k, sel in (('today', '.today'), ('next', '#h-next'), ('list', '#gl-list'), ('todo', '#todo'))}
+    if not all(b.values()):
+        return fails + ['휴대폰: 홈의 칸이 안 보인다: %s' % [k for k, v in b.items() if not v]]
+    order = ['today', 'next', 'list', 'todo']
+    for x, y in zip(order, order[1:]):
+        if b[x]['b'] > b[y]['t'] + 0.5:
+            fails.append('휴대폰: %s 칸이 %s 칸 위에 있지 않다' % (x, y))
+    return fails
+
+
+@check('first_screen')
+def first_screen(pw, path):
+    fails = []
+    for size, sels in (('phone', ['#h-next']), ((360, 640), ['.today', '#h-nt'])):
+        p = open_page(pw, path, size=size)
+        nav_top = (p.evaluate(JS_BOX, '.nav-tabs') or {}).get('t')
+        for sel in sels:
+            b = p.evaluate(JS_BOX, sel)
+            if not b or nav_top is None:
+                fails.append('%s: %s 나 아래 탭이 없다' % (size, sel))
+            elif b['b'] > nav_top + 0.5:
+                fails.append('%s: %s 가 첫 화면에서 아래 탭에 %.0fpx 가려진다' % (size, sel, b['b'] - nav_top))
+    return fails
+
+
+@check('edges')
+def edges(pw, path):
+    fails = []
+    p = open_page(pw, path, when='2026-10-01T09:00:00+09:00')
+    if norm(p.evaluate(JS_TEXT, 'gl-ga')) != '이식 전':
+        fails.append('이식 전: 주수 칸이 「%s」' % norm(p.evaluate(JS_TEXT, 'gl-ga')))
+    if p.evaluate(JS_ARC) != 0:
+        fails.append('이식 전: 호 길이가 %s' % p.evaluate(JS_ARC))
+    if norm(p.evaluate(JS_TEXT, 'h-ring-n')) != '':
+        fails.append('이식 전: 고리 안 글이 「%s」' % norm(p.evaluate(JS_TEXT, 'h-ring-n')))
+    fails += ['이식 전: 오류 %s' % e[:120] for e in p.rd_errors]
+    p = open_page(pw, path, when='2026-11-30T09:00:00+09:00')
+    if norm(p.evaluate(JS_TEXT, 'h-left')) != '오늘입니다':
+        fails.append('당일: 남은 날 칸이 「%s」' % norm(p.evaluate(JS_TEXT, 'h-left')))
+    p = open_page(pw, path, when='2027-09-30T09:00:00+09:00')
+    if p.evaluate(JS_BOX, '#h-next') is not None:
+        fails.append('모든 일정 뒤: 다음 일정 칸이 보인다')
+    cls = p.evaluate("() => [...document.querySelectorAll('#gl-list li')].map(li => li.className)")
+    if not cls or any('done' not in c.split() for c in cls):
+        fails.append('모든 일정 뒤: 지남이 아닌 줄이 있다 %s' % cls)
+    if (p.evaluate(JS_ARC) or 0) < 301:
+        fails.append('모든 일정 뒤: 호 길이가 %s' % p.evaluate(JS_ARC))
+    fails += ['모든 일정 뒤: 오류 %s' % e[:120] for e in p.rd_errors]
+    return fails
+
+
 def shots(args):
     """눈으로 볼 화면을 찍는다."""
     out = ROOT / '.superpowers' / 'shots'
