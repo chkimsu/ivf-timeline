@@ -143,6 +143,30 @@ html.side-closed .side-open{display:block}
 .scale-l{font-size:16px;font-weight:750;margin-top:11px}
 .scale-d{font-size:15px;color:var(--ink2);margin-top:6px;line-height:1.65}
 .scale-n.a{color:var(--a)}
+/* 한눈에 보기 — 어르신도 첫 화면에서 오늘 주수와 다음 병원 날, 큰 일정만 보게 한다 */
+.glance{margin:22px 0 26px;border-top:2px solid var(--ink)}
+.gl-now{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;padding:18px 0 16px;border-bottom:1px solid var(--hair)}
+.gl-k{font-size:17px;font-weight:750;color:var(--ink2)}
+.gl-n{font-size:clamp(32px,3.2vw,44px);line-height:1.1;font-weight:750;letter-spacing:-.03em;color:var(--a)}
+.gl-d{font-size:19px;font-weight:650;line-height:1.5}
+.gl-list{list-style:none;margin:0;padding:0}
+.gl-list li{display:grid;grid-template-columns:minmax(190px,270px) minmax(0,1fr) minmax(0,320px);gap:4px 20px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--hair2);font-size:19px;line-height:1.5}
+.gl-date{font-weight:750}
+.gl-time{white-space:nowrap}
+.gl-what{font-weight:650}
+.gl-where{font-size:17px;color:var(--ink2)}
+.gl-tag{display:inline-block;font-size:14px;font-weight:750;line-height:1.4;padding:1px 8px;margin-left:8px;vertical-align:2px;border:1px solid var(--c-bd);color:var(--c)}
+.gl-list li.done{color:var(--ink3)}
+.gl-list li.done .gl-what,.gl-list li.done .gl-date{font-weight:600}
+.gl-list li.done .gl-where{color:var(--ink3)}
+.gl-list li.next{background:var(--a-bg);box-shadow:inset 4px 0 0 var(--a);margin:0 -16px;padding-left:16px;padding-right:16px}
+.gl-list li.next .gl-tag{border-color:var(--a);background:var(--a);color:var(--card)}
+.gl-foot{font-size:16px;color:var(--ink2);margin:12px 0 0}
+@media(max-width:760px){
+  .gl-list li{grid-template-columns:1fr;gap:2px;padding:13px 0}
+  .gl-list li.next{margin:0 -12px;padding-left:12px;padding-right:12px}
+  .gl-d{font-size:18px}
+}
 /* 출산과 조리원 — 위 요약 바로 아래 늘 보이는 칸. 파랑 굵은 띠로 다른 칸보다 먼저 눈에 들게 한다 */
 .birth{border-top:6px solid var(--a);margin:56px 0 48px;padding-top:28px}
 /* 한눈에 보는 일정표 — 가로 띠 그림. 좁으면 가로로 민다 */
@@ -624,31 +648,13 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
       <button type="button" class="theme-b" data-theme-set="dark" aria-pressed="false">어둡게</button>
     </div>
   </div>
+  <div class="glance" aria-label="한눈에 보기">
+    <div class="gl-now"><span class="gl-k">오늘</span><span class="gl-n" id="gl-ga"></span><span class="gl-d" id="gl-next"></span></div>
+    <ol class="gl-list" id="gl-list"></ol>
+    <p class="gl-foot">날짜는 병원 사정으로 바뀔 수 있습니다. 자세한 내용은 왼쪽 차례의 각 항목에 있습니다.</p>
+  </div>
   <p class="sub">두 분이 <span class="dd" data-k="T"></span>에 이식하신 배아는 PGT-A, 그러니까 염색체 검사를 통과한 배아입니다. 이식부터 출산까지의 일정을 날짜로 정리한 페이지입니다. 왼쪽 차례에서 주제를 고르면 그 내용이 열립니다. 화면이 좁으면 왼쪽 위 「▸ 차례」를 누릅니다.</p>
   <p class="meta">기준: 이식 때 아내 만 36세, 남편 만 33세. 5일 배아, PGT-A 정상. 여기 적힌 날짜와 숫자는 일반적인 값이라 병원에서 들은 것과 다르면 병원 말이 맞습니다.</p>
-
-  <div class="scale">
-    <div class="scale-i">
-      <div class="scale-n" id="s-t"></div>
-      <div class="scale-l">배아 이식일</div>
-      <div class="scale-d" id="s-t-d"></div>
-    </div>
-    <div class="scale-i">
-      <div class="scale-n" id="s-b"></div>
-      <div class="scale-l" id="s-b-l">1차 피검사</div>
-      <div class="scale-d" id="s-b-d"></div>
-    </div>
-    <div class="scale-i">
-      <div class="scale-n" id="s-w12"></div>
-      <div class="scale-l">12주, 안정기 시작</div>
-      <div class="scale-d" id="s-w12-d"></div>
-    </div>
-    <div class="scale-i">
-      <div class="scale-n" id="s-edd"></div>
-      <div class="scale-l">출산 예정일</div>
-      <div class="scale-d" id="s-edd-d"></div>
-    </div>
-  </div>
 </section>
 
 
@@ -3079,27 +3085,41 @@ function renderTimeline(EV){
 function md(d){return (d.getMonth()+1)+'월 '+d.getDate()+'일'}
 function ymd(d){return d.getFullYear()+'년, '+WD[d.getDay()]+'요일'}
 function renderScale(){
-  $('#s-t').textContent=md(T);
-  $('#s-t-d').textContent=ymd(T)+'. '+DAY+'일 배아라 이날이 벌써 임신 '+gaS(T)+'입니다';
-  if(S.ys&&SC){
-    /* 첫 초음파를 보면 그 결과와 다음 병원 날을 보인다 */
-    $('#s-b-l').textContent='첫 초음파';
-    $('#s-b').textContent=md(SC);
-    $('#s-b-d').textContent=gaS(SC)+'. 아기집과 난황을 봤고 임신확인서가 나왔습니다. '+(HB?fmt(HB)+'에 ':'다음 초음파에서 ')+'심장박동을 봅니다';
-  }else if(S.hcg2){
-    /* 2차 결과가 나오면 가장 최근 결과와 다음 병원 날을 보인다 */
-    $('#s-b-l').textContent='2차 피검사';
-    $('#s-b').textContent=md(B20);
-    $('#s-b-d').textContent='결과는 '+S.hcg2+'입니다. 1차 '+S.hcg1+'의 '+Math.round(S.hcg2/S.hcg1)+'배쯤이라 '+(S.skip3?'3차 피검사 없이 ':'')+(SC?fmt(SC)+'에 ':'')+'첫 초음파를 봅니다';
-  }else{
-    $('#s-b').textContent=!days(B0,B1)?md(B0):(B0.getMonth()===B1.getMonth())?((B0.getMonth()+1)+'월 '+B0.getDate()+'~'+B1.getDate()+'일'):(md(B0)+'~'+md(B1));
-    $('#s-b-d').textContent=days(B0,B1)?'이식 후 9~11일. 병원이 잡아 준 날이 있으면 그날이 맞습니다':'이식 '+days(T,B0)+'일째입니다. '+(S.hcg1?'결과는 '+S.hcg1+'이고 병원이 안정권으로 보는 50에서 100 사이입니다':'병원이 잡아 준 날입니다');
-  }
-  var W=wk(12);
-  $('#s-w12').textContent=md(W);
-  $('#s-w12-d').textContent=ymd(W)+'. 유산 위험이 1% 아래로 내려가는 때입니다';
-  $('#s-edd').textContent=md(EDD);
-  $('#s-edd-d').textContent=ymd(EDD)+'. 40주 0일, '+DAY+'일 배아 기준';
+  /* 한눈에 보기 — 큰 일정만 날짜순으로. 오늘보다 앞선 줄은 「지남」, 첫 남은 줄은 「다음」 */
+  var now=new Date(), today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  var g=ga(today);
+  $('#gl-ga').textContent=(g.n<0)?'이식 전':(g.w+'주 '+g.d+'일');
+  var surg=wk(PLAN_W), inEnd=add(surg,4), careEnd=add(inEnd,13);
+  var R=[
+    {a:T,t:'배아 이식',w:'분당차 난임센터'},
+    (S.ys&&SC)?{a:SC,t:'아기집 확인, 임신확인서 받음',w:'분당차 난임센터'}:null,
+    {a:HB||wk(6),b:HB?null:wk(7),t:'심장박동 확인',w:'분당차 난임센터'},
+    {a:wk(9),b:wk(10),about:true,t:'난임센터 졸업 (날짜는 병원이 정합니다)',w:'분당차 난임센터'},
+    {a:new Date(2026,11,29),time:'오전 10시 10분',t:'첫 진료, 1차 기형아 검사',w:'분당제일여성병원 한성식 원장님'},
+    {a:wk(12),t:'12주, 안정기',w:''},
+    {a:new Date(2027,1,1),b:new Date(2027,1,28),month:true,t:'새 아파트로 이사',w:'성남시 수정구 금토동'},
+    {a:surg,t:'출산 (제왕절개, 38주 예정). 예정일은 '+md(EDD),w:'분당제일여성병원'},
+    {a:inEnd,b:careEnd,t:'산후조리원 2주',w:'판교 트리니티'}
+  ].filter(Boolean);
+  var ol=$('#gl-list'); ol.textContent=''; var nextDone=false, nextTxt='';
+  R.forEach(function(r){
+    var last=r.b||r.a, li=document.createElement('li');
+    var dt=r.month?(r.a.getFullYear()+'년 '+(r.a.getMonth()+1)+'월'):(r.b?fmtR(r.a,r.b):fmt(r.a,r.a.getFullYear()!==T.getFullYear()));
+    if(r.about) dt+=' 무렵';
+    var tag='';
+    if(last<today){ li.className='done'; tag='지남'; }
+    else if(!nextDone){ li.className='next'; tag='다음'; nextDone=true;
+      var left=days(today,r.a);
+      nextTxt='다음: '+dt+(r.time?' '+r.time:'')+' '+r.t.replace(/ \(.*\)$/,'')+(left>0?', '+left+'일 남았습니다':left===0?', 오늘입니다':'');
+    }
+    var d=document.createElement('span'); d.className='gl-date'; d.textContent=dt;
+    if(r.time){ var tm=document.createElement('span'); tm.className='gl-time'; tm.textContent=' '+r.time; d.appendChild(tm); }
+    var t=document.createElement('span'); t.className='gl-what'; t.textContent=r.t;
+    if(tag){ var b=document.createElement('span'); b.className='gl-tag'; b.textContent=tag; t.appendChild(b); }
+    var w=document.createElement('span'); w.className='gl-where'; w.textContent=r.w;
+    li.appendChild(d); li.appendChild(t); li.appendChild(w); ol.appendChild(li);
+  });
+  $('#gl-next').textContent=nextTxt;
   [38,39].forEach(function(w){
     var s=wk(w);
     $('#bt-s'+w).textContent=fmt(s,true);
