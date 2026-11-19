@@ -31,6 +31,8 @@
   --r-xl:30px;  --r-lg:24px;  --r-md:22px;  --r-pill:99px;
   --edge:0 2px 0 var(--hair);  --float:0 2px 12px rgba(120,80,40,.07);
   --page-w:1240px;
+  /* 주의 아이콘 — 느낌표가 든 세모. 글자색으로 칠해지게 mask 로 쓴다 */
+  --warn-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill-rule='evenodd' d='M10 1.8c.6 0 1.1.3 1.4.8l7.2 12.6c.6 1.1-.2 2.4-1.4 2.4H2.8c-1.2 0-2-1.3-1.4-2.4L8.6 2.6c.3-.5.8-.8 1.4-.8zm0 4.7c-.5 0-.9.4-.9.9v4.2c0 .5.4.9.9.9s.9-.4.9-.9V7.4c0-.5-.4-.9-.9-.9zm0 7.4a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2z'/%3E%3C/svg%3E");
 }
 :root, :root[data-theme="light"]{
   --ground:#FFF9F3;  --card:#FFFFFF;  --sunk:#FFF4EA;
@@ -95,10 +97,11 @@ h1{font-size:clamp(27px,2.6vw,38px);line-height:1.14;letter-spacing:-.032em;font
 .theme-b[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(120,80,40,.16)}
 .sub{font-size:17px;line-height:1.85;margin:0;color:var(--ink2)}
 .meta{color:var(--ink2);font-size:15px;line-height:1.75;margin-top:18px}
-h2{font-size:23px;line-height:1.25;letter-spacing:-.025em;font-weight:800;margin:0 0 12px;display:flex;align-items:baseline;gap:11px;text-wrap:balance}
+h2{font-size:30px;line-height:1.25;letter-spacing:-.03em;font-weight:800;margin:6px 4px 10px;display:flex;align-items:baseline;gap:11px;text-wrap:balance}
+@media(max-width:760px){h2{font-size:25px}}
 h2 .no{font-family:var(--mono);font-weight:600;font-size:16px;letter-spacing:-.02em;color:var(--ink3)}
-.sec-desc{color:var(--ink2);font-size:16.5px;margin:6px 0 30px;line-height:1.85;max-width:84ch}
-h3{font-size:18.5px;line-height:1.35;letter-spacing:-.015em;font-weight:750;margin:34px 0 14px}
+.sec-desc{color:var(--ink2);font-size:16.5px;margin:6px 4px 26px;line-height:1.85}
+h3{font-size:18.5px;line-height:1.35;letter-spacing:-.015em;font-weight:800;margin:34px 4px 14px}
 p,li{font-size:17px;line-height:1.9}
 .wrap li{margin:7px 0}
 ul{margin:6px 0;padding-left:20px}
@@ -106,6 +109,10 @@ li{margin:3px 0}
 .wrap a{color:var(--a)} .wrap a:visited{color:var(--a)}
 a:focus-visible,summary:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,svg:focus-visible{outline:2.5px solid var(--a);outline-offset:3px}
 b,strong{font-weight:750}
+/* 주의 표시 — 색이 안 보여도 구분되게 글머리에 주의 아이콘을 둔다. 낱말은 더하지 않는다 */
+h4.warn::before,.callout.warn::before{content:"";width:18px;height:18px;background:currentColor;-webkit-mask:var(--warn-icon) center/contain no-repeat;mask:var(--warn-icon) center/contain no-repeat}
+h4.warn::before{display:inline-block;vertical-align:-3px;margin-right:6px}
+.callout.warn::before{display:block;float:left;margin:5px 8px 0 0;color:var(--b)}
 
 /* 메뉴 — 탭 다섯 개로 화면을 고른다. 900px 아래는 화면 아래에 붙고 900px 이상은 위쪽 흰 띠에 놓인다.
    화면이 둘 이상인 탭(일정, 임신 중, 출산 준비)은 본문 맨 위 항목 줄(.subbar)에서 고른다.
@@ -174,8 +181,8 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .today-t{display:flex;flex-direction:column;min-width:0}
 .today-k,.today-e{font-size:15.5px;font-weight:700;line-height:1.5;letter-spacing:-.02em;color:var(--ink2);word-break:keep-all}
 .today-n{font-size:44px;line-height:1.14;font-weight:800;letter-spacing:-.045em;color:var(--ink);white-space:nowrap}
-.ring{position:relative;flex:none;width:94px;height:94px}
-.ring svg{display:block;width:100%;height:100%}
+.today .ring{position:relative;flex:none;width:94px;height:94px}
+.today .ring svg{display:block;width:100%;height:100%}
 .ring-bg{fill:none;stroke:var(--card);stroke-width:13;opacity:.75}
 .ring-arc{fill:none;stroke:var(--a-fill);stroke-width:13;stroke-linecap:round}
 .ring-t{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15}
@@ -219,7 +226,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
   .home-head{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
   .today{grid-area:today;padding:26px 28px}
   .today-n{font-size:60px}
-  .ring{width:118px;height:118px}
+  .today .ring{width:118px;height:118px}
   .ring-t b{font-size:22px}
   .ring-t small{font-size:13px}
   .nextc{grid-area:next;padding:22px 28px 24px}
@@ -310,29 +317,32 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .hl-h{font-size:clamp(21px,2vw,27px);line-height:1.3;letter-spacing:-.02em;font-weight:800;margin:0 0 14px}
 .hl-h span{color:var(--a)}
 .hl-h2{font-size:19px;font-weight:800;margin:28px 0 10px}
-.hl-t{width:100%;border-collapse:collapse;font-size:15px;border-top:2px solid var(--ink)}
-.hl-t th{text-align:left;font-weight:800;padding:12px 12px;border-bottom:1px solid var(--hair);white-space:normal;word-break:keep-all}
-.hl-t td{padding:16px 12px;vertical-align:top;border-bottom:1px solid var(--hair2);line-height:1.65;color:var(--ink2)}
-.hl-t th:first-child,.hl-t td:first-child{padding-left:0;color:var(--ink);font-weight:700;width:22%}
+.hl-t{width:100%;font-size:15px}
+.hl-t th{text-align:left;font-weight:800;padding:12px 14px;white-space:normal;word-break:keep-all}
+.hl-t td{padding:15px 14px;vertical-align:top;line-height:1.65;color:var(--ink2)}
+.hl-t th:first-child,.hl-t td:first-child{padding-left:18px;color:var(--ink);font-weight:700;width:22%}
 .hl-t3 th:first-child,.hl-t3 td:first-child{width:18%;white-space:nowrap}
 .hl-t3 td:nth-child(2){font-weight:700;color:var(--ink);width:24%}
 .hl-t4 th:first-child,.hl-t4 td:first-child{width:11%}
 .hl-t4 th,.hl-t4 td{font-size:14.5px;padding:10px 8px}
-.hl-t4 td:first-child,.hl-t4 th:first-child{padding-left:0}
+.hl-t4 td:first-child,.hl-t4 th:first-child{padding-left:16px}
 .hl-t5 th:first-child,.hl-t5 td:first-child{width:12%}
 .hl-t5 td:nth-child(2){font-weight:700;color:var(--ink);white-space:nowrap}
 .hl-t6 th:first-child,.hl-t6 td:first-child{width:16%}
 .hl-t6 td:nth-child(2),.hl-t6 td:nth-child(3),.hl-t6 td:nth-child(4){color:var(--ink);font-weight:650}
+.hl-t6 td:nth-child(5){min-width:340px}
 /* 경우별 몫 표 — 셋째 칸(몫)이 넷째 칸 긴 글에 밀려 낱말 가운데서 끊기지 않게 */
 .hl-t7 td:nth-child(2){width:24%}
 .hl-t7 td:nth-child(3){width:16%;color:var(--ink);font-weight:650;word-break:keep-all}
 @media(max-width:760px){
   .hl-t thead{display:none}
   .hl-t,.hl-t tbody,.hl-t tr,.hl-t td{display:block;width:auto}
-  .hl-t tr{padding:10px 0;border-bottom:1px solid var(--hair)}
+  .hl-t{background:none;box-shadow:none;border-radius:0;overflow:visible}
+  .hl-t tr{background:var(--card);border-radius:var(--r-md);box-shadow:var(--edge);padding:16px 18px 14px;margin:0 0 10px}
   .hl-t td{padding:4px 0;border:none}
   .hl-t td::before{content:attr(data-l);display:block;font-size:13px;font-weight:750;color:var(--ink3)}
-  .hl-t td:first-child{font-size:16px;padding-bottom:6px;width:auto}
+  .hl-t td:first-child{font-size:16px;padding:0 0 6px;width:auto}
+  .fold-b .hl-t tr{box-shadow:0 0 0 1px var(--hair)}
   .hl-t3 td:nth-child(2){width:auto}
   .hl-t td:first-child::before{display:none}
 }
@@ -419,11 +429,11 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .tip .n{color:var(--ink2)}
 .tip .v{font-family:var(--mono);font-weight:700;color:var(--ink);margin-left:auto;padding-left:12px;white-space:nowrap}
 .legend{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0 0}
-.chip{display:inline-flex;align-items:center;gap:9px;padding:6px 11px;border:1px solid var(--hair);background:var(--card);font-size:14.5px;font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:9px;padding:6px 13px;border:0;border-radius:var(--r-pill);background:var(--card);box-shadow:var(--edge);font-size:14.5px;font-weight:600}
 .chip .key{width:20px;height:0;border-top:3px solid var(--c);flex:none}
 .chip .key.a{border-top-color:var(--a)}
 .chip .key.est{border-top-style:dashed}
-.chip .pt-s{width:10px;height:10px;flex:none;background:var(--ink3)}
+.chip .pt-s{width:10px;height:10px;flex:none;border-radius:50%;background:var(--ink3)}
 .chip .pt-s.hollow{background:var(--card);border:2px solid var(--ink3)}
 
 /* 단계 카드 — 한 줄에 두 장. 순서는 「1단계」 같은 번호로 읽는다 */
@@ -438,30 +448,35 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .step-d{font-size:15.5px;color:var(--ink2);line-height:1.8;margin:12px 0 0}
 @media(max-width:560px){.steps{grid-template-columns:1fr}}
 
-/* 표 — 머리글만 누른다 */
-.tw{overflow-x:auto;margin:20px 0 12px}
-.tbl-wrap{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:15.5px}
-th{text-align:left;font-size:14.5px;font-weight:800;letter-spacing:.05em;color:var(--ink2);vertical-align:bottom;padding:0 14px 12px;border-bottom:2px solid var(--ink);background:transparent;white-space:nowrap}
-td{font-size:15.5px;line-height:1.8;vertical-align:top;padding:16px 14px;border-bottom:1px solid var(--hair2)}
-th:first-child,td:first-child{padding-left:0}
-tbody tr:last-child td{border-bottom:none}
-td.num,td.dt{font-family:var(--mono);font-size:15.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+/* 표 — 표 하나가 흰 둥근 카드다. 머리 줄만 옅은 바탕이고 가로선만 긋는다. 감싸는 칸(.tw)은 가로 스크롤만 맡는다 */
+.tw{overflow-x:auto;margin:18px 0 12px;padding-bottom:2px}
+.tbl-wrap{overflow-x:auto;padding-bottom:2px}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:15.5px;background:var(--card);border-radius:var(--r-lg);box-shadow:var(--edge);overflow:hidden}
+th{text-align:left;font-size:13.5px;font-weight:800;letter-spacing:.02em;line-height:1.5;color:var(--ink2);vertical-align:bottom;padding:12px 18px;background:var(--sunk);white-space:nowrap}
+td{font-size:15.5px;line-height:1.8;vertical-align:top;padding:15px 18px;border-top:1px solid var(--hair2)}
+tbody tr:first-child td{border-top:0}
+/* 날짜와 숫자 칸 — 한글이 섞여 있어 고정폭 글꼴을 쓰지 않는다. 숫자 폭만 맞춘다 */
+td.num,td.dt{font-size:15.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
 td.num{text-align:right}
 td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
+/* 긴 글이 든 열의 최소폭 — 글자 15.5px 로 한 줄 20자와 좌우 여백. 좁은 칸에 긴 글이 갇히지 않게 한다 */
+#cert-todo + p + table.stk td:nth-child(3),#hospital>table.stk:has(th:nth-child(3):last-child) td:nth-child(n+2){min-width:348px}
+/* 흰 카드(펼쳐보기) 안에 든 표와 카드는 아래 턱 대신 가는 테두리로 구분한다 */
+.fold-b table,.fold-b .pts>li,.fold-b .wk>div,.fold-b .step,.fold-b .med{box-shadow:0 0 0 1px var(--hair)}
 
-/* 펼쳐보기 — 결론은 위 표에, 자세한 것은 접는다 */
-.fold{border:1px solid var(--hair);background:var(--card);margin:20px 0}
-.fold>summary{cursor:pointer;list-style:none;background:var(--sunk);padding:20px 24px;font-size:17px;font-weight:750;letter-spacing:-.01em;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+/* 펼쳐보기 — 결론은 위 표에, 자세한 것은 접는다. 흰 둥근 줄이고 펼치면 같은 카드 안에 내용이 나온다.
+   안쪽(.fold-b)은 폭을 재는 기준이 된다. 좁은 칸에 든 표는 화면이 넓어도 세로 카드로 펴진다 */
+.fold{border:0;border-radius:var(--r-md);background:var(--card);box-shadow:var(--edge);margin:16px 0}
+.fold>summary{cursor:pointer;list-style:none;border-radius:var(--r-md);padding:18px 22px;font-size:17px;font-weight:800;letter-spacing:-.01em;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .fold>summary::-webkit-details-marker{display:none}
-.fold>summary::before{content:"\25B8";font-size:12px;color:var(--ink3);flex:none;line-height:1.6}
+.fold>summary::before{content:"\25B8";font-size:13px;color:var(--a);flex:none;line-height:1.6}
 .fold[open]>summary::before{content:"\25BE"}
 .fold>summary:hover{color:var(--a)}
 .fold>summary:focus-visible{outline:2.5px solid var(--a);outline-offset:-3px}
-.fold-n{font-size:14.5px;font-weight:650;color:var(--ink3);margin-left:auto;flex:none;font-family:var(--mono)}
-.fold-b{padding:12px 24px 28px;border-top:1px solid var(--hair)}
+.fold-n{font-size:14px;font-weight:700;color:var(--ink3);margin-left:auto;flex:none}
+.fold-b{padding:6px 22px 24px;border-top:1px solid var(--hair2);container-type:inline-size}
 /* 의사별 펼쳐보기 — 병원 펼쳐보기 안에 한 번 더 접는다. 맨 위 한 줄 요약, 이름과 뜻, 날짜가 붙은 원문 인용 순서다 */
-.fold .fold.dr{margin:12px 0}
+.fold .fold.dr{margin:12px 0;box-shadow:0 0 0 1px var(--hair)}
 .dr-1{font-size:16.5px;line-height:1.8;margin:18px 0 0}
 .qs{list-style:none;margin:18px 0 6px;padding:0}
 .qs li{margin:0 0 10px;font-size:15.5px;line-height:1.7}
@@ -470,16 +485,18 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 .nw1 td:first-child{white-space:nowrap}
 /* 빨간 밑줄 — 서둘러 할 일과 주의할 점. 색은 붉은 강조(--b)라 다크에서도 같이 바뀐다 */
 .ru{text-decoration-line:underline;text-decoration-color:var(--b);text-decoration-thickness:2.5px;text-underline-offset:4px;text-decoration-skip-ink:none}
-.hosp{background:var(--sunk);padding:18px 22px;font-size:16px;line-height:1.85;margin-top:22px}
+.hosp{background:var(--sunk);border-radius:var(--r-md);padding:18px 22px;font-size:16px;line-height:1.85;margin-top:22px}
 .hosp b{font-weight:800}
 .hosp ul{margin:6px 0 0;padding-left:20px}
 .hosp li{font-size:16px;line-height:1.8;margin:6px 0}
-.wk{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:26px 34px;margin-top:22px}
-.wk>div{min-width:0}
-.wk h4,.med h4{font-size:15.5px;font-weight:800;letter-spacing:.02em;color:var(--ink);margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--ink)}
-.wk h4.warn,.med h4.warn{border-bottom-color:var(--b);color:var(--b)}
+/* 주차 카드 — 예비 엄마 할 일, 예비 아빠 할 일, 바로 병원에 연락할 증상. 칸마다 흰 카드이고 주의 칸만 옅은 주의색 바탕이다 */
+.wk{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:16px;margin-top:18px}
+.wk>div{min-width:0;background:var(--card);border-radius:var(--r-lg);box-shadow:var(--edge);padding:20px 22px 16px}
+/* 주의 칸은 한 줄을 다 쓴다. 세 칸을 나란히 두면 칸이 좁아 긴 글이 잘 안 읽힌다 */
+.wk>div:has(>h4.warn){grid-column:1/-1;background:var(--b-bg);box-shadow:none}
+.wk h4,.med h4{font-size:16px;font-weight:800;line-height:1.5;color:var(--ink);margin:0 0 10px}
+.wk h4.warn,.med h4.warn{color:var(--b)}
 .wk ul,.med ul{margin:0;padding-left:18px}
-.wk li,.med li{margin:0 0 8px}
 .wk li,.med li{font-size:16.5px;line-height:1.8;margin:9px 0}
 @media(max-width:900px){.wk{grid-template-columns:1fr}}
 
@@ -493,8 +510,9 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 .med .role{font-size:16.5px;color:var(--ink2);line-height:1.8;margin:12px 0 0}
 @media(max-width:1000px){.meds{grid-template-columns:1fr}}
 
-.callout{background:var(--sunk);border-left:4px solid var(--ink);padding:20px 24px;margin:26px 0 0;font-size:16.5px;line-height:1.85}
-.callout.warn{border-left-color:var(--b)}
+/* 알림 칸 — 연노랑 둥근 칸. 주의는 옅은 주의색 칸에 주의 아이콘 */
+.callout{background:var(--y-bg);border:0;border-radius:var(--r-md);padding:18px 22px;margin:22px 0 0;font-size:16.5px;line-height:1.85}
+.callout.warn{background:var(--b-bg)}
 .callout ul{margin:6px 0 0}
 .callout li{font-size:16px;line-height:1.8}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -523,42 +541,44 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 @media(max-width:640px){
   table.stk,table.stk tbody,table.stk tr,table.stk td{display:block}
   table.stk thead{display:none}
-  table.stk{border-top:2px solid var(--ink)}
-  table.stk tr{padding:14px 0 12px;border-bottom:1px solid var(--hair)}
+  table.stk{background:none;box-shadow:none;border-radius:0;overflow:visible}
+  table.stk tr{background:var(--card);border-radius:var(--r-md);box-shadow:var(--edge);padding:16px 18px 14px;margin:0 0 10px}
   table.stk td{padding:5px 0;border:0;font-size:16px;line-height:1.7;white-space:normal;text-align:left}
   table.stk td::before{content:attr(data-l);display:block;font-size:12.5px;font-weight:800;letter-spacing:.05em;color:var(--ink3);margin-bottom:1px}
-  table.stk td:first-child{font-size:17px;font-weight:750;padding-top:0}
+  table.stk td:first-child{font-size:17px;font-weight:800;padding-top:0}
   table.stk td:first-child::before{display:none}
   table.stk.kv td:nth-child(2)::before{display:none}
   table.stk.kv td:nth-child(2){padding-top:0}
   table.stk td.num,table.stk td.dt{font-size:16px}
-  .fold>summary{padding:14px 14px}
-  .fold-b{padding:4px 14px 18px}
-  .hosp{padding:12px 14px}
+  .fold-b table.stk tr{box-shadow:0 0 0 1px var(--hair)}
+  .fold>summary{padding:16px 16px}
+  .fold-b{padding:4px 14px 16px}
+  .hosp{padding:14px 16px}
   .callout{padding:14px 16px}
   .med{padding:16px 16px 18px}
   .emb i{width:26px;height:26px}
 }
-/* 요점 카드: 글줄 묶음을 카드 한 장에 요점 하나로. 좁은 세로 상자가 늘어서지 않게 한 줄에 두 장까지 */
-.pts{list-style:none;margin:24px 0 14px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,max(380px,calc((100% - 20px)/2))),1fr));gap:20px}
-.pts>li{margin:0;background:var(--card);border:1px solid var(--hair);border-top:3px solid var(--ink);padding:20px 22px 22px;font-size:16px;line-height:1.75;color:var(--ink)}
-.pts>li.a{border-top-color:var(--a)}
-.pts>li.b{border-top-color:var(--b)}
-.pts>li.c{border-top-color:var(--c)}
-.pt-h{display:block;font-size:17.5px;font-weight:800;line-height:1.45;letter-spacing:-.01em;margin:0 0 10px;color:var(--ink)}
-.pts>li.a>.pt-h{color:var(--a)}
-.pts>li.b>.pt-h{color:var(--b)}
+/* 요점 카드: 글줄을 카드 한 장에 요점 하나로. 좁은 세로 상자가 늘어서지 않게 한 줄에 두 장까지.
+   제목 앞 작은 점의 색이 종류다 — 살구는 두 분의 경우, 와인색은 주의나 둘째 갈래, 회색은 참고 */
+.pts{list-style:none;margin:22px 0 14px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,max(380px,calc((100% - 16px)/2))),1fr));gap:16px}
+.pts>li{margin:0;background:var(--card);border:0;border-radius:var(--r-lg);box-shadow:var(--edge);padding:20px 22px 22px;font-size:16px;line-height:1.75;color:var(--ink)}
+.pt-h{display:block;position:relative;padding-left:19px;font-size:17.5px;font-weight:800;line-height:1.45;letter-spacing:-.01em;margin:0 0 10px;color:var(--ink)}
+.pt-h::before{content:"";position:absolute;left:0;top:.48em;width:10px;height:10px;border-radius:50%;background:var(--uk)}
+.pts>li.a>.pt-h::before{background:var(--a-fill)}
+.pts>li.b>.pt-h::before{background:var(--b)}
+.pts>li.c>.pt-h::before{background:var(--c)}
 .pts>li ul{margin:10px 0 0;padding-left:18px;list-style:disc}
 .pts>li ul li{margin:0 0 8px;font-size:inherit;line-height:1.65}
 .pts.n{counter-reset:pt}
-.pts.n>li>.pt-h::before{counter-increment:pt;content:counter(pt);display:inline-block;min-width:1.7em;margin-right:8px;padding:0 5px;font-family:var(--mono);font-size:13.5px;font-weight:700;line-height:1.5;text-align:center;color:var(--a);border:1.5px solid var(--a);vertical-align:2px}
-@media(max-width:760px){.pts{grid-template-columns:1fr;gap:16px}.pts>li{padding:18px 18px 19px}}
+.pts.n>li>.pt-h{padding-left:0}
+.pts.n>li>.pt-h::before{counter-increment:pt;content:counter(pt);position:static;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;margin-right:8px;border-radius:50%;background:var(--a-tint);color:var(--a);font-size:14px;font-weight:800;line-height:1;vertical-align:2px}
+@media(max-width:760px){.pts{grid-template-columns:1fr;gap:12px}.pts>li{padding:18px 18px 19px}}
 /* 표를 카드로: 줄 하나가 카드 한 장. 칸 이름이 왼쪽에 서므로 한 줄에 두 장까지 */
-.hl-t.cards{border-top:0}
+.hl-t.cards{background:none;box-shadow:none;border-radius:0;overflow:visible}
 .hl-t.cards thead{display:none}
 .hl-t.cards,.hl-t.cards tbody,.hl-t.cards tr,.hl-t.cards td{display:block;width:auto}
-.hl-t.cards tbody{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,max(520px,calc((100% - 22px)/2))),1fr));gap:22px}
-.hl-t.cards tr{border:1px solid var(--hair);border-top:3px solid var(--ink);padding:20px 24px 14px;background:var(--card)}
+.hl-t.cards tbody{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,max(520px,calc((100% - 16px)/2))),1fr));gap:16px}
+.hl-t.cards tr{border:0;border-radius:var(--r-lg);box-shadow:var(--edge);padding:20px 24px 14px;background:var(--card)}
 .hl-t.cards td{position:relative;padding:13px 0 13px 140px;border:0;border-top:1px solid var(--hair2);font-size:15.5px;line-height:1.7;color:var(--ink)}
 .hl-t.cards td::before{content:attr(data-l);position:absolute;left:0;top:13px;width:124px;white-space:normal;word-break:keep-all;font-size:14.5px;font-weight:750;line-height:1.75;color:var(--ink2)}
 .hl-t.cards td:first-child{display:block;width:auto;padding:0 0 14px;border-top:0;font-size:18px;font-weight:800;line-height:1.4;color:var(--ink)}
@@ -572,13 +592,13 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 /* 강조 상자의 첫 줄 */
 .co-h{display:block;font-size:17.5px;font-weight:800;line-height:1.5;margin:0 0 8px;color:var(--ink)}
 /* 읽는 법: 이름과 뜻 */
-.read{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:12px 24px;margin:22px 0 14px;padding:20px 24px;background:var(--sunk);font-size:16px;line-height:1.65;color:var(--ink)}
+.read{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:12px 24px;margin:22px 0 14px;padding:20px 24px;background:var(--sunk);border-radius:var(--r-md);font-size:16px;line-height:1.65;color:var(--ink)}
 .read dt{font-weight:800}
 .read dd{margin:0}
 @media(max-width:640px){.read{grid-template-columns:1fr;gap:1px;padding:16px 18px}.read dd{margin-bottom:12px}.read dd:last-child{margin-bottom:0}}
 /* 주제가 바뀌는 곳: 소제목 위에 가로선과 넓은 여백 */
-.tabp>h3,.hl>h3.hl-h2,.why-grid>div>h3:first-child{margin:64px 0 18px;padding-top:24px;border-top:2px solid var(--ink);font-size:20.5px;font-weight:800;line-height:1.35;letter-spacing:-.015em}
-@media(max-width:760px){.tabp>h3,.hl>h3.hl-h2,.why-grid>div>h3:first-child{margin-top:48px;padding-top:20px;font-size:19.5px}.hl{margin-top:56px}}
+.tabp>h3,.hl>h3.hl-h2,.why-grid>div>h3:first-child{margin:52px 4px 16px;font-size:21px;font-weight:800;line-height:1.35;letter-spacing:-.02em}
+@media(max-width:760px){.tabp>h3,.hl>h3.hl-h2,.why-grid>div>h3:first-child{margin-top:40px;font-size:19.5px}.hl{margin-top:44px}}
 /* 언제 무엇을 그림: 점선 칸은 알아보는 때, 옅은 칸은 예약이나 신청, 짙은 칸은 실제로 쓰는 때 */
 .g-bar.p-look{fill:var(--card);stroke:var(--ink);stroke-width:1.5;stroke-dasharray:5 4}
 .g-bar.p-book{fill:var(--a-bg);stroke:var(--a);stroke-width:1.5}
@@ -646,28 +666,44 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 .al-dn{flex:1 1 auto;min-width:0;font-size:15px;line-height:1.6;color:var(--ink2)}
 .al-o{font-size:14.5px;font-weight:700;color:var(--a);white-space:nowrap}
 @media(max-width:760px){.al-dlg{width:100vw;max-width:100vw;height:100%;max-height:100%;margin:0;border:0}.al-dm{flex:1 1 0;height:auto}.al-df{flex-wrap:wrap}.al-dn{order:-1;flex-basis:100%}.al-o{margin-left:auto}}
-/* 본문 폭 기준 — 왼쪽 차례가 열리면 화면이 넓어도 본문이 240px 좁다. 위 화면 폭 규칙과 같은 내용을 본문 폭으로 한 번 더 건다 */
+/* 본문 폭 기준 — 표가 놓인 칸(화면 칸이나 펼쳐보기 안쪽)이 좁으면 화면이 넓어도 표를 세로 카드로 편다. 위 화면 폭 규칙과 같은 내용이다 */
 .tabp{container-type:inline-size}
 @container (max-width:700px){
   .hl-t thead{display:none}
   .hl-t,.hl-t tbody,.hl-t tr,.hl-t td{display:block;width:auto}
-  .hl-t tr{padding:10px 0;border-bottom:1px solid var(--hair)}
+  .hl-t{background:none;box-shadow:none;border-radius:0;overflow:visible}
+  .hl-t tr{background:var(--card);border-radius:var(--r-md);box-shadow:var(--edge);padding:16px 18px 14px;margin:0 0 10px}
   .hl-t td{padding:4px 0;border:none}
   .hl-t td::before{content:attr(data-l);display:block;font-size:13px;font-weight:750;color:var(--ink3)}
-  .hl-t td:first-child{font-size:16px;padding-bottom:6px;width:auto}
+  .hl-t td:first-child{font-size:16px;padding:0 0 6px;width:auto}
+  .fold-b .hl-t tr{box-shadow:0 0 0 1px var(--hair)}
   .hl-t3 td:nth-child(2){width:auto}
   .hl-t td:first-child::before{display:none}
   table.stk,table.stk tbody,table.stk tr,table.stk td{display:block}
   table.stk thead{display:none}
-  table.stk{border-top:2px solid var(--ink)}
-  table.stk tr{padding:14px 0 12px;border-bottom:1px solid var(--hair)}
+  table.stk{background:none;box-shadow:none;border-radius:0;overflow:visible}
+  table.stk tr{background:var(--card);border-radius:var(--r-md);box-shadow:var(--edge);padding:16px 18px 14px;margin:0 0 10px}
   table.stk td{padding:5px 0;border:0;font-size:16px;line-height:1.7;white-space:normal;text-align:left}
   table.stk td::before{content:attr(data-l);display:block;font-size:12.5px;font-weight:800;letter-spacing:.05em;color:var(--ink3);margin-bottom:1px}
-  table.stk td:first-child{font-size:17px;font-weight:750;padding-top:0}
+  table.stk td:first-child{font-size:17px;font-weight:800;padding-top:0}
+  .fold-b table.stk tr{box-shadow:0 0 0 1px var(--hair)}
   table.stk td:first-child::before{display:none}
   table.stk.kv td:nth-child(2)::before{display:none}
   table.stk.kv td:nth-child(2){padding-top:0}
   table.stk td.num,table.stk td.dt{font-size:16px}
+}
+/* 칸이 넷 이상인 표는 놓인 칸이 1040px 아래면 세로 카드로 편다. 태블릿 폭에서 네 칸을 나란히 두면 긴 글이 든 칸이 좁아진다 */
+@container (max-width:1040px){
+  table.stk:has(th:nth-child(4)),table.stk:has(th:nth-child(4)) tbody,table.stk:has(th:nth-child(4)) tr,table.stk:has(th:nth-child(4)) td{display:block}
+  table.stk:has(th:nth-child(4)) thead{display:none}
+  table.stk:has(th:nth-child(4)){background:none;box-shadow:none;border-radius:0;overflow:visible}
+  table.stk:has(th:nth-child(4)) tr{background:var(--card);border-radius:var(--r-md);box-shadow:var(--edge);padding:16px 18px 14px;margin:0 0 10px}
+  table.stk:has(th:nth-child(4)) td{padding:5px 0;border:0;font-size:16px;line-height:1.7;white-space:normal;text-align:left;min-width:0}
+  table.stk:has(th:nth-child(4)) td::before{content:attr(data-l);display:block;font-size:12.5px;font-weight:800;letter-spacing:.05em;color:var(--ink3);margin-bottom:1px}
+  table.stk:has(th:nth-child(4)) td:first-child{font-size:17px;font-weight:800;padding-top:0}
+  table.stk:has(th:nth-child(4)) td:first-child::before{display:none}
+  table.stk:has(th:nth-child(4)) td.num,table.stk:has(th:nth-child(4)) td.dt{font-size:16px}
+  .fold-b table.stk:has(th:nth-child(4)) tr{box-shadow:0 0 0 1px var(--hair)}
 }
 </style>
 <script>try{var t0=localStorage.getItem('ivf-theme');if(t0==='light'||t0==='dark')document.documentElement.setAttribute('data-theme',t0);}catch(e){}</script>

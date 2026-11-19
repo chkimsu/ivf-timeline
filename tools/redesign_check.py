@@ -638,6 +638,42 @@ def edges(pw, path):
     return fails
 
 
+# ---------- 부품 모양 ----------
+JS_SHAPES = """phone => {
+  document.querySelectorAll('details').forEach(d => { d.open = true; });
+  const vis = e => e.getClientRects().length > 0, cs = (e, ps) => getComputedStyle(e, ps), out = [];
+  const each = (sel, fn) => [...document.querySelectorAll(sel)].filter(vis).forEach(e => { const m = fn(e); if (m) out.push(sel + ': ' + m); });
+  each('.pts>li', e => { const c = cs(e); return (c.borderTopWidth !== '0px' || c.borderTopLeftRadius !== '24px') ? '테두리 ' + c.borderTopWidth + ', 모서리 ' + c.borderTopLeftRadius : null; });
+  each('details.fold', e => cs(e).borderTopLeftRadius !== '22px' ? '모서리 ' + cs(e).borderTopLeftRadius : null);
+  each('.callout', e => { const c = cs(e); return (c.borderLeftWidth !== '0px' || c.borderTopLeftRadius !== '22px') ? '왼쪽 선 ' + c.borderLeftWidth + ', 모서리 ' + c.borderTopLeftRadius : null; });
+  each('table', e => (cs(e).display === 'table' && cs(e).borderTopLeftRadius !== '24px') ? '모서리 ' + cs(e).borderTopLeftRadius : null);
+  if (phone) each('table.stk tr, .hl-t:not(.cards) tr', e => (cs(e).display === 'block' && cs(e).borderTopLeftRadius !== '22px') ? '펴진 줄의 모서리 ' + cs(e).borderTopLeftRadius : null);
+  each('h4.warn, .callout.warn', e => { const b = cs(e, '::before'), m = b.maskImage || b.webkitMaskImage;
+    return (b.width !== '18px' || !m || m === 'none') ? '주의 아이콘이 없다 (폭 ' + b.width + ')' : null; });
+  return out;
+}"""
+
+
+def shape_run(pw, path, js, schemes=('light',), sizes=('pc', 'phone')):
+    fails = []
+    for size in sizes:
+        for scheme in schemes:
+            page = open_page(pw, path, size=size, scheme=scheme)
+            for pid in SCREENS:
+                go(page, pid)
+                r = page.evaluate(js, size == 'phone')
+                seen = {}
+                for m in r:
+                    seen[m] = seen.get(m, 0) + 1
+                fails += ['%s %s #%s %s (%d곳)' % (size, scheme, pid, m, n) for m, n in seen.items()]
+    return fails
+
+
+@check('shapes')
+def shapes(pw, path):
+    return shape_run(pw, path, JS_SHAPES)
+
+
 def shots(args):
     """눈으로 볼 화면을 찍는다."""
     out = ROOT / '.superpowers' / 'shots'
