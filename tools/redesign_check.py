@@ -52,11 +52,13 @@ class Session:
         self.contexts = []
 
 
-def open_page(pw, path, size='pc', scheme='light', when=FIXED, hash=''):
+def open_page(pw, path, size='pc', scheme='light', when=FIXED, hash='', init=None):
     w, h = SIZES[size] if isinstance(size, str) else size
     ctx = pw.browser.new_context(viewport={'width': w, 'height': h}, timezone_id='Asia/Seoul',
                                  locale='ko-KR', color_scheme=scheme)
     pw.contexts.append(ctx)
+    if init:
+        ctx.add_init_script(init)   # 페이지 스크립트보다 먼저 돈다
     page = ctx.new_page()
     page.rd_errors = []
     page.rd_requests = []
@@ -110,11 +112,17 @@ JS_LIST = """() => [...document.querySelectorAll('#gl-list li')].map(li => {
 })"""
 
 
-def panel_texts(page):
+JS_TEXT_NOSVG = """id => {
+  const e = document.getElementById(id); if (!e) return null;
+  const c = e.cloneNode(true); c.querySelectorAll('svg').forEach(x => x.remove()); return c.textContent;
+}"""
+
+
+def panel_texts(page, svg=True):
     out = {}
     for pid in PANELS:
         go(page, pid)   # 숨은 화면의 그림은 열릴 때 그려진다
-        out[pid] = page.evaluate(JS_TEXT, pid)
+        out[pid] = page.evaluate(JS_TEXT if svg else JS_TEXT_NOSVG, pid)
     go(page, 'top')
     return out
 
@@ -122,16 +130,20 @@ def panel_texts(page):
 @check('content')
 def content(pw, path):
     fails = []
+    # 그림(SVG)은 놓인 폭이 넓으면 긴 이름을, 좁으면 짧은 이름을 쓴다. 개편하면 PC 에서 본문 폭이 달라지므로
+    # 그림까지 넣은 비교는 그림 폭이 최솟값으로 같아지는 휴대폰 폭에서 하고, PC 폭에서는 그림을 빼고 비교한다.
+    for size, svg in (('phone', True), ('pc', False)):
+        bt = panel_texts(open_page(pw, baseline_path(), size=size), svg)
+        nt = panel_texts(open_page(pw, path, size=size), svg)
+        for pid in PANELS:
+            if nt[pid] is None:
+                fails.append('%s: 패널이 없다' % pid)
+                continue
+            a, b = allowed(norm(bt[pid])), norm(nt[pid])
+            if a != b:
+                fails.append('%s (%s): 글이 다르다. %s' % (pid, size, first_diff(a, b)))
     base = open_page(pw, baseline_path())
     new = open_page(pw, path)
-    bt, nt = panel_texts(base), panel_texts(new)
-    for pid in PANELS:
-        if nt[pid] is None:
-            fails.append('%s: 패널이 없다' % pid)
-            continue
-        a, b = allowed(norm(bt[pid])), norm(nt[pid])
-        if a != b:
-            fails.append('%s: 글이 다르다. %s' % (pid, first_diff(a, b)))
     # 홈 (가) 할 일 표
     a, b = allowed(norm(base.evaluate(JS_TEXT, 'todo'))), norm(new.evaluate(JS_TEXT, 'todo'))
     if a != b:
@@ -286,6 +298,99 @@ def narrow(pw, path):
                 fails.append('%s #%s: 좁은 칸 %d곳. 예 「%s」' % (name, pid, len(r['narrow']), r['narrow'][0]))
             if r['tight']:
                 fails.append('%s #%s: 붙은 목록 %d곳. 예 「%s」' % (name, pid, len(r['tight']), r['tight'][0]))
+    return fails
+
+
+# ---------- 색 ----------
+PAIRS = [('ink', 'ground'), ('ink', 'card'), ('ink', 'sunk'), ('ink2', 'ground'), ('ink2', 'card'),
+         ('ink3', 'ground'), ('ink3', 'card'), ('ink3', 'sunk'), ('a', 'ground'), ('a', 'card'), ('a', 'a-bg'),
+         ('a', 'a-tint'), ('a', 'sunk'), ('b', 'card'), ('b', 'b-bg'), ('b', 'ground'), ('c', 'card'), ('c', 'c-bg'),
+         ('g', 'g-bg'), ('g', 'card'), ('card', 'g'), ('y', 'y-bg'), ('y', 'card'), ('card', 'y'), ('card', 'ink'),
+         ('ink', 'a-bg'), ('ink', 'g-bg'), ('ink', 'y-bg'), ('ink2', 'a-bg'), ('ink2', 'g-bg'), ('ink2', 'y-bg')]
+
+# 개편 전 색. 파일에 남으면 안 된다. 주의색 #8A2846 은 새 색에서도 쓰므로 뺐다.
+OLD = ['#E8EAED', '#F3F4F6', '#16181C', '#494D55', '#6C7079', '#DFE1E5', '#EDEEF1', '#1F5FBF', '#EAF1FC', '#B9D0F0',
+       '#FBEBF0', '#5C6068', '#F1F2F4', '#D3D6DB', '#767A82', '#111316', '#1B1D21', '#232529', '#F2F3F5', '#C9CCD2',
+       '#989DA6', '#32353B', '#26282D', '#7FAAEA', '#16222F', '#2C4360', '#E08AA6', '#2B141C', '#542634', '#A3A8B0',
+       '#242629', '#3B3E44', '#9AA0A8']
+
+
+def lum(h):
+    h = h.lstrip('#')
+    c = [int(h[i:i + 2], 16) / 255 for i in (0, 2, 4)]
+    c = [x / 12.92 if x <= .04045 else ((x + .055) / 1.055) ** 2.4 for x in c]
+    return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]
+
+
+def ratio(a, b):
+    la, lb = sorted((lum(a), lum(b)), reverse=True)
+    return (la + .05) / (lb + .05)
+
+
+def token_block(src, head):
+    """head 로 시작하는 규칙의 --이름:#색 을 읽는다."""
+    i = src.find(head)
+    if i < 0:
+        return None
+    body = src[src.find('{', i) + 1:src.find('}', i)]
+    return {k: v.upper() for k, v in re.findall(r'--([a-z0-9-]+)\s*:\s*(#[0-9A-Fa-f]{6})\b', body)}
+
+
+@check('contrast')
+def contrast(pw, path):
+    fails = []
+    src = pathlib.Path(path).read_text(encoding='utf-8')
+    for label, head in (('밝게', ':root, :root[data-theme="light"]'), ('어둡게', ':root[data-theme="dark"]')):
+        tk = token_block(src, head)
+        if tk is None:
+            fails.append('%s 변수 블록을 못 찾았다' % label)
+            continue
+        for f, bg in PAIRS:
+            if f not in tk or bg not in tk:
+                fails.append('%s: 변수 --%s 나 --%s 가 없다' % (label, f, bg))
+                continue
+            r = ratio(tk[f], tk[bg])
+            if r < 4.5:
+                fails.append('%s: --%s / --%s 대비 %.2f' % (label, f, bg, r))
+    return fails
+
+
+@check('legacy_colors')
+def legacy_colors(pw, path):
+    fails = []
+    here = pathlib.Path(path).resolve().parent
+    for f in (pathlib.Path(path), here / 'manifest.json', here / 'icon.svg'):
+        if not f.exists():
+            continue
+        up = f.read_text(encoding='utf-8').upper()
+        left = [h for h in OLD if h in up]
+        if left:
+            fails.append('%s 에 옛 색 %d종이 남았다: %s' % (f.name, len(left), ' '.join(left[:8])))
+    return fails
+
+
+JS_BG = "() => getComputedStyle(document.body).backgroundColor"
+
+
+@check('theme')
+def theme(pw, path):
+    fails = []
+    p = open_page(pw, path, scheme='dark')
+    if p.evaluate(JS_BG) != 'rgb(29, 26, 23)':
+        fails.append('기기가 어둡게이고 고른 값이 없을 때 배경이 %s' % p.evaluate(JS_BG))
+    p = open_page(pw, path, scheme='dark', init="try{localStorage.setItem('ivf-theme','light')}catch(e){}")
+    if p.evaluate(JS_BG) != 'rgb(255, 249, 243)':
+        fails.append('기기가 어둡게인데 밝게를 골랐을 때 배경이 %s' % p.evaluate(JS_BG))
+    p = open_page(pw, path, scheme='light')
+    btn = p.locator('[data-theme-set="dark"]:visible').first
+    btn.click()
+    p.wait_for_timeout(60)
+    if p.evaluate(JS_BG) != 'rgb(29, 26, 23)':
+        fails.append('어둡게 단추를 눌렀을 때 배경이 %s' % p.evaluate(JS_BG))
+    if p.evaluate("() => localStorage.getItem('ivf-theme')") != 'dark':
+        fails.append('어둡게를 고른 것이 저장되지 않았다')
+    if btn.get_attribute('aria-pressed') != 'true':
+        fails.append('어둡게 단추가 눌린 표시가 아니다')
     return fails
 
 

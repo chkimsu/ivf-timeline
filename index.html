@@ -8,52 +8,69 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="시험관 임신 일정표">
 <meta property="og:description" content="이식일부터 출산 예정일까지의 일정과 시기별 할 일을 한 페이지에 모았습니다.">
-<meta name="theme-color" content="#E8EAED" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#111316" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFF9F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1A17" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="임신 일정표">
-<meta name="theme-color" content="#E8EAED">
+<meta name="theme-color" content="#FFF9F3">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.svg">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%231F5FBF'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23FFE3D1'/%3E%3Ccircle cx='8' cy='8' r='4.4' fill='none' stroke='%23FFFFFF' stroke-width='2'/%3E%3Ccircle cx='8' cy='8' r='4.4' fill='none' stroke='%23E0733F' stroke-width='2' stroke-linecap='round' stroke-dasharray='9.7 27.6' transform='rotate(-90 8 8)'/%3E%3C/svg%3E">
 <title>시험관 임신 일정표</title>
 <style>
 /* 레이아웃 — 회색 판 위에 흰 칸을 놓는다. 위 요약 칸은 늘 보이고, 아래 열한 칸은 왼쪽 차례에서 하나씩 고른다. 모든 날짜는 이식일과 배아 일수에서 계산한다.
-   색 — 파랑은 이 부부의 경우(PGT-A 정상 배아), 자주는 바로 연락할 증상, 회색은 비교용 일반 임신. */
-/* DESIGN-TOKENS v3 */
-:root, :root[data-theme="light"]{
-  --ground:#E8EAED;  --card:#FFFFFF;  --sunk:#F3F4F6;
-  --ink:#16181C;  --ink2:#494D55;  --ink3:#6C7079;
-  --hair:#DFE1E5;  --hair2:#EDEEF1;
-  --a:#1F5FBF;  --a-bg:#EAF1FC;  --a-bd:#B9D0F0;
-  --b:#8A2846;  --b-bg:#FBEBF0;  --b-bd:#EDC2D0;
-  --c:#5C6068;  --c-bg:#F1F2F4;  --c-bd:#D3D6DB;
-  --uk:#767A82;
+   색 — 살구는 이 부부의 경우(PGT-A 정상 배아), 와인색은 바로 연락할 증상과 둘째 갈래, 따뜻한 회색은 비교용 일반 임신.
+   풀빛과 연노랑은 꾸미는 색이다. 홈과 알림 칸에만 쓴다. */
+/* DESIGN-TOKENS warm */
+/* 색 세 벌 — 밝게, 기기가 어둡게이고 고르지 않았을 때, 어둡게를 골랐을 때. 단추로 고른 것이 기기 설정을 이긴다.
+   채움 위에 글자를 얹을 때는 color:var(--card) 로 쓴다(풀빛, 연노랑, 먹색 채움 위에서만). --a-fill 위에는 글자를 얹지 않는다 */
+:root{
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,"Roboto Mono",monospace;
   --sans:'Pretendard','Apple SD Gothic Neo',-apple-system,BlinkMacSystemFont,'Helvetica Neue','Malgun Gothic',sans-serif;
+  --r-xl:30px;  --r-lg:24px;  --r-md:22px;  --r-pill:99px;
+  --edge:0 2px 0 var(--hair);  --float:0 2px 12px rgba(120,80,40,.07);
+  --page-w:1240px;
+}
+:root, :root[data-theme="light"]{
+  --ground:#FFF9F3;  --card:#FFFFFF;  --sunk:#FFF4EA;
+  --ink:#33302B;  --ink2:#5E564E;  --ink3:#766C61;
+  --hair:#F3E7DA;  --hair2:#F5EBDF;
+  --a:#A8481F;  --a-bg:#FFE3D1;  --a-bd:#F3C3A6;  --a-tint:#FFEDE1;  --a-fill:#E0733F;
+  --b:#8A2846;  --b-bg:#FBE6EA;  --b-bd:#EDC2D0;
+  --c:#6F665C;  --c-bg:#F4EEE6;  --c-bd:#DDD3C6;
+  --g:#4E7252;  --g-bg:#E3EEDF;
+  --y:#8A6410;  --y-bg:#FFF1C9;
+  --uk:#9A8F84;
+  --hero:linear-gradient(140deg,#FFE0CC,#FFF0C4);
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --ground:#111316;  --card:#1B1D21;  --sunk:#232529;
-    --ink:#F2F3F5;  --ink2:#C9CCD2;  --ink3:#989DA6;
-    --hair:#32353B;  --hair2:#26282D;
-    --a:#7FAAEA;  --a-bg:#16222F;  --a-bd:#2C4360;
-    --b:#E08AA6;  --b-bg:#2B141C;  --b-bd:#542634;
-    --c:#A3A8B0;  --c-bg:#242629;  --c-bd:#3B3E44;
-    --uk:#9AA0A8;
+    --ground:#1D1A17;  --card:#292420;  --sunk:#332D27;
+    --ink:#F6EEE5;  --ink2:#D9CDC0;  --ink3:#AFA395;
+    --hair:#3D352E;  --hair2:#332C26;
+    --a:#F2A47E;  --a-bg:#4A2C1E;  --a-bd:#6B3F2A;  --a-tint:#3A251B;  --a-fill:#E0733F;
+    --b:#F08FAA;  --b-bg:#42202B;  --b-bd:#6A3040;
+    --c:#B5A99B;  --c-bg:#35302A;  --c-bd:#4A433B;
+    --g:#A7CBA9;  --g-bg:#26382A;
+    --y:#EBCB6B;  --y-bg:#3F3413;
+    --uk:#8A7F73;
+    --hero:linear-gradient(140deg,#4A2C1E,#3F3413);
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --ground:#111316;  --card:#1B1D21;  --sunk:#232529;
-  --ink:#F2F3F5;  --ink2:#C9CCD2;  --ink3:#989DA6;
-  --hair:#32353B;  --hair2:#26282D;
-  --a:#7FAAEA;  --a-bg:#16222F;  --a-bd:#2C4360;
-  --b:#E08AA6;  --b-bg:#2B141C;  --b-bd:#542634;
-  --c:#A3A8B0;  --c-bg:#242629;  --c-bd:#3B3E44;
-  --uk:#9AA0A8;
+  --ground:#1D1A17;  --card:#292420;  --sunk:#332D27;
+  --ink:#F6EEE5;  --ink2:#D9CDC0;  --ink3:#AFA395;
+  --hair:#3D352E;  --hair2:#332C26;
+  --a:#F2A47E;  --a-bg:#4A2C1E;  --a-bd:#6B3F2A;  --a-tint:#3A251B;  --a-fill:#E0733F;
+  --b:#F08FAA;  --b-bg:#42202B;  --b-bd:#6A3040;
+  --c:#B5A99B;  --c-bg:#35302A;  --c-bd:#4A433B;
+  --g:#A7CBA9;  --g-bg:#26382A;
+  --y:#EBCB6B;  --y-bg:#3F3413;
+  --uk:#8A7F73;
+  --hero:linear-gradient(140deg,#4A2C1E,#3F3413);
   color-scheme:dark;
 }
 /* /DESIGN-TOKENS */
@@ -64,9 +81,10 @@ button,summary{touch-action:manipulation;-webkit-tap-highlight-color:transparent
 body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.85;
   -webkit-font-smoothing:antialiased;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
-.wrap{max-width:1600px;margin:24px auto 64px;display:flex;flex-direction:column;gap:20px}
-.panel{background:var(--card);padding:36px 40px 48px;min-width:0}
-@media(max-width:760px){.wrap{margin:10px auto 40px;gap:14px}.panel{padding:20px 16px 24px}}
+.wrap{max-width:var(--page-w);margin:24px auto 64px;display:flex;flex-direction:column;gap:20px}
+/* 화면 하나. 흰 칸이 아니다 — 흰 카드는 안쪽 부품(표, 펼쳐보기, 요점 카드)이 맡는다 */
+.panel{background:transparent;padding:0;min-width:0}
+@media(max-width:760px){.wrap{margin:10px auto 40px;gap:14px}}
 
 h1{font-size:clamp(27px,2.6vw,38px);line-height:1.14;letter-spacing:-.032em;font-weight:800;margin:0 0 13px;text-wrap:balance}
 /* 제목 줄 — 왼쪽 제목, 오른쪽 화면 밝기 단추. 좁으면 단추가 아래로 내려온다 */
