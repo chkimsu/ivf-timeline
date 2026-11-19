@@ -674,6 +674,44 @@ def shapes(pw, path):
     return shape_run(pw, path, JS_SHAPES)
 
 
+# 옛 모양이 남았나 — 각진 칸과 굵은 먹선.
+# 빼는 것: 화면 끝까지 닿는 띠(.nav, .subbar), 표의 줄과 칸, 그림(svg) 안, 사진과 영상, 크게 보기 창.
+SQUARE_SKIP = '.nav, .subbar, .al-dm'
+JS_SQUARES = """skip => {
+  document.querySelectorAll('details').forEach(d => { d.open = true; });
+  const tags = ['HTML', 'BODY', 'IMG', 'VIDEO', 'TR', 'TD', 'TH', 'THEAD', 'TBODY', 'DIALOG', 'SVG', 'svg'];
+  const out = {};
+  const name = e => e.tagName.toLowerCase() + (typeof e.className === 'string' && e.className.trim() ? '.' + e.className.trim().split(/\\s+/).join('.') : '');
+  document.querySelectorAll('body *').forEach(e => {
+    if (tags.includes(e.tagName) || e.closest('svg') || e.matches(skip) || !e.getClientRects().length) return;
+    const r = e.getBoundingClientRect(); if (r.width < 80 || r.height < 32) return;
+    const c = getComputedStyle(e), sides = ['Top', 'Right', 'Bottom', 'Left'];
+    const w = sides.map(k => c['border' + k + 'Style'] === 'none' ? 0 : parseFloat(c['border' + k + 'Width']));
+    const bg = (c.backgroundColor !== 'rgba(0, 0, 0, 0)' && c.backgroundColor !== 'transparent') || c.backgroundImage !== 'none';
+    const boxed = w.filter(x => x > 0).length >= 3;
+    let why = null;
+    if ((bg || boxed) && c.borderTopLeftRadius === '0px') why = '각진 칸';
+    else if (w.some(x => x >= 2)) why = '굵은 선 ' + Math.max(...w) + 'px';
+    if (why) { const k = name(e) + ' — ' + why; out[k] = (out[k] || 0) + 1; }
+  });
+  return Object.entries(out).map(([k, n]) => k + ' (' + n + '곳)');
+}"""
+
+
+@check('squares')
+def squares(pw, path):
+    fails = []
+    for size in ('pc', 'phone'):
+        page = open_page(pw, path, size=size)
+        seen = {}
+        for pid in SCREENS:
+            go(page, pid)
+            for m in page.evaluate(JS_SQUARES, SQUARE_SKIP):
+                seen.setdefault(m, []).append(pid)
+        fails += ['%s %s: %s' % (size, m, ' '.join(v[:4])) for m, v in seen.items()]
+    return fails
+
+
 def shots(args):
     """눈으로 볼 화면을 찍는다."""
     out = ROOT / '.superpowers' / 'shots'
