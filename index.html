@@ -19,7 +19,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23FFE3D1'/%3E%3Ccircle cx='8' cy='8' r='4.4' fill='none' stroke='%23FFFFFF' stroke-width='2'/%3E%3Ccircle cx='8' cy='8' r='4.4' fill='none' stroke='%23E0733F' stroke-width='2' stroke-linecap='round' stroke-dasharray='9.7 27.6' transform='rotate(-90 8 8)'/%3E%3C/svg%3E">
 <title>시험관 임신 일정표</title>
 <style>
-/* 레이아웃 — 회색 판 위에 흰 칸을 놓는다. 위 요약 칸은 늘 보이고, 아래 열한 칸은 왼쪽 차례에서 하나씩 고른다. 모든 날짜는 이식일과 배아 일수에서 계산한다.
+/* 레이아웃 — 크림색 바탕 위에 흰 둥근 카드를 놓는다. 화면 열두 개(홈과 항목 열한 개) 가운데 하나만 보이고 탭 다섯 개로 고른다. 모든 날짜는 이식일과 배아 일수에서 계산한다.
    색 — 살구는 이 부부의 경우(PGT-A 정상 배아), 와인색은 바로 연락할 증상과 둘째 갈래, 따뜻한 회색은 비교용 일반 임신.
    풀빛과 연노랑은 꾸미는 색이다. 홈과 알림 칸에만 쓴다. */
 /* DESIGN-TOKENS warm */
@@ -111,46 +111,50 @@ li{margin:3px 0}
 a:focus-visible,summary:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,svg:focus-visible{outline:2.5px solid var(--a);outline-offset:3px}
 b,strong{font-weight:750}
 
-/* 왼쪽 차례 — 위 탭 줄 대신. 길잡이는 이것 하나. 열한 칸을 주제별 4묶음으로 나누고 지금 칸은 왼쪽 파란 줄로 표시한다.
-   「숨기기」로 접고 왼쪽 위 「▸ 차례」로 다시 연다. 넓은 화면에서 접은 상태는 기억한다.
-   900px 아래에서는 처음에 접혀 있고 열면 본문 위에 겹쳐 뜬다. ml-system-labs 의 왼쪽 차례와 같은 모양이다 */
-:root{--side-w:240px;--side-top:0px}
-@media(max-width:900px){:root{--side-w:0px;--side-top:50px}}
-html.side-closed{--side-w:0px;--side-top:50px}
-body.has-side{padding-left:calc(var(--side-w) + max(16px,env(safe-area-inset-left,0px)));padding-top:var(--side-top);transition:padding-left .18s ease}
-.side{position:fixed;top:0;bottom:0;left:0;width:240px;z-index:90;display:flex;flex-direction:column;background:var(--card);
-  border-right:1px solid var(--hair);padding-top:env(safe-area-inset-top,0px);padding-left:env(safe-area-inset-left,0px);transition:transform .18s ease,visibility 0s}
-html.side-closed .side{transform:translateX(-100%);visibility:hidden;transition:transform .18s ease,visibility 0s .18s}
-.side-h{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 14px 13px 20px;border-bottom:2px solid var(--ink)}
-.side-h .logo{font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
-.side-h .logo:hover{color:var(--a)}
-.side-x{font:inherit;font-size:12.5px;font-weight:700;line-height:1.3;letter-spacing:.02em;border:1px solid var(--hair);border-radius:0;background:var(--card);color:var(--ink3);padding:4px 8px;cursor:pointer;flex:none}
-.side-x:hover{color:var(--a);border-color:var(--a)}
-.side-nav{flex:1;overflow-y:auto;padding:4px 0 18px;overscroll-behavior:contain}
-.side-g{padding:10px 0 2px}
-.side-g+.side-g{border-top:1px solid var(--hair2)}
-.side-gl{font-size:12.5px;font-weight:800;line-height:1.45;letter-spacing:.08em;color:var(--ink3);padding:0 20px 4px}
-.side-nav .tab{appearance:none;-webkit-appearance:none;font:inherit;display:flex;align-items:baseline;gap:8px;width:100%;margin:0;text-align:left;
-  padding:6px 16px 6px 17px;border:0;border-left:3px solid transparent;border-radius:0;background:none;
-  font-size:15.5px;font-weight:600;line-height:1.45;color:var(--ink2);cursor:pointer;word-break:keep-all}
-.side-nav .tab .no{flex:none;min-width:2.2em;font-family:var(--mono);font-weight:600;font-size:13px;letter-spacing:-.02em;color:var(--ink3)}
-.side-nav .tab:hover{background:var(--sunk);color:var(--ink)}
-.side-nav .tab[aria-selected="true"]{border-left-color:var(--a);background:var(--a-bg);color:var(--a);font-weight:750}
-.side-nav .tab[aria-selected="true"] .no{color:var(--a)}
-.side-nav .tab:focus-visible,.side-x:focus-visible,.side-open:focus-visible,.side-h .logo:focus-visible{outline:2.5px solid var(--a);outline-offset:-2px}
-@media(max-width:900px){.side-nav .tab{padding-top:9px;padding-bottom:9px}}
-.side-open{position:fixed;top:max(10px,env(safe-area-inset-top,0px));left:max(12px,env(safe-area-inset-left,0px));z-index:85;display:none;
-  font:inherit;font-size:14.5px;font-weight:700;line-height:1.3;padding:7px 12px;background:var(--card);color:var(--ink);border:1px solid var(--ink);border-radius:0;cursor:pointer}
-.side-open:hover{color:var(--a);border-color:var(--a)}
-html.side-closed .side-open{display:block}
-.side-bg{display:none}
-@media(max-width:900px){html:not(.side-closed) .side-bg{display:block;position:fixed;inset:0;z-index:88;background:rgba(0,0,0,.35)}}
-@media(prefers-reduced-motion:reduce){.side,body.has-side{transition:none}}
+/* 메뉴 — 탭 다섯 개로 화면을 고른다. 900px 아래는 화면 아래에 붙고 900px 이상은 위쪽 흰 띠에 놓인다.
+   화면이 둘 이상인 탭(일정, 임신 중, 출산 준비)은 본문 맨 위 항목 줄(.subbar)에서 고른다.
+   --stick 은 위에 붙어 있는 것의 높이다. 페이지 안 링크로 갈 때 그만큼 띄운다 */
+:root{--nav-h:64px;--stick:72px}
+@media(min-width:900px){:root{--stick:136px}}
+body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+.nav-logo,.nav-theme{display:none}
+.nav-tabs{position:fixed;left:0;right:0;bottom:0;z-index:90;display:flex;align-items:center;gap:2px;background:var(--card);
+  border-radius:22px 22px 0 0;box-shadow:0 -2px 12px rgba(120,80,40,.09);
+  padding:6px max(6px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px))}
+.nav-tab{appearance:none;-webkit-appearance:none;font:inherit;margin:0;border:0;background:none;cursor:pointer;flex:1 1 0;min-width:0;min-height:52px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:5px 1px;border-radius:14px;
+  font-size:12.5px;font-weight:700;line-height:1.25;letter-spacing:-.02em;color:var(--ink3);white-space:nowrap}
+.nav-tab svg{width:22px;height:22px;flex:none}
+.nav-tab:hover{color:var(--a)}
+.nav-tab[aria-selected="true"]{background:var(--a-tint);color:var(--a)}
+.nav-tab:focus-visible,.sub-tab:focus-visible,.nav-logo:focus-visible{outline:2.5px solid var(--a);outline-offset:-2px}
+.subbar{position:sticky;top:0;z-index:80;background:var(--ground);padding:10px 0}
+.subbar[hidden],.sub-tabs[hidden]{display:none}
+.sub-tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none}
+.sub-tabs::-webkit-scrollbar{display:none}
+.sub-tab{appearance:none;-webkit-appearance:none;font:inherit;margin:0;border:0;cursor:pointer;flex:none;min-height:44px;padding:8px 17px;
+  border-radius:var(--r-pill);background:var(--card);box-shadow:var(--edge);font-size:15.5px;font-weight:700;line-height:1.3;color:var(--ink2);white-space:nowrap}
+.sub-tab:hover{color:var(--a)}
+.sub-tab[aria-selected="true"]{background:var(--ink);color:var(--card);box-shadow:none}
+@media(min-width:900px){
+  body{padding-bottom:0}
+  /* 띠는 화면 끝까지 닿고 안쪽 내용은 본문 폭(--page-w)에 맞춘다. 좌우 -16px 는 body 의 옆 여백이다 */
+  .nav{position:sticky;top:0;z-index:90;display:flex;align-items:center;gap:6px;min-height:var(--nav-h);background:var(--card);box-shadow:var(--float);
+    margin:0 -16px;padding:0 max(16px,calc((100% + 32px - var(--page-w)) / 2))}
+  .nav-logo{display:block;margin-right:auto;font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+  .nav-logo:hover{color:var(--a)}
+  .nav-tabs{position:static;gap:4px;background:none;border-radius:0;box-shadow:none;padding:0}
+  .nav-tab{flex:none;flex-direction:row;gap:7px;min-height:44px;padding:8px 16px;border-radius:var(--r-pill);font-size:15.5px;letter-spacing:-.01em;color:var(--ink2)}
+  .nav-tab svg{width:19px;height:19px}
+  .nav-theme{display:inline-flex;margin-left:10px}
+  #top .top-row .theme{display:none}
+  .subbar{top:var(--nav-h)}
+}
 .tabbox{min-width:0}
-.tabp{scroll-margin-top:var(--side-top)}
-.tabp [id]{scroll-margin-top:calc(var(--side-top) + 12px)}
+.tabp{scroll-margin-top:var(--stick)}
+.tabp [id]{scroll-margin-top:calc(var(--stick) + 12px)}
 .tabp[hidden]{display:none}
-@media print{.side,.side-open,.side-bg{display:none}body.has-side{padding-left:16px;padding-top:0}.tabp[hidden]{display:block}}
+@media print{.nav,.subbar{display:none}body{padding-bottom:0}.tabp[hidden]{display:block}}
 
 
 /* 눈금줄 — 큰 숫자 카드 대신 위를 먹선으로 누르고 칸만 나눈다 */
@@ -627,38 +631,25 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 }
 </style>
 <script>try{var t0=localStorage.getItem('ivf-theme');if(t0==='light'||t0==='dark')document.documentElement.setAttribute('data-theme',t0);}catch(e){}</script>
-<script>(function(){var c=false;try{c=matchMedia('(max-width: 900px)').matches;}catch(e){}if(!c){try{c=localStorage.getItem('ivf-side')==='closed';}catch(e){}}if(c)document.documentElement.classList.add('side-closed');})();</script>
 </head>
-<body class="has-side">
-<aside class="side" id="side" aria-label="차례">
-  <div class="side-h"><a class="logo" href="#top">임신 일정표</a><button type="button" class="side-x" aria-controls="side" aria-expanded="true">숨기기</button></div>
-  <div class="side-nav" role="tablist" aria-label="내용 선택" aria-orientation="vertical">
-    <div class="side-g" role="presentation"><div class="side-gl" aria-hidden="true">일정</div>
-      <button class="tab" type="button" role="tab" id="tab-timeline" aria-controls="timeline" aria-selected="true"><span class="no">1</span>전체 일정</button>
-      <button class="tab" type="button" role="tab" id="tab-leave" aria-controls="leave" aria-selected="false" tabindex="-1"><span class="no">1-2</span>휴가 계획</button>
-    </div>
-    <div class="side-g" role="presentation"><div class="side-gl" aria-hidden="true">임신 중</div>
-      <button class="tab" type="button" role="tab" id="tab-risk" aria-controls="risk" aria-selected="false" tabindex="-1"><span class="no">2</span>유산 위험</button>
-      <button class="tab" type="button" role="tab" id="tab-why" aria-controls="why" aria-selected="false" tabindex="-1"><span class="no">3</span>PGT-A 배아</button>
-      <button class="tab" type="button" role="tab" id="tab-weekly" aria-controls="weekly" aria-selected="false" tabindex="-1"><span class="no">4</span>시기별 할 일</button>
-      <button class="tab" type="button" role="tab" id="tab-meds" aria-controls="meds" aria-selected="false" tabindex="-1"><span class="no">5</span>약 안내</button>
-    </div>
-    <div class="side-g" role="presentation"><div class="side-gl" aria-hidden="true">출산 준비</div>
-      <button class="tab" type="button" role="tab" id="tab-support" aria-controls="support" aria-selected="false" tabindex="-1"><span class="no">6</span>지원금과 보험</button>
-      <button class="tab" type="button" role="tab" id="tab-care" aria-controls="care" aria-selected="false" tabindex="-1"><span class="no">7</span>조리원과 어린이집</button>
-      <button class="tab" type="button" role="tab" id="tab-helper" aria-controls="helper" aria-selected="false" tabindex="-1"><span class="no">8</span>산후도우미</button>
-      <button class="tab" type="button" role="tab" id="tab-hospital" aria-controls="hospital" aria-selected="false" tabindex="-1"><span class="no">10</span>분만 병원</button>
-    </div>
-    <div class="side-g" role="presentation"><div class="side-gl" aria-hidden="true">기록</div>
-      <button class="tab" type="button" role="tab" id="tab-album" aria-controls="album" aria-selected="false" tabindex="-1"><span class="no">9</span>사진과 영상</button>
-    </div>
+<body>
+<nav class="nav" id="nav" aria-label="메뉴">
+  <a class="nav-logo" href="#top">시험관 임신 일정표</a>
+  <div class="nav-tabs" role="tablist" aria-label="메뉴">
+    <button class="nav-tab" type="button" role="tab" id="nav-home" data-group="home" aria-selected="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5 10 3l7 6.5V17H3z"/></svg><span>홈</span></button>
+    <button class="nav-tab" type="button" role="tab" id="nav-plan" data-group="plan" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="3"/><path d="M3 8h14M7 2v4M13 2v4"/></svg><span>일정</span></button>
+    <button class="nav-tab" type="button" role="tab" id="nav-preg" data-group="preg" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17s-6.5-4-6.5-8.5A3.5 3.5 0 0 1 10 6.5a3.5 3.5 0 0 1 6.5 2C16.5 13 10 17 10 17z"/></svg><span>임신 중</span></button>
+    <button class="nav-tab" type="button" role="tab" id="nav-prep" data-group="prep" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="7" width="13" height="10" rx="2.5"/><path d="M7 7V5.5a3 3 0 0 1 6 0V7"/></svg><span>출산 준비</span></button>
+    <button class="nav-tab" type="button" role="tab" id="nav-photo" data-group="photo" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="3"/><circle cx="7.5" cy="8.5" r="1.5"/><path d="m4 14 4-4 3 3 2-2 3 3"/></svg><span>사진</span></button>
   </div>
-</aside>
-<button type="button" class="side-open" aria-controls="side" aria-expanded="false">▸ 차례</button>
-<div class="side-bg"></div>
+  <div class="theme nav-theme" role="group" aria-label="화면 밝기">
+    <button type="button" class="theme-b" data-theme-set="light" aria-pressed="false">밝게</button>
+    <button type="button" class="theme-b" data-theme-set="dark" aria-pressed="false">어둡게</button>
+  </div>
+</nav>
 <div class="wrap">
 
-<section class="panel" id="top">
+<section class="panel tabp home" id="top" role="tabpanel" aria-labelledby="nav-home" tabindex="0">
   <div class="top-row">
     <h1>시험관 임신 일정표</h1>
     <div class="theme" role="group" aria-label="화면 밝기">
@@ -711,8 +702,26 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 
 
 <div class="tabbox">
+<div class="subbar" hidden>
+  <div class="sub-tabs" role="tablist" aria-label="일정 항목" data-group="plan" hidden>
+    <button class="sub-tab" type="button" role="tab" id="tab-timeline" aria-controls="timeline" aria-selected="true">전체 일정</button>
+    <button class="sub-tab" type="button" role="tab" id="tab-leave" aria-controls="leave" aria-selected="false" tabindex="-1">휴가 계획</button>
+  </div>
+  <div class="sub-tabs" role="tablist" aria-label="임신 중 항목" data-group="preg" hidden>
+    <button class="sub-tab" type="button" role="tab" id="tab-risk" aria-controls="risk" aria-selected="true">유산 위험</button>
+    <button class="sub-tab" type="button" role="tab" id="tab-why" aria-controls="why" aria-selected="false" tabindex="-1">PGT-A 배아</button>
+    <button class="sub-tab" type="button" role="tab" id="tab-weekly" aria-controls="weekly" aria-selected="false" tabindex="-1">시기별 할 일</button>
+    <button class="sub-tab" type="button" role="tab" id="tab-meds" aria-controls="meds" aria-selected="false" tabindex="-1">약 안내</button>
+  </div>
+  <div class="sub-tabs" role="tablist" aria-label="출산 준비 항목" data-group="prep" hidden>
+    <button class="sub-tab" type="button" role="tab" id="tab-support" aria-controls="support" aria-selected="true">지원금과 보험</button>
+    <button class="sub-tab" type="button" role="tab" id="tab-care" aria-controls="care" aria-selected="false" tabindex="-1">조리원과 어린이집</button>
+    <button class="sub-tab" type="button" role="tab" id="tab-helper" aria-controls="helper" aria-selected="false" tabindex="-1">산후도우미</button>
+    <button class="sub-tab" type="button" role="tab" id="tab-hospital" aria-controls="hospital" aria-selected="false" tabindex="-1">분만 병원</button>
+  </div>
+</div>
 
-<section class="panel tabp" id="timeline" role="tabpanel" aria-labelledby="tab-timeline" tabindex="0">
+<section class="panel tabp" id="timeline" role="tabpanel" aria-labelledby="tab-timeline" tabindex="0" hidden>
   <h2><span class="no">1</span>전체 일정</h2>
   <p class="sec-desc">이식부터 조리원 퇴소까지를 날짜로 늘어놓았습니다. 날짜를 읽기 전에 두 가지만 알아 두시면 됩니다.</p>
   <ul class="pts">
@@ -2021,7 +2030,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
   <p class="meta">출처: <a href="https://www.guro.go.kr/health/contents.do?key=1329">구로구보건소 2026년 안내</a>, <a href="https://www.songpa.go.kr/ehealth/contents.do?key=4569">송파구보건소</a>, <a href="https://www.hanam.go.kr/health/contents.do?key=956">하남시보건소</a>(경기도 추가 지원 종료, 맞벌이 판정), <a href="https://www.ddm.go.kr/health/contents.do?key=1260">동대문구보건소</a>(하는 일과 안 하는 일), <a href="https://www.socialservice.or.kr">사회서비스 전자바우처</a>, <a href="https://www.bokjiro.go.kr">복지로</a>. 2027년 기준은 2027년 초 보건소 안내로 다시 맞춥니다.</p>
 </section>
 
-<section class="panel tabp" id="album" role="tabpanel" aria-labelledby="tab-album" tabindex="0" hidden>
+<section class="panel tabp" id="album" role="tabpanel" aria-labelledby="nav-photo" tabindex="0" hidden>
   <h2><span class="no">9</span>사진과 영상</h2>
   <p class="sec-desc">병원에서 받은 사진, 집에서 찍은 사진, 초음파 영상을 날짜별로 한곳에 모읍니다. 가장 최근 것이 맨 위에 옵니다. 사진을 누르면 크게 볼 수 있습니다.</p>
   <div class="al-bar" id="al-bar" role="group" aria-label="종류별로 보기"></div>
@@ -3746,36 +3755,60 @@ if(DLG){
 
 function fillDates(){ $$('.dd').forEach(function(s){ s.textContent=D[s.getAttribute('data-k')]||''; }); }
 function renderAll(){ compute(); var EV=events(); fillDates(); renderScale(); renderGantt(); renderPlans(); renderTimeline(EV); renderRiskTable(); lastW=-1; renderChart(); renderAlbum(); }
-/* 탭 — 여러 칸 가운데 하나만 보인다. 주소의 # 로도 열 수 있고, 안쪽 링크가 숨은 칸을 가리키면 그 칸을 먼저 연다 */
-var TABS=$$('.side-nav .tab'), PANELS=$$('.tabp'), BOX=$('.tabbox');
-/* 차례가 접혀 있으면 왼쪽 위 「▸ 차례」 단추가 본문 위에 떠 있다. 칸 맨 위로 옮길 때 그 높이만큼 덜 올린다 */
-function sideGap(){ return parseFloat(getComputedStyle(document.body).paddingTop)||0; }
+/* 탭 — 화면 열두 개 가운데 하나만 보인다. 탭 다섯 개로 고르고, 화면이 둘 이상인 탭은 항목 줄에서 고른다.
+   주소의 # 로도 열 수 있고, 안쪽 링크가 숨은 화면을 가리키면 그 화면을 먼저 연다 */
+var GROUPS=[{id:'home',panels:['top']},{id:'plan',panels:['timeline','leave']},
+            {id:'preg',panels:['risk','why','weekly','meds']},
+            {id:'prep',panels:['support','care','helper','hospital']},{id:'photo',panels:['album']}];
+var NAVT=$$('.nav-tab'), SUBT=$$('.sub-tab'), SUBROWS=$$('.sub-tabs'), SUBBAR=$('.subbar'), PANELS=$$('.tabp');
+function groupOf(id){ for(var i=0;i<GROUPS.length;i++){ if(GROUPS[i].panels.indexOf(id)>=0) return GROUPS[i]; } return null; }
 function showTab(id,focus,keepScroll){
+  var g=groupOf(id); if(!g) return false;
+  NAVT.forEach(function(b){ var on=b.getAttribute('data-group')===g.id; b.setAttribute('aria-selected',on?'true':'false'); b.tabIndex=on?0:-1; });
+  SUBBAR.hidden=g.panels.length<2;
+  SUBROWS.forEach(function(r){ r.hidden=r.getAttribute('data-group')!==g.id; });
   var btn=null;
-  TABS.forEach(function(b){ var on=b.getAttribute('aria-controls')===id; b.setAttribute('aria-selected',on?'true':'false'); b.tabIndex=on?0:-1; if(on) btn=b; });
-  if(!btn) return false;
+  SUBT.forEach(function(b){ var on=b.getAttribute('aria-controls')===id; b.setAttribute('aria-selected',on?'true':'false'); b.tabIndex=on?0:-1; if(on) btn=b; });
   PANELS.forEach(function(p){ p.hidden=(p.id!==id); });
   if(L && typeof renderPlans==='function'){ renderPlans(); if(id==='timeline') renderGantt(); }
-  if(focus) btn.focus();
+  /* 고른 항목이 줄 밖으로 밀려 있으면 줄 안에서만 옆으로 민다 */
+  if(btn){ var row=btn.parentElement, br=btn.getBoundingClientRect(), rr=row.getBoundingClientRect(); if(br.left<rr.left||br.right>rr.right) row.scrollLeft+=br.left-rr.left-12; }
+  if(focus&&btn) btn.focus();
   try{ history.replaceState(null,'','#'+id); }catch(e){}
-  if(!keepScroll){ var top=BOX.getBoundingClientRect().top-sideGap(); if(top<0) window.scrollTo(0,window.pageYOffset+top); }
+  if(!keepScroll) window.scrollTo(0,0);
   return true;
 }
-TABS.forEach(function(b,i){
-  b.addEventListener('click',function(){ showTab(b.getAttribute('aria-controls'),false,false); });
-  b.addEventListener('keydown',function(ev){
-    var j=i;
-    if(ev.key==='ArrowDown'||ev.key==='ArrowRight') j=(i+1)%TABS.length; else if(ev.key==='ArrowUp'||ev.key==='ArrowLeft') j=(i-1+TABS.length)%TABS.length;
-    else if(ev.key==='Home') j=0; else if(ev.key==='End') j=TABS.length-1; else return;
-    ev.preventDefault(); showTab(TABS[j].getAttribute('aria-controls'),true,false);
+function showGroup(gid,focus){
+  for(var i=0;i<GROUPS.length;i++){ if(GROUPS[i].id===gid){
+    var ok=showTab(GROUPS[i].panels[0],false,false);
+    if(ok&&focus){ var b=$('.nav-tab[data-group="'+gid+'"]'); if(b) b.focus(); }
+    return ok;
+  } }
+  return false;
+}
+function tabKeys(list,i,ev,open){
+  var j=i;
+  if(ev.key==='ArrowRight') j=(i+1)%list.length; else if(ev.key==='ArrowLeft') j=(i-1+list.length)%list.length;
+  else if(ev.key==='Home') j=0; else if(ev.key==='End') j=list.length-1; else return;
+  ev.preventDefault(); open(list[j]);
+}
+NAVT.forEach(function(b,i){
+  b.addEventListener('click',function(){ showGroup(b.getAttribute('data-group'),false); });
+  b.addEventListener('keydown',function(ev){ tabKeys(NAVT,i,ev,function(t){ showGroup(t.getAttribute('data-group'),true); }); });
+});
+SUBROWS.forEach(function(row){
+  var list=[].slice.call(row.querySelectorAll('.sub-tab'));
+  list.forEach(function(b,i){
+    b.addEventListener('click',function(){ showTab(b.getAttribute('aria-controls'),false,false); });
+    b.addEventListener('keydown',function(ev){ tabKeys(list,i,ev,function(t){ showTab(t.getAttribute('aria-controls'),true,false); }); });
   });
 });
 function openTarget(id,fromClick){
   var tgt=id&&document.getElementById(id); if(!tgt) return false;
   var pnl=tgt.closest('.tabp'); if(!pnl) return false;
-  showTab(pnl.id,false,true);
+  showTab(pnl.id,false,tgt!==pnl);
   for(var d=tgt; d && d!==pnl; d=d.parentElement){ if(d.tagName==='DETAILS') d.open=true; }
-  if(tgt!==pnl) tgt.scrollIntoView(); else if(fromClick){ var top=BOX.getBoundingClientRect().top-sideGap(); window.scrollTo(0,window.pageYOffset+top); }
+  if(tgt!==pnl) tgt.scrollIntoView();
   return true;
 }
 document.addEventListener('click',function(ev){
@@ -3784,28 +3817,6 @@ document.addEventListener('click',function(ev){
 });
 window.addEventListener('hashchange',function(){ openTarget((location.hash||'').slice(1),false); });
 openTarget((location.hash||'').slice(1),false);
-
-/* 왼쪽 차례 — 「숨기기」로 접고 「▸ 차례」로 다시 연다. 넓은 화면에서 접은 상태는 기억한다.
-   900px 아래에서는 처음에 접혀 있고, 열면 본문 위에 겹쳐 뜨고, 칸을 고르면 다시 접힌다 */
-var SIDE_X=$('.side-x'), SIDE_OPEN=$('.side-open'), SIDE_BG=$('.side-bg'), SKEY='ivf-side';
-var SMQ=window.matchMedia?window.matchMedia('(max-width: 900px)'):null;
-function narrow(){ return !!(SMQ&&SMQ.matches); }
-function sideClosed(){ return document.documentElement.classList.contains('side-closed'); }
-function sideSaved(){ try{ return localStorage.getItem(SKEY); }catch(e){ return null; } }
-function setSide(closed,save){
-  document.documentElement.classList.toggle('side-closed',closed);
-  SIDE_X.setAttribute('aria-expanded',closed?'false':'true');
-  SIDE_OPEN.setAttribute('aria-expanded',closed?'false':'true');
-  if(save&&!narrow()){ try{ localStorage.setItem(SKEY,closed?'closed':'open'); }catch(e){} }
-}
-setSide(narrow()?true:sideSaved()==='closed',false);
-SIDE_X.addEventListener('click',function(){ setSide(true,true); SIDE_OPEN.focus(); });
-SIDE_OPEN.addEventListener('click',function(){ setSide(false,true); var cur=$('.side-nav .tab[aria-selected="true"]')||TABS[0]; if(cur) cur.focus(); });
-SIDE_BG.addEventListener('click',function(){ setSide(true,false); });
-document.addEventListener('keydown',function(ev){ if(ev.key==='Escape'&&narrow()&&!sideClosed()){ setSide(true,false); SIDE_OPEN.focus(); } });
-$('.side-nav').addEventListener('click',function(ev){ if(narrow()&&ev.target.closest('.tab')) setSide(true,false); });
-$('.side-h .logo').addEventListener('click',function(ev){ ev.preventDefault(); if(narrow()) setSide(true,false); window.scrollTo(0,0); });
-if(SMQ&&SMQ.addEventListener) SMQ.addEventListener('change',function(e){ setSide(e.matches?true:sideSaved()==='closed',false); });
 
 /* 점선 밑줄 숫자 — 누르면 다른 자료가 열리고, 다른 곳을 누르면 닫힌다 */
 function hvSet(h,on){ h.classList.toggle('on',on); h.setAttribute('aria-expanded',on?'true':'false'); var st=h.closest('.step'); if(st) st.classList.toggle('hv-up',on); }

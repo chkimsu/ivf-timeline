@@ -198,6 +198,20 @@ JS_TARGET = """id => {
 }"""
 
 
+# 화면 위에 붙어 있는 것(PC 의 메뉴 띠, 보일 때의 항목 줄)의 아래 끝. 없으면 0
+JS_STICK = """() => {
+  let line = 0;
+  for (const s of ['.nav', '.subbar']) {
+    const e = document.querySelector(s); if (!e || e.hidden) continue;
+    const cs = getComputedStyle(e);
+    if (cs.display === 'none' || (cs.position !== 'sticky' && cs.position !== 'fixed')) continue;
+    const r = e.getBoundingClientRect();
+    if (r.height > 0 && r.top <= 1) line = Math.max(line, r.bottom);
+  }
+  return line;
+}"""
+
+
 @check('links')
 def links(pw, path):
     fails = []
@@ -211,6 +225,8 @@ def links(pw, path):
             fails.append('링크 %s: 가리키는 자리가 없다' % href)
         elif r['hidden'] or r['h'] <= 0:
             fails.append('링크 %s: 눌러도 가리키는 자리가 안 보인다' % href)
+        elif r['top'] < page.evaluate(JS_STICK) - 1:
+            fails.append('링크 %s: 가리키는 자리가 위에 붙은 메뉴에 가려진다 (top %.0f)' % (href, r['top']))
     for pid in SCREENS + ['todo', 'cert-todo', 'pgt-screen']:
         p = open_page(pw, path, hash=pid)
         r = p.evaluate(JS_TARGET, pid)
@@ -394,11 +410,181 @@ def theme(pw, path):
     return fails
 
 
+# ---------- 메뉴 ----------
+NAV = ['홈', '일정', '임신 중', '출산 준비', '사진']
+SUBS = {'plan': ['전체 일정', '휴가 계획'],
+        'preg': ['유산 위험', 'PGT-A 배아', '시기별 할 일', '약 안내'],
+        'prep': ['지원금과 보험', '조리원과 어린이집', '산후도우미', '분만 병원']}
+FIRST = {'home': 'top', 'plan': 'timeline', 'preg': 'risk', 'prep': 'support', 'photo': 'album'}
+
+JS_VISP = "() => [...document.querySelectorAll('.tabp')].filter(p => !p.hidden).map(p => p.id)"
+JS_VSUB = """() => [...document.querySelectorAll('.sub-tabs')].filter(e => !e.hidden && e.getClientRects().length)
+  .map(e => [...e.querySelectorAll('.sub-tab')].map(b => b.textContent.trim()))"""
+JS_SEL_ON = "id => { const e = document.getElementById(id); return !!e && e.getAttribute('aria-selected') === 'true'; }"
+
+
+@check('nav')
+def nav(pw, path):
+    fails = []
+    page = open_page(pw, path)
+    names = page.evaluate("() => [...document.querySelectorAll('.nav-tab')].map(b => b.textContent.trim())")
+    if names != NAV:
+        return ['탭 이름이 %s' % names]
+    # 2. 처음 화면은 홈
+    if page.evaluate(JS_VISP) != ['top']:
+        fails.append('처음에 보이는 화면이 %s' % page.evaluate(JS_VISP))
+    if not page.evaluate(JS_SEL_ON, 'nav-home'):
+        fails.append('처음에 홈 탭이 고른 표시가 아니다')
+    if page.evaluate(JS_VSUB) != []:
+        fails.append('홈에서 항목 줄이 보인다')
+    # 3. 탭마다 첫 화면
+    for g, first in FIRST.items():
+        page.click('#nav-' + g)
+        page.wait_for_timeout(60)
+        if page.evaluate(JS_VISP) != [first]:
+            fails.append('%s 탭을 누르면 보이는 화면이 %s' % (g, page.evaluate(JS_VISP)))
+        want = [SUBS[g]] if g in SUBS else []
+        if page.evaluate(JS_VSUB) != want:
+            fails.append('%s 탭의 항목 줄이 %s' % (g, page.evaluate(JS_VSUB)))
+        if g in SUBS and not page.evaluate(JS_SEL_ON, 'tab-' + first):
+            fails.append('%s 탭의 첫 항목이 고른 표시가 아니다' % g)
+    # 4. 휴대폰과 폭 320 에서 아래 탭
+    for size in ('phone', (320, 568)):
+        p = open_page(pw, path, size=size)
+        r = p.evaluate("""() => {
+          const bar = document.querySelector('.nav-tabs').getBoundingClientRect();
+          const tabs = [...document.querySelectorAll('.nav-tab')];
+          return {gap: Math.abs(bar.bottom - innerHeight), pos: getComputedStyle(document.querySelector('.nav-tabs')).position,
+            low: tabs.filter(t => t.getBoundingClientRect().height < 48).length,
+            wrap: tabs.filter(t => t.scrollWidth > t.clientWidth + 1 || t.querySelector('span').getClientRects().length > 1).length,
+            over: document.documentElement.scrollWidth - document.documentElement.clientWidth};
+        }""")
+        if r['pos'] != 'fixed' or r['gap'] > 1:
+            fails.append('%s: 탭이 화면 아래에 붙어 있지 않다 (%s, 틈 %.0f)' % (size, r['pos'], r['gap']))
+        if r['low']:
+            fails.append('%s: 높이 48 미만인 탭 %d개' % (size, r['low']))
+        if r['wrap']:
+            fails.append('%s: 이름이 두 줄이 되거나 넘치는 탭 %d개' % (size, r['wrap']))
+        if r['over'] > 0:
+            fails.append('%s: 가로로 %dpx 밀린다' % (size, r['over']))
+    # 5. 맨 아래 내용이 탭에 가려지지 않는다
+    p = open_page(pw, path, size='phone', hash='hospital')
+    p.evaluate("() => window.scrollTo(0, document.documentElement.scrollHeight)")
+    p.wait_for_timeout(80)
+    r = p.evaluate("""() => {
+      const kids = [...document.getElementById('hospital').children].filter(e => e.getClientRects().length);
+      return {last: kids[kids.length - 1].getBoundingClientRect().bottom, nav: document.querySelector('.nav-tabs').getBoundingClientRect().top};
+    }""")
+    if r['last'] > r['nav'] + 0.5:
+        fails.append('휴대폰: 맨 아래 내용이 탭에 %.0fpx 가려진다' % (r['last'] - r['nav']))
+    # 6. PC 에서 메뉴 띠와 항목 줄이 붙어 있다
+    p = open_page(pw, path, size='pc', hash='hospital')
+    p.evaluate("() => window.scrollTo(0, 800)")
+    p.wait_for_timeout(80)
+    r = p.evaluate("""() => { const n = document.querySelector('.nav').getBoundingClientRect(), s = document.querySelector('.subbar').getBoundingClientRect();
+      return {nt: n.top, nb: n.bottom, st: s.top}; }""")
+    if abs(r['nt']) > 1:
+        fails.append('PC: 내려도 메뉴 띠가 위에 붙어 있지 않다 (top %.0f)' % r['nt'])
+    if abs(r['st'] - r['nb']) > 1:
+        fails.append('PC: 항목 줄이 메뉴 띠 바로 아래에 붙어 있지 않다 (%.0f, %.0f)' % (r['st'], r['nb']))
+    # 7. 다른 탭을 누르면 맨 위부터
+    p.evaluate("() => window.scrollTo(0, 2000)")
+    p.click('#nav-plan')
+    p.wait_for_timeout(80)
+    if p.evaluate("() => window.scrollY") != 0:
+        fails.append('PC: 내려 읽다가 다른 탭을 누르면 scrollY 가 %s' % p.evaluate("() => window.scrollY"))
+    # 8. 키보드
+    p = open_page(pw, path)
+    p.focus('#nav-home')
+    p.keyboard.press('ArrowRight')
+    if not p.evaluate(JS_SEL_ON, 'nav-plan') or p.evaluate("() => document.activeElement.id") != 'nav-plan':
+        fails.append('키보드: 홈 탭에서 오른쪽 화살표로 일정 탭에 가지 않는다')
+    p.focus('#tab-timeline')
+    p.keyboard.press('ArrowRight')
+    if not p.evaluate(JS_SEL_ON, 'tab-leave') or p.evaluate(JS_VISP) != ['leave']:
+        fails.append('키보드: 전체 일정에서 오른쪽 화살표로 휴가 계획에 가지 않는다')
+    # 9. 주소의 # 를 바꾸면 화면이 따라온다
+    go(p, 'why')
+    if p.evaluate(JS_VISP) != ['why'] or not p.evaluate(JS_SEL_ON, 'nav-preg') or not p.evaluate(JS_SEL_ON, 'tab-why'):
+        fails.append('#why 로 바꿨을 때 화면이나 고른 표시가 맞지 않는다 (%s)' % p.evaluate(JS_VISP))
+    go(p, 'top')
+    if p.evaluate(JS_VISP) != ['top']:
+        fails.append('#top 으로 바꿨을 때 보이는 화면이 %s' % p.evaluate(JS_VISP))
+    # 10. 왼쪽 차례가 남지 않았다
+    if p.evaluate("() => !!document.querySelector('.side,.side-open,.side-bg')"):
+        fails.append('왼쪽 차례 요소가 남았다')
+    src = pathlib.Path(path).read_text(encoding='utf-8')
+    fails += ['파일에 「%s」가 남았다' % w for w in ('ivf-side', 'has-side', 'side-closed') if w in src]
+    return fails
+
+
+JS_SVG = """sel => [...document.querySelectorAll(sel)].filter(s => s.getBoundingClientRect().width >= 300 && s.childElementCount > 0).length"""
+
+
+@check('charts')
+def charts(pw, path):
+    fails = []
+    page = open_page(pw, path)
+    # 그림이 있는 화면은 다섯 개다 (전체 일정, 유산 위험, 지원금과 보험, 조리원과 어린이집, 산후도우미)
+    for btn, sel, name in (('#nav-plan', '#timeline svg', '전체 일정'), ('#nav-preg', '#risk svg', '유산 위험'),
+                           ('#nav-prep', '#support svg', '지원금과 보험'), ('#tab-care', '#care svg', '조리원과 어린이집'),
+                           ('#tab-helper', '#helper svg', '산후도우미')):
+        if not page.locator(btn).count():
+            fails.append('단추 %s 가 없다' % btn)
+            continue
+        page.click(btn)
+        page.wait_for_timeout(200)
+        if page.evaluate(JS_SVG, sel) < 1:
+            fails.append('%s: 탭으로 열었을 때 그림이 그려지지 않았다' % name)
+    return fails
+
+
+@check('print')
+def print_(pw, path):
+    fails = []
+    page = open_page(pw, path, hash='timeline')
+    page.emulate_media(media='print')
+    r = page.evaluate("""ids => ({
+      hid: ids.filter(id => getComputedStyle(document.getElementById(id)).display === 'none'),
+      menu: ['.nav', '.subbar'].filter(s => { const e = document.querySelector(s); return !e || getComputedStyle(e).display !== 'none'; })
+    })""", SCREENS)
+    if r['hid']:
+        fails.append('인쇄에서 빠지는 화면: %s' % r['hid'])
+    if r['menu']:
+        fails.append('인쇄에 메뉴가 나오거나 메뉴가 없다: %s' % r['menu'])
+    return fails
+
+
+def shots(args):
+    """눈으로 볼 화면을 찍는다."""
+    out = ROOT / '.superpowers' / 'shots'
+    out.mkdir(parents=True, exist_ok=True)
+    with sync_playwright() as p:
+        pw = Session(p)
+        for sz in args.sizes.split(','):
+            size = sz if sz in SIZES else tuple(int(x) for x in sz.split('x'))
+            page = open_page(pw, args.page, size=size, scheme=args.scheme)
+            for pid in (args.names or SCREENS):
+                go(page, pid)
+                page.wait_for_timeout(150)
+                f = out / ('%s-%s-%s-%s.png' % (args.shots, pid, sz, args.scheme))
+                page.screenshot(path=str(f), full_page=args.full)
+                print(f)
+        pw.close_pages()
+        pw.browser.close()
+
+
 def main():
     ap = argparse.ArgumentParser(description='디자인 개편 확인 도구')
     ap.add_argument('names', nargs='*', help='돌릴 검사 이름. 없으면 전부')
     ap.add_argument('--page', default=PAGE, help='index.html 대신 볼 파일')
+    ap.add_argument('--shots', metavar='이름', help='검사 대신 화면을 찍는다. names 는 화면 id (없으면 전부). .superpowers/shots/ 에 둔다')
+    ap.add_argument('--sizes', default='phone,pc', help='--shots 로 찍을 폭. 예: phone,pc 또는 360x640')
+    ap.add_argument('--scheme', default='light', choices=['light', 'dark'])
+    ap.add_argument('--full', action='store_true', help='--shots 를 화면 전체 길이로 찍는다')
     args = ap.parse_args()
+    if args.shots:
+        return shots(args)
     names = args.names or list(CHECKS)
     unknown = [n for n in names if n not in CHECKS]
     if unknown:
