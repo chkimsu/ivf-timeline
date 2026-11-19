@@ -261,7 +261,7 @@ def external(pw, path):
 
 
 def overflow_sizes():
-    return dict(SIZES)
+    return dict(SIZES, small=(320, 568))   # 글자를 키운 휴대폰과 같은 폭
 
 
 @check('overflow')
@@ -671,7 +671,7 @@ def shape_run(pw, path, js, schemes=('light',), sizes=('pc', 'phone')):
 
 @check('shapes')
 def shapes(pw, path):
-    return shape_run(pw, path, JS_SHAPES)
+    return shape_run(pw, path, JS_SHAPES, schemes=('light', 'dark'))
 
 
 # 옛 모양이 남았나 — 각진 칸과 굵은 먹선.
@@ -702,13 +702,45 @@ JS_SQUARES = """skip => {
 def squares(pw, path):
     fails = []
     for size in ('pc', 'phone'):
-        page = open_page(pw, path, size=size)
+        for scheme in ('light', 'dark'):
+            page = open_page(pw, path, size=size, scheme=scheme)
+            seen = {}
+            for pid in SCREENS:
+                go(page, pid)
+                for m in page.evaluate(JS_SQUARES, SQUARE_SKIP):
+                    seen.setdefault(m, []).append(pid)
+            fails += ['%s %s %s: %s' % (size, scheme, m, ' '.join(v[:4])) for m, v in seen.items()]
+    return fails
+
+
+# 어둡게 볼 때 밝은 칸이 그대로 남았나. 색값을 직접 쓴 규칙이 있으면 걸린다.
+JS_DARK = """() => {
+  document.querySelectorAll('details').forEach(d => { d.open = true; });
+  const lin = v => { v /= 255; return v <= .04045 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); };
+  const out = {};
+  document.querySelectorAll('body *').forEach(e => {
+    if (e.closest('svg') || ['IMG', 'VIDEO'].includes(e.tagName) || !e.getClientRects().length) return;
+    const r = e.getBoundingClientRect(); if (r.width < 160 || r.height < 48) return;
+    const m = getComputedStyle(e).backgroundColor.match(/rgba?\\(([\\d.]+), ([\\d.]+), ([\\d.]+)(?:, ([\\d.]+))?\\)/);
+    if (!m || (m[4] !== undefined && parseFloat(m[4]) < .5)) return;
+    const L = .2126 * lin(+m[1]) + .7152 * lin(+m[2]) + .0722 * lin(+m[3]);
+    if (L > .6) { const k = e.tagName.toLowerCase() + (typeof e.className === 'string' && e.className.trim() ? '.' + e.className.trim().split(/\\s+/).join('.') : ''); out[k] = (out[k] || 0) + 1; }
+  });
+  return Object.entries(out).map(([k, n]) => k + ' (' + n + '곳)');
+}"""
+
+
+@check('dark_fills')
+def dark_fills(pw, path):
+    fails = []
+    for size in ('pc', 'phone'):
+        page = open_page(pw, path, size=size, scheme='dark')
         seen = {}
         for pid in SCREENS:
             go(page, pid)
-            for m in page.evaluate(JS_SQUARES, SQUARE_SKIP):
+            for m in page.evaluate(JS_DARK):
                 seen.setdefault(m, []).append(pid)
-        fails += ['%s %s: %s' % (size, m, ' '.join(v[:4])) for m, v in seen.items()]
+        fails += ['%s 어둡게 밝은 칸 %s: %s' % (size, m, ' '.join(v[:4])) for m, v in seen.items()]
     return fails
 
 

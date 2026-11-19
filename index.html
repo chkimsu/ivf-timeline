@@ -157,7 +157,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .tabp [id]{scroll-margin-top:calc(var(--stick) + 12px)}
 .tabp[hidden]{display:none}
 .tabp:focus-visible{outline:2.5px solid var(--a);outline-offset:6px;border-radius:var(--r-lg)}
-@media print{.nav,.subbar{display:none}body{padding-bottom:0}.tabp[hidden]{display:block}}
+@media print{.nav,.subbar,.theme{display:none}body{padding-bottom:0}.tabp[hidden]{display:block}}
 
 
 /* 눈금줄 — 큰 숫자와 그 뜻. 칸마다 흰 둥근 카드 */
@@ -192,7 +192,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .nextc[hidden],.nextc-left[hidden]{display:none}
 .nextc-left{background:var(--g);color:var(--card);font-size:14px;font-weight:800;line-height:1.4;border-radius:var(--r-pill);padding:3px 13px;margin-bottom:8px}
 .nextc-d{font-size:16px;font-weight:700;line-height:1.5;color:var(--g)}
-.nextc-t{font-size:23px;line-height:1.3;font-weight:800;letter-spacing:-.025em}
+.nextc-t{font-size:23px;line-height:1.3;font-weight:800;letter-spacing:-.025em;word-break:keep-all}
 .nextc-w{font-size:15.5px;line-height:1.5;color:var(--ink2)}
 .home-h{display:block;font-size:17px;line-height:1.4;font-weight:800;letter-spacing:-.01em;margin:6px 6px 10px}
 .gl-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
@@ -204,7 +204,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .gl-list li:nth-child(3n+2) .gl-badge{background:var(--y-bg);color:var(--y)}
 .gl-list li:nth-child(3n) .gl-badge{background:var(--g-bg);color:var(--g)}
 .gl-main{min-width:0;display:flex;flex-direction:column;gap:1px}
-.gl-what{font-weight:800;letter-spacing:-.015em}
+.gl-what{font-weight:800;letter-spacing:-.015em;word-break:keep-all}
 .gl-sub{font-size:15px;line-height:1.5;color:var(--ink2)}
 .gl-time{white-space:nowrap}
 .gl-where:not(:empty)::before{content:", "}
@@ -459,7 +459,9 @@ td.num,td.dt{font-size:15.5px;white-space:nowrap;font-variant-numeric:tabular-nu
 td.num{text-align:right}
 td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 /* 긴 글이 든 열의 최소폭 — 글자 15.5px 로 한 줄 20자와 좌우 여백. 좁은 칸에 긴 글이 갇히지 않게 한다 */
-#cert-todo + p + table.stk td:nth-child(3),#hospital>table.stk:has(th:nth-child(3):last-child) td:nth-child(n+2){min-width:348px}
+/* 표가 세로 카드로 펴지는 폭에서는 걸지 않는다. 걸면 좁은 화면에서 가로로 밀린다 */
+@container (min-width:1041px){#cert-todo + p + table.stk td:nth-child(3){min-width:348px}}
+@container (min-width:701px){#hospital>table.stk:has(th:nth-child(3):last-child) td:nth-child(n+2){min-width:348px}}
 /* 흰 카드(펼쳐보기) 안에 든 표와 카드는 아래 턱 대신 가는 테두리로 구분한다 */
 .fold-b table,.fold-b .pts>li,.fold-b .wk>div,.fold-b .step,.fold-b .med{box-shadow:0 0 0 1px var(--hair)}
 
