@@ -218,7 +218,7 @@ JS_STICK = """() => {
     const cs = getComputedStyle(e);
     if (cs.display === 'none' || (cs.position !== 'sticky' && cs.position !== 'fixed')) continue;
     const r = e.getBoundingClientRect();
-    if (r.height > 0 && r.top <= 1) line = Math.max(line, r.bottom);
+    if (r.height > 0 && r.top <= line + 1) line = Math.max(line, r.bottom);   // 메뉴 띠 아래에 항목 줄이 이어 붙는다
   }
   return line;
 }"""
@@ -228,9 +228,10 @@ JS_STICK = """() => {
 def links(pw, path):
     fails = []
     page = open_page(pw, path)
-    hrefs = page.evaluate("() => [...document.querySelectorAll('a[href^=\"#\"]')].map(a => a.getAttribute('href'))")
+    # 왼쪽 차례의 링크는 화면을 옮길 때마다 새로 만들어지므로 뺀다. 차례는 toc 검사가 따로 본다
+    hrefs = page.evaluate("() => [...document.querySelectorAll('a[href^=\"#\"]:not(#toc a)')].map(a => a.getAttribute('href'))")
     for i, href in enumerate(hrefs):
-        page.evaluate("i => document.querySelectorAll('a[href^=\"#\"]')[i].click()", i)
+        page.evaluate("i => document.querySelectorAll('a[href^=\"#\"]:not(#toc a)')[i].click()", i)
         page.wait_for_timeout(60)
         r = page.evaluate(JS_TARGET, href[1:])
         if r.get('missing'):
@@ -338,7 +339,7 @@ JS_NARROW = """() => {
 @check('narrow')
 def narrow(pw, path):
     fails = []
-    for name in ('tablet', 'pc'):
+    for name in ('tablet', (1280, 800), 'pc'):   # 1280 은 왼쪽 차례가 붙는 가장 좁은 폭
         page = open_page(pw, path, size=name)
         for pid in SCREENS:
             go(page, pid)
@@ -934,6 +935,70 @@ def robust(pw, path):
     after = p.evaluate(js)
     if before != '348px' or after != '348px':
         fails.append('임신확인서 표의 기한 칸 최소폭이 %s 였다가 문단을 끼우면 %s' % (before, after))
+    return fails
+
+
+# ---------- 화면 안 차례 (PC) ----------
+JS_TOC = """() => { const t = document.getElementById('toc'); if (!t || !t.getClientRects().length) return null;
+  const r = t.getBoundingClientRect(); return {l: r.left, r: r.right, t: r.top, b: r.bottom, links: [...t.querySelectorAll('a')].map(a => a.textContent.trim())}; }"""
+JS_HEADS = """id => { const p = document.getElementById(id), first = p.querySelector('h2');
+  return [...p.querySelectorAll('h2, h3')].filter(h => h !== first && !h.closest('details') && h.getClientRects().length).map(h => h.textContent.trim()); }"""
+
+
+@check('toc')
+def toc(pw, path):
+    """PC 에서 긴 화면의 절 제목을 왼쪽에 붙여 두고 눌러서 옮겨 간다."""
+    fails = []
+    p = open_page(pw, path, size='pc', hash='risk')
+    t = p.evaluate(JS_TOC)
+    if not t:
+        return ['PC #risk: 왼쪽 차례가 없다']
+    heads = p.evaluate(JS_HEADS, 'risk')
+    if t['links'] != ['맨 위로'] + heads:
+        fails.append('PC #risk: 차례의 줄이 화면의 절 제목과 다르다. 차례 %s' % t['links'][:4])
+    pan = p.evaluate(JS_BOX, '#risk')
+    if t['r'] > pan['l'] - 8:
+        fails.append('PC #risk: 차례가 본문과 겹친다 (차례 오른쪽 %.0f, 본문 왼쪽 %.0f)' % (t['r'], pan['l']))
+    # 내려도 차례가 화면 위쪽에 붙어 있다
+    p.evaluate("() => window.scrollTo(0, 3000)")
+    p.wait_for_timeout(120)
+    t2, line = p.evaluate(JS_TOC), p.evaluate(JS_STICK)
+    if not t2 or t2['t'] < line - 1 or t2['t'] > line + 40:
+        fails.append('PC #risk: 3000px 내린 뒤 차례가 위에 붙어 있지 않다 (top %s, 기준선 %.0f)' % (t2 and t2['t'], line))
+    # 넷째 줄을 누르면 그 절이 맨 위로 오고 그 줄이 지금 자리로 표시된다
+    p.evaluate("() => document.querySelectorAll('#toc a')[3].click()")
+    p.wait_for_timeout(250)
+    r = p.evaluate("""() => { const a = document.querySelectorAll('#toc a')[3], h = document.getElementById(a.getAttribute('href').slice(1));
+      return {top: h ? h.getBoundingClientRect().top : null, cur: a.getAttribute('aria-current'), n: document.querySelectorAll('#toc a[aria-current="true"]').length}; }""")
+    line = p.evaluate(JS_STICK)
+    if r['top'] is None or r['top'] < line - 1 or r['top'] > line + 60:
+        fails.append('PC #risk: 차례 넷째 줄을 눌러도 그 절이 맨 위로 오지 않는다 (top %s)' % r['top'])
+    if r['cur'] != 'true' or r['n'] != 1:
+        fails.append('PC #risk: 누른 줄이 지금 자리로 표시되지 않는다 (표시된 줄 %d개)' % r['n'])
+    # 맨 위로
+    p.evaluate("() => document.querySelector('#toc a').click()")
+    p.wait_for_timeout(150)
+    if p.evaluate("() => window.scrollY") != 0:
+        fails.append('PC #risk: 「맨 위로」를 눌러도 맨 위로 가지 않는다')
+    # 절이 셋 미만인 화면과 홈에는 차례가 없고 본문이 폭을 다 쓴다
+    for pid in ('weekly', 'top'):
+        go(p, pid)
+        if p.evaluate(JS_TOC):
+            fails.append('PC #%s: 절이 적은 화면인데 차례가 있다' % pid)
+        w = p.evaluate("id => document.getElementById(id).getBoundingClientRect().width / document.querySelector('.wrap').getBoundingClientRect().width", pid)
+        if w < 0.99:
+            fails.append('PC #%s: 차례가 없는데 본문이 폭을 다 쓰지 않는다 (%.2f)' % (pid, w))
+    # 주소로 바로 들어와도 차례가 채워진다 (사진 목록은 스크립트가 나중에 그린다)
+    p = open_page(pw, path, size='pc', hash='album')
+    p.wait_for_timeout(300)
+    t = p.evaluate(JS_TOC)
+    if not t or len(t['links']) < 4:
+        fails.append('PC: #album 으로 바로 들어오면 차례가 비어 있다')
+    # 휴대폰과 좁은 PC 폭에는 차례가 없다
+    for size in ('phone', 'tablet', (1200, 800)):
+        q = open_page(pw, path, size=size, hash='risk')
+        if q.evaluate(JS_TOC):
+            fails.append('%s #risk: 좁은 폭인데 차례가 보인다' % (size,))
     return fails
 
 

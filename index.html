@@ -30,7 +30,7 @@
   --sans:'Pretendard','Apple SD Gothic Neo',-apple-system,BlinkMacSystemFont,'Helvetica Neue','Malgun Gothic',sans-serif;
   --r-xl:30px;  --r-lg:24px;  --r-md:22px;  --r-pill:99px;
   --edge:0 2px 0 var(--hair);  --float:0 2px 12px rgba(120,80,40,.07);
-  --page-w:1240px;
+  --page-w:1480px;
   /* 주의 아이콘 — 느낌표가 든 세모. 글자색으로 칠해지게 mask 로 쓴다 */
   --warn-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill-rule='evenodd' d='M10 1.8c.6 0 1.1.3 1.4.8l7.2 12.6c.6 1.1-.2 2.4-1.4 2.4H2.8c-1.2 0-2-1.3-1.4-2.4L8.6 2.6c.3-.5.8-.8 1.4-.8zm0 4.7c-.5 0-.9.4-.9.9v4.2c0 .5.4.9.9.9s.9-.4.9-.9V7.4c0-.5-.4-.9-.9-.9zm0 7.4a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2z'/%3E%3C/svg%3E");
 }
@@ -157,11 +157,27 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
   .sub-tab{flex:none;padding:8px 17px;white-space:nowrap}
 }
 .tabbox{min-width:0}
+/* 화면 안 차례 — PC(1280px 이상)에서 긴 화면의 절 제목을 왼쪽에 붙여 두고 눌러서 옮겨 간다.
+   절이 셋 미만인 화면(홈, 시기별 할 일, 약 안내)과 좁은 화면에는 두지 않는다. 지금 읽는 절은 살구 알약으로 표시한다 */
+.toc{display:none}
+@media(min-width:1280px){
+  .tabbox.has-toc{display:grid;grid-template-columns:216px minmax(0,1fr);column-gap:28px;align-items:start}
+  .tabbox.has-toc>.subbar{grid-column:1/-1}
+  .tabbox.has-toc>.tabp{grid-column:2;grid-row:2}
+  .tabbox.has-toc>.toc{display:flex;flex-direction:column;gap:2px;grid-column:1;grid-row:2;position:sticky;top:calc(var(--stick) + 10px);
+    max-height:calc(100vh - var(--stick) - 28px);overflow-y:auto;padding:4px 0 6px}
+  .toc a{display:block;padding:7px 12px;border-radius:12px;font-size:15px;line-height:1.45;font-weight:600;color:var(--ink2);text-decoration:none;word-break:keep-all}
+  .toc a:visited{color:var(--ink2)}
+  .toc a:hover{color:var(--a);background:var(--card)}
+  .toc a[aria-current="true"]{background:var(--a-bg);color:var(--a);font-weight:800}
+  .toc a.toc-top{font-size:14.5px;font-weight:800;color:var(--ink3);margin-bottom:4px}
+  .toc a:focus-visible{outline:2.5px solid var(--a);outline-offset:-2px}
+}
 .tabp{scroll-margin-top:var(--stick)}
 .tabp [id]{scroll-margin-top:calc(var(--stick) + 12px)}
 .tabp[hidden]{display:none}
 .tabp:focus-visible{outline:2px solid var(--a-bd);outline-offset:6px;border-radius:var(--r-lg)}
-@media print{.nav,.subbar,.theme{display:none}body{padding-bottom:0}.tabp[hidden]{display:block}.home[hidden]{display:grid}}
+@media print{.nav,.subbar,.theme,.toc{display:none}body{padding-bottom:0}.tabp[hidden]{display:block}.home[hidden]{display:grid}}
 
 
 /* 눈금줄 — 큰 숫자와 그 뜻. 칸마다 흰 둥근 카드 */
@@ -468,6 +484,9 @@ td.num{text-align:right}
 td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 /* 표의 첫 칸(이름표)은 낱말 가운데서 끊지 않는다 */
 table.stk td:first-child{word-break:keep-all;overflow-wrap:anywhere}
+/* 분만 병원의 두 병원 비교 표 — 두 병원 칸을 같은 폭으로 둔다. 글 길이대로 두면 한쪽 칸이 좁아진다 */
+#hospital>table.stk:has(th:nth-child(3):last-child){table-layout:fixed}
+#hospital>table.stk:has(th:nth-child(3):last-child) th:first-child{width:15%}
 /* 긴 글이 든 열의 최소폭 — 글자 15.5px 로 한 줄 20자와 좌우 여백. 좁은 칸에 긴 글이 갇히지 않게 한다 */
 /* 표가 세로 카드로 펴지는 폭에서는 걸지 않는다. 걸면 좁은 화면에서 가로로 밀린다 */
 @container (min-width:1041px){#cert-todo ~ table.stk:not(#cert-todo ~ table.stk ~ table.stk) td:nth-child(3){min-width:348px}}
@@ -818,6 +837,7 @@ table.stk td:first-child{word-break:keep-all;overflow-wrap:anywhere}
   </div>
 </div>
 
+<nav class="toc" id="toc" aria-label="이 화면의 차례" hidden></nav>
 <section class="panel tabp" id="timeline" role="tabpanel" aria-labelledby="tab-timeline" tabindex="0" hidden>
   <h2>전체 일정</h2>
   <p class="sec-desc">이식부터 조리원 퇴소까지를 날짜로 늘어놓았습니다. 날짜를 읽기 전에 두 가지만 알아 두시면 됩니다.</p>
@@ -3874,6 +3894,31 @@ var GROUPS=[{id:'home',panels:['top']},{id:'plan',panels:['timeline','leave']},
             {id:'preg',panels:['risk','why','weekly','meds']},
             {id:'prep',panels:['support','care','helper','hospital']},{id:'photo',panels:['album']}];
 var NAVT=$$('.nav-tab'), SUBT=$$('.sub-tab'), SUBROWS=$$('.sub-tabs'), SUBBAR=$('.subbar'), PANELS=$$('.tabp');
+/* 화면 안 차례 — 지금 화면의 절 제목(화면 제목을 뺀 h2 와 h3, 펼쳐보기 안은 빼고)을 왼쪽에 모은다. 절이 셋 미만이면 두지 않는다.
+   제목에 id 가 없으면 붙인다. 누르면 아래의 페이지 안 링크 처리(openTarget)가 그 절로 옮긴다 */
+var TOC=$('#toc'), TOCBOX=$('.tabbox'), CUR='top', tocHeads=[], tocLinks=[];
+function buildToc(id){
+  var pnl=document.getElementById(id), first=pnl?pnl.querySelector('h2'):null;
+  TOC.textContent=''; tocHeads=[]; tocLinks=[];
+  var hs=(pnl&&id!=='top')?[].slice.call(pnl.querySelectorAll('h2,h3')).filter(function(h){ return h!==first && !h.closest('details') && h.getClientRects().length; }):[];
+  if(hs.length<3){ TOC.hidden=true; TOCBOX.classList.toggle('has-toc',false); return; }
+  var up=document.createElement('a'); up.href='#'+id; up.className='toc-top'; up.textContent='맨 위로'; TOC.appendChild(up);
+  hs.forEach(function(h,i){
+    if(!h.id) h.id='sec-'+id+'-'+(i+1);
+    var a=document.createElement('a'); a.href='#'+h.id; a.textContent=h.textContent.trim(); TOC.appendChild(a);
+    tocHeads.push(h); tocLinks.push(a);
+  });
+  TOC.hidden=false; TOCBOX.classList.toggle('has-toc',true); spyToc();
+}
+/* 지금 읽는 절 — 화면 위쪽 기준선을 지난 마지막 제목 */
+function spyToc(){
+  if(!tocHeads.length) return;
+  var line=(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stick'))||0)+70, cur=-1;
+  for(var i=0;i<tocHeads.length;i++){ if(tocHeads[i].getBoundingClientRect().top<=line) cur=i; }
+  tocLinks.forEach(function(a,i){ a.toggleAttribute('aria-current',i===cur); if(i===cur) a.setAttribute('aria-current','true'); });
+}
+var tocTick=false;
+window.addEventListener('scroll',function(){ if(tocTick) return; tocTick=true; requestAnimationFrame(function(){ tocTick=false; spyToc(); }); },{passive:true});
 function groupOf(id){ for(var i=0;i<GROUPS.length;i++){ if(GROUPS[i].panels.indexOf(id)>=0) return GROUPS[i]; } return null; }
 function showTab(id,focus,keepScroll){
   var g=groupOf(id); if(!g) return false;
@@ -3884,6 +3929,7 @@ function showTab(id,focus,keepScroll){
   SUBT.forEach(function(b){ var on=b.getAttribute('aria-controls')===id; b.setAttribute('aria-selected',on?'true':'false'); b.tabIndex=on?0:-1; if(on) btn=b; });
   PANELS.forEach(function(p){ p.hidden=(p.id!==id); });
   if(L && typeof renderPlans==='function'){ renderPlans(); if(id==='timeline') renderGantt(); }
+  CUR=id; buildToc(id);
   /* 고른 항목이 줄 밖으로 밀려 있으면 줄 안에서만 옆으로 민다 */
   if(btn){ var row=btn.parentElement, br=btn.getBoundingClientRect(), rr=row.getBoundingClientRect(); if(br.left<rr.left||br.right>rr.right) row.scrollLeft+=br.left-rr.left-12; }
   if(focus&&btn) btn.focus();
@@ -3962,6 +4008,8 @@ if(MQ&&MQ.addEventListener) MQ.addEventListener('change',paintTheme);
 paintTheme();
 
 renderAll(); watchChart();
+/* 사진 목록처럼 방금 그려진 제목이 있으니 차례를 한 번 더 만든다 */
+buildToc(CUR);
 })();
 </script>
 </body>
