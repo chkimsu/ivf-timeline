@@ -21,3 +21,5 @@ Thumbs.db
 # 앨범 원본. 사진 속 정보가 남아 있다. 올릴 때는 tools/album.py 로 줄이고 정보를 지운 사본만 album/ 에 넣는다
 앨범-원본/
 KakaoTalk_*
+# 파이썬이 만드는 캐시
+__pycache__/

@@ -7,6 +7,7 @@
   python3 tools/redesign_check.py                 등록된 검사를 다 돌린다
   python3 tools/redesign_check.py content dates   고른 검사만 돌린다
   python3 tools/redesign_check.py content --page .superpowers/mut.html   다른 파일을 본다
+  python3 tools/redesign_check.py --base 028db1a                         기준선을 다른 커밋으로 (기본은 main)
 
 검사마다 PASS 나 FAIL 을 찍고, 실패가 하나라도 있으면 종료 코드 1 로 끝난다.
 """
@@ -20,6 +21,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGE = str(ROOT / 'index.html')
+BASE = 'main'   # 글과 날짜를 견줄 기준 커밋. --base 로 바꾼다. 개편 전 마지막 커밋은 028db1a
 
 FIXED = "2026-11-20T09:00:00+09:00"   # 이때 주수는 6주 0일, 다음 일정까지 10일
 PANELS = ['timeline', 'leave', 'risk', 'why', 'weekly', 'meds', 'support', 'care', 'helper', 'album', 'hospital']
@@ -90,7 +92,7 @@ def go(page, pid):
 def baseline_path():
     d = ROOT / '.superpowers' / 'baseline'
     d.mkdir(parents=True, exist_ok=True)
-    out = subprocess.run(['git', 'show', 'main:index.html'], cwd=ROOT, capture_output=True, check=True).stdout
+    out = subprocess.run(['git', 'show', BASE + ':index.html'], cwd=ROOT, capture_output=True, check=True).stdout
     (d / 'index.html').write_bytes(out)
     return str(d / 'index.html')
 
@@ -898,14 +900,17 @@ def shots(args):
 
 
 def main():
+    global BASE
     ap = argparse.ArgumentParser(description='디자인 개편 확인 도구')
     ap.add_argument('names', nargs='*', help='돌릴 검사 이름. 없으면 전부')
     ap.add_argument('--page', default=PAGE, help='index.html 대신 볼 파일')
+    ap.add_argument('--base', default=BASE, help='글과 날짜를 견줄 기준 커밋 (기본 main)')
     ap.add_argument('--shots', metavar='이름', help='검사 대신 화면을 찍는다. names 는 화면 id (없으면 전부). .superpowers/shots/ 에 둔다')
     ap.add_argument('--sizes', default='phone,pc', help='--shots 로 찍을 폭. 예: phone,pc 또는 360x640')
     ap.add_argument('--scheme', default='light', choices=['light', 'dark'])
     ap.add_argument('--full', action='store_true', help='--shots 를 화면 전체 길이로 찍는다')
     args = ap.parse_args()
+    BASE = args.base
     if args.shots:
         return shots(args)
     names = args.names or list(CHECKS)
