@@ -24,13 +24,13 @@ PAGE = str(ROOT / 'index.html')
 BASE = 'main'   # 글과 날짜를 견줄 기준 커밋. --base 로 바꾼다. 개편 전 마지막 커밋은 028db1a
 
 FIXED = "2026-11-20T09:00:00+09:00"   # 이때 주수는 6주 0일, 다음 일정까지 10일
-PANELS = ['timeline', 'leave', 'risk', 'why', 'weekly', 'meds', 'support', 'care', 'helper', 'album', 'hospital']
+PANELS = ['timeline', 'leave', 'risk', 'why', 'weekly', 'meds', 'size', 'support', 'care', 'helper', 'album', 'hospital']
 SCREENS = ['top'] + PANELS
 SIZES = {'phone': (390, 844), 'tablet': (1024, 768), 'pc': (1440, 900)}
 
 # 비교하기 전에 기준선 글에 적용하는 정규식 치환. 개편에서 글을 고친 곳은 이것뿐이다 —
 # 왼쪽 차례와 항목 번호가 없어져서 그것을 가리키던 문구를 새 메뉴 이름으로 바꿨다.
-NAMES = '전체 일정|휴가 계획|유산 위험|PGT-A 배아|시기별 할 일|약 안내|지원금과 보험|조리원과 어린이집|산후도우미|분만 병원|사진과 영상'
+NAMES = '전체 일정|휴가 계획|유산 위험|PGT-A 배아|시기별 할 일|약 안내|아기 크기|지원금과 보험|조리원과 어린이집|산후도우미|분만 병원|사진과 영상'
 ALLOWED = [
     (r'^\d+(?:-\d+)?(?=[가-힣A-Z])', ''),                                    # 화면 제목 앞의 번호
     (r'(「?)(?:\d+(?:-\d+)? )?(%s)(」?) 탭' % NAMES, r'\1\2\3 화면'),            # 「3 PGT-A 배아 탭」 → 「PGT-A 배아 화면」
@@ -447,7 +447,7 @@ def theme(pw, path):
 # ---------- 메뉴 ----------
 NAV = ['홈', '일정', '임신 중', '출산 준비', '사진']
 SUBS = {'plan': ['전체 일정', '휴가 계획'],
-        'preg': ['유산 위험', 'PGT-A 배아', '시기별 할 일', '약 안내'],
+        'preg': ['유산 위험', 'PGT-A 배아', '시기별 할 일', '약 안내', '아기 크기'],
         'prep': ['지원금과 보험', '조리원과 어린이집', '산후도우미', '분만 병원']}
 FIRST = {'home': 'top', 'plan': 'timeline', 'preg': 'risk', 'prep': 'support', 'photo': 'album'}
 
@@ -905,7 +905,7 @@ def aria(pw, path):
         ids: [...document.querySelectorAll('.tabp')].map(x => x.id)}; }""")
     if r['n'] != 1 or r['off']:
         fails.append('h1 이 %d개이고 그중 %d개는 홈이 아닌 화면에서 읽히지 않는다 (하나가 늘 읽혀야 한다)' % (r['n'], r['off']))
-    want = {'nav-home': ['top'], 'nav-plan': ['timeline', 'leave'], 'nav-preg': ['risk', 'why', 'weekly', 'meds'],
+    want = {'nav-home': ['top'], 'nav-plan': ['timeline', 'leave'], 'nav-preg': ['risk', 'why', 'weekly', 'meds', 'size'],
             'nav-prep': ['support', 'care', 'helper', 'hospital'], 'nav-photo': ['album']}
     for tid, ctl in r['tabs']:
         if ctl.split() != want.get(tid):
@@ -1020,6 +1020,75 @@ def shots(args):
                 print(f)
         pw.close_pages()
         pw.browser.close()
+
+
+# ---------- 아기 크기 ----------
+JS_SIZE = """() => { const vis = e => !!e && !e.hidden && e.getClientRects().length > 0, tx = e => e.textContent.replace(/\\s+/g, ' ').trim();
+  const g = id => { const e = document.getElementById(id); return vis(e) ? tx(e) : null; };
+  const uses = [...document.querySelectorAll('#top use, #size use')].map(u => u.getAttribute('href') || '');
+  return {t: g('h-size-t'), d: g('h-size-d'), n: document.querySelectorAll('.sz-grid li').length,
+    cur: [...document.querySelectorAll('.sz-grid li.now')].map(tx), sym: document.querySelectorAll('symbol[id^="f-"]').length,
+    dead: uses.filter(h => !h || !document.getElementById(h.slice(1))).length,
+    name: g('sz-n'), size: g('sz-d'), next: g('sz-nt'), meas: g('sz-meas'), k: g('sz-k')}; }"""
+
+
+@check('babysize')
+def babysize(pw, path):
+    """홈의 크기 줄과 아기 크기 화면. 주수에 맞는 과일이 나오고 4주 전에는 숨는다."""
+    fails = []
+
+    def at(when, size='phone'):
+        p = open_page(pw, path, size=size, when=when)
+        home = p.evaluate(JS_SIZE)
+        go(p, 'size')
+        return p, home, p.evaluate(JS_SIZE)
+
+    # 오늘(6주 0일)
+    p, h, s = at(FIXED)
+    if h['t'] != '지금 아기는 석류알만 합니다' or h['d'] != '보통 0.4~0.9cm, 40주 크기 보기':
+        fails.append('6주 0일 홈: 크기 줄이 「%s」 「%s」' % (h['t'], h['d']))
+    if s['n'] != 37 or s['sym'] != 37 or s['dead']:
+        fails.append('과일 칸 %s개, 그림 %s개, 그림이 없는 칸 %s개 (기대 37, 37, 0)' % (s['n'], s['sym'], s['dead']))
+    if s['cur'] != ['6주지금 석류알 0.4~0.9cm'] and s['cur'] != ['6주 지금 석류알 0.4~0.9cm']:
+        fails.append('6주 0일: 지금 칸이 %s' % s['cur'])
+    if (s['k'], s['name'], s['next'], s['meas']) != ('이번 주, 6주', '석류알', '다음 주에는 블루베리만 해집니다', None):
+        fails.append('6주 0일: 이번 주 칸이 %s' % [s['k'], s['name'], s['next'], s['meas']])
+    if '0.4~0.9cm' not in (s['size'] or '') or '보통' not in (s['size'] or ''):
+        fails.append('6주 0일: 이번 주 칸의 크기가 「%s」' % s['size'])
+    # 홈의 크기 줄을 누르면 아기 크기 화면이 열린다
+    p = open_page(pw, path, size='phone')
+    p.click('#h-size')
+    p.wait_for_timeout(100)
+    if p.evaluate(JS_VISP) != ['size'] or not p.evaluate(JS_SEL_ON, 'nav-preg') or not p.evaluate(JS_SEL_ON, 'tab-size'):
+        fails.append('홈의 크기 줄을 눌러도 아기 크기 화면이 열리지 않는다 (%s)' % p.evaluate(JS_VISP))
+    # 날짜를 바꿔 본다
+    for when, name, d in (('2026-11-06T09:00:00+09:00', '딸기씨', '40주 크기 보기'),
+                          ('2027-01-08T09:00:00+09:00', '복숭아', '보통 6.7~7.8cm, 40주 크기 보기'),
+                          ('2027-01-15T09:00:00+09:00', '귤', '보통 15cm, 93g, 40주 크기 보기'),
+                          ('2027-07-04T09:00:00+09:00', '늙은호박', '보통 49cm, 3.2kg, 40주 크기 보기'),
+                          ('2027-07-30T09:00:00+09:00', '수박', '보통 51cm, 3.6kg, 40주 크기 보기')):
+        p, h, s = at(when)
+        if h['t'] != '지금 아기는 %s만 합니다' % name or h['d'] != d:
+            fails.append('%s 홈: 크기 줄이 「%s」 「%s」 (기대 %s, %s)' % (when[:10], h['t'], h['d'], name, d))
+        if s['name'] != name or len(s['cur']) != 1 or name not in s['cur'][0]:
+            fails.append('%s: 이번 주 칸이 「%s」, 지금 칸이 %s' % (when[:10], s['name'], s['cur']))
+        if (s['next'] is None) != (name == '수박'):
+            fails.append('%s: 다음 주 줄이 「%s」' % (when[:10], s['next']))
+        fails += ['%s: 오류 %s' % (when[:10], e[:120]) for e in p.rd_errors]
+    # 4주 전에는 크기 줄과 이번 주 칸을 숨긴다
+    for when in ('2026-10-01T09:00:00+09:00', '2026-11-05T09:00:00+09:00'):
+        p, h, s = at(when)
+        if h['t'] is not None or s['name'] is not None or s['cur']:
+            fails.append('%s(4주 전): 크기 줄 「%s」, 이번 주 칸 「%s」, 지금 칸 %s' % (when[:10], h['t'], s['name'], s['cur']))
+        fails += ['%s: 오류 %s' % (when[:10], e[:120]) for e in p.rd_errors]
+    # 좁은 휴대폰에서 과일 칸의 글이 칸 밖으로 넘치지 않는다
+    for size in ((320, 568), (360, 640), 'phone', 'pc'):
+        p = open_page(pw, path, size=size, hash='size')
+        cut = p.evaluate("""() => [...document.querySelectorAll('.sz-grid li')].filter(li => li.scrollWidth > li.clientWidth + 1
+          || [...li.children].some(c => c.getBoundingClientRect().right > li.getBoundingClientRect().right + 0.5)).map(li => li.textContent.trim().slice(0, 12))""")
+        if cut:
+            fails.append('%s: 글이 칸 밖으로 나가는 과일 칸 %s' % (size, cut[:5]))
+    return fails
 
 
 def main():

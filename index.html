@@ -196,7 +196,9 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .home>p.meta{margin:0}
 .home-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;padding:2px 4px 0}
 .home-title{font-size:19px;line-height:1.3;letter-spacing:-.02em;font-weight:800;color:var(--ink2)}
-.today{background:var(--hero);border-radius:var(--r-xl);padding:18px 20px 18px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+/* 오늘 칸 — 윗줄에 주수와 진행 고리, 아랫줄에 이번 주 아기 크기. 크기 줄을 누르면 아기 크기 화면이 열린다 */
+.today{background:var(--hero);border-radius:var(--r-xl);padding:18px 20px 18px 22px;display:flex;flex-direction:column;gap:14px}
+.today-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .today-t{display:flex;flex-direction:column;min-width:0}
 .today-k,.today-e{font-size:15.5px;font-weight:700;line-height:1.5;letter-spacing:-.02em;color:var(--ink2);word-break:keep-all}
 .today-n{font-size:44px;line-height:1.14;font-weight:800;letter-spacing:-.045em;color:var(--ink);white-space:nowrap}
@@ -208,6 +210,17 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .ring-t[hidden]{display:none}
 .ring-t b{font-size:19px;font-weight:800;letter-spacing:-.02em;color:var(--a)}
 .ring-t small{font-size:12px;font-weight:700;letter-spacing:-.05em;color:var(--ink2)}
+/* 크기 줄의 바탕은 흰 칸 색을 반쯤 비치게 깐다. color-mix 를 모르는 브라우저에서는 흰 칸 색 그대로 나온다 */
+.today-size{display:flex;align-items:center;gap:11px;margin:0 -6px 0 -8px;padding:9px 12px 9px 10px;border-radius:var(--r-md);text-decoration:none;
+  background:var(--card);background:color-mix(in srgb,var(--card) 66%,transparent)}
+.today-size[hidden]{display:none}
+.ts-t{display:flex;flex-direction:column;min-width:0;flex:1}
+.ts-t b{font-size:16.5px;font-weight:800;line-height:1.4;letter-spacing:-.03em;color:var(--ink);word-break:keep-all}
+.ts-t small{font-size:14.5px;line-height:1.45;color:var(--ink2);word-break:keep-all}
+.ts-t small span{white-space:nowrap}
+.today-size:hover .ts-t b{color:var(--a)}
+.ts-go{flex:none;width:17px;height:17px;color:var(--a)}
+.fi{flex:none;display:block}
 .nextc{background:var(--g-bg);border-radius:var(--r-xl);padding:18px 22px 20px;display:flex;flex-direction:column;align-items:flex-start}
 .nextc[hidden],.nextc-left[hidden]{display:none}
 .nextc-left{background:var(--g);color:var(--card);font-size:14px;font-weight:800;line-height:1.4;border-radius:var(--r-pill);padding:3px 13px;margin-bottom:8px}
@@ -251,6 +264,9 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
   .today .ring{width:118px;height:118px}
   .ring-t b{font-size:22px}
   .ring-t small{font-size:13px}
+  .today-size{margin:0 -10px;padding:12px 16px 12px 14px;gap:14px}
+  .ts-t b{font-size:18px}
+  .ts-t small{font-size:15.5px}
   .nextc{grid-area:next;padding:22px 28px 24px}
   .nextc-t{font-size:25px}
   .home-list{grid-area:list}
@@ -259,6 +275,52 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
   .home>p.sub{grid-area:sub;margin-top:10px}
   .home>p.meta{grid-area:meta}
 }
+/* 아기 크기 — 이번 주 칸과 40주 과일 격자. 과일 그림은 주수가 갈수록 조금씩 크게 그린다 */
+.sz-now{background:var(--hero);border-radius:var(--r-xl);padding:20px 22px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin:0 0 6px}
+.sz-now[hidden],.sz-meas[hidden],.sz-next[hidden]{display:none}
+.sz-k{font-size:15.5px;font-weight:700;line-height:1.5;letter-spacing:-.02em;color:var(--ink2)}
+.sz-row{display:flex;align-items:center;gap:16px}
+.sz-n{display:block;font-size:36px;line-height:1.2;font-weight:800;letter-spacing:-.045em;word-break:keep-all}
+.sz-d{display:block;font-size:15.5px;line-height:1.5;font-weight:700;color:var(--ink2);margin-top:2px}
+.sz-meas{display:flex;flex-direction:column;align-self:stretch;border-radius:var(--r-md);padding:10px 16px;background:var(--card);background:color-mix(in srgb,var(--card) 66%,transparent)}
+.sz-meas b{font-size:16.5px;font-weight:800;line-height:1.45;letter-spacing:-.03em}
+.sz-meas small{font-size:14.5px;line-height:1.45;color:var(--ink2)}
+.sz-next{display:flex;align-items:center;gap:8px;border-radius:var(--r-pill);padding:7px 15px 7px 11px;font-size:15px;font-weight:700;line-height:1.4;color:var(--ink2);
+  background:var(--card);background:color-mix(in srgb,var(--card) 66%,transparent)}
+.sz-note{font-size:15.5px;line-height:1.6;color:var(--ink2);margin:-8px 4px 12px}
+.sz-grid{list-style:none;margin:0;padding:0;display:grid;gap:8px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.sz-grid li{margin:0;background:var(--card);border-radius:var(--r-md);box-shadow:var(--edge);padding:9px 5px 11px;display:flex;flex-direction:column;align-items:center;
+  text-align:center;min-width:0;font-size:15.5px;line-height:1.3}
+.sz-w{align-self:stretch;display:flex;align-items:center;justify-content:center;gap:5px;min-height:23px;font-size:14.5px;font-weight:800;color:var(--ink3)}
+.sz-ic{height:66px;display:flex;align-items:center;justify-content:center}
+.sz-grid b{font-size:15.5px;font-weight:800;line-height:1.3;letter-spacing:-.04em;word-break:keep-all}
+.sz-grid small{font-size:14.5px;line-height:1.4;color:var(--ink2);font-variant-numeric:tabular-nums;margin-top:2px;word-break:keep-all}
+.sz-grid li.now{background:var(--y-bg);box-shadow:none}
+.sz-grid li.now .sz-w{color:var(--y)}
+.sz-tag{font-size:12.5px;font-weight:800;line-height:1.6;padding:0 8px;border-radius:var(--r-pill);background:var(--y);color:var(--card)}
+@media(min-width:560px){.sz-grid{grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px}}
+@media(min-width:900px){.sz-now{max-width:520px}}
+.fdefs{position:absolute;width:0;height:0;overflow:hidden}
+/* 과일 그림 색 — 밝게와 어둡게에서 같은 값을 쓴다. 그림에만 쓰고 글자에는 쓰지 않는다 */
+:root{
+  --f-bl:#6676C4; --f-nv:#3F4C96; --f-rd:#D9564C; --f-ch:#C23B4E; --f-rs:#D4567E; --f-pl:#A3426C; --f-pd:#7A2E50;
+  --f-pe:#F8B596; --f-pk:#F08F8F; --f-or:#F28E2B; --f-do:#D5741A; --f-ap:#F6AC52; --f-ps:#EE7F3A; --f-mg:#F5B63C;
+  --f-yl:#F4D04F; --f-tn:#DDBB78; --f-pr:#E2B766; --f-lg:#A8CE6E; --f-av:#D3E28E; --f-ml:#B9D49C; --f-hd:#E1EAA6;
+  --f-cy:#EEF0B4; --f-gp:#B5D56A; --f-gn:#5F9F58; --f-dg:#3F7446; --f-xg:#2C5133; --f-ol:#A9A548; --f-od:#7F7C2E;
+  --f-br:#8B5B3D; --f-sd:#55382A; --f-cr:#FCF4E4; --f-wt:#FBF6EC; --f-wr:#EC5B5B; --f-gf:#F28C84;
+}
+.c-bl{fill:var(--f-bl)}.c-nv{fill:var(--f-nv)}.c-rd{fill:var(--f-rd)}.c-ch{fill:var(--f-ch)}.c-rs{fill:var(--f-rs)}.c-pl{fill:var(--f-pl)}
+.c-pe{fill:var(--f-pe)}.c-pk{fill:var(--f-pk)}.c-or{fill:var(--f-or)}.c-do{fill:var(--f-do)}.c-ap{fill:var(--f-ap)}.c-ps{fill:var(--f-ps)}
+.c-mg{fill:var(--f-mg)}.c-yl{fill:var(--f-yl)}.c-tn{fill:var(--f-tn)}.c-pr{fill:var(--f-pr)}.c-lg{fill:var(--f-lg)}.c-av{fill:var(--f-av)}
+.c-ml{fill:var(--f-ml)}.c-hd{fill:var(--f-hd)}.c-cy{fill:var(--f-cy)}.c-gp{fill:var(--f-gp)}.c-gn{fill:var(--f-gn)}.c-dg{fill:var(--f-dg)}
+.c-ol{fill:var(--f-ol)}.c-od{fill:var(--f-od)}.c-br{fill:var(--f-br)}.c-sd{fill:var(--f-sd)}.c-cr{fill:var(--f-cr)}
+.c-wt{fill:var(--f-wt);stroke:var(--f-tn);stroke-width:1.1}.c-wr{fill:var(--f-wr)}.c-gf{fill:var(--f-gf)}
+.f-hl{fill:var(--f-cr);opacity:.5}
+.s-br,.s-gn,.s-dg,.s-xg,.s-do,.s-cr,.s-tn,.s-pd,.s-rd,.s-ol,.s-lg,.s-wt{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.s-br{stroke:var(--f-br)}.s-gn{stroke:var(--f-gn)}.s-dg{stroke:var(--f-dg)}.s-xg{stroke:var(--f-xg)}.s-do{stroke:var(--f-do);stroke-width:1.6}
+.s-cr{stroke:var(--f-cr);stroke-width:1.5}.s-tn{stroke:var(--f-tn);stroke-width:1.4}.s-pd{stroke:var(--f-pd);stroke-width:1.6;opacity:.6}
+.s-rd{stroke:var(--f-rd);stroke-width:1.6}.s-ol{stroke:var(--f-ol);stroke-width:2.6}.s-lg{stroke:var(--f-lg);stroke-width:1.5}
+.s-wt{stroke:var(--f-wt);stroke-width:2.6}
 /* 출산과 조리원 — 전체 일정 안에서 따로 눈에 들게 하는 칸. 작은 살구색 알약 이름표로 시작한다 */
 .birth{margin:52px 0 44px}
 /* 한눈에 보는 일정표 — 가로 띠 그림. 좁으면 가로로 민다 */
@@ -743,7 +805,7 @@ table.stk td:first-child{word-break:keep-all;overflow-wrap:anywhere}
   <div class="nav-tabs" role="tablist" aria-label="메뉴">
     <button class="nav-tab" type="button" role="tab" id="nav-home" data-group="home" aria-controls="top" aria-selected="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5 10 3l7 6.5V17H3z"/></svg><span>홈</span></button>
     <button class="nav-tab" type="button" role="tab" id="nav-plan" data-group="plan" aria-controls="timeline leave" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="3"/><path d="M3 8h14M7 2v4M13 2v4"/></svg><span>일정</span></button>
-    <button class="nav-tab" type="button" role="tab" id="nav-preg" data-group="preg" aria-controls="risk why weekly meds" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17s-6.5-4-6.5-8.5A3.5 3.5 0 0 1 10 6.5a3.5 3.5 0 0 1 6.5 2C16.5 13 10 17 10 17z"/></svg><span>임신 중</span></button>
+    <button class="nav-tab" type="button" role="tab" id="nav-preg" data-group="preg" aria-controls="risk why weekly meds size" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17s-6.5-4-6.5-8.5A3.5 3.5 0 0 1 10 6.5a3.5 3.5 0 0 1 6.5 2C16.5 13 10 17 10 17z"/></svg><span>임신 중</span></button>
     <button class="nav-tab" type="button" role="tab" id="nav-prep" data-group="prep" aria-controls="support care helper hospital" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="7" width="13" height="10" rx="2.5"/><path d="M7 7V5.5a3 3 0 0 1 6 0V7"/></svg><span>출산 준비</span></button>
     <button class="nav-tab" type="button" role="tab" id="nav-photo" data-group="photo" aria-controls="album" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="3"/><circle cx="7.5" cy="8.5" r="1.5"/><path d="m4 14 4-4 3 3 2-2 3 3"/></svg><span>사진</span></button>
   </div>
@@ -764,11 +826,17 @@ table.stk td:first-child{word-break:keep-all;overflow-wrap:anywhere}
     </div>
   </div>
   <div class="today">
-    <div class="today-t"><span class="today-k">오늘</span><span class="today-n" id="gl-ga"></span><span class="today-e" id="h-edd"></span></div>
-    <div class="ring" id="h-ring" role="img">
-      <svg viewBox="0 0 118 118" aria-hidden="true"><circle class="ring-bg" cx="59" cy="59" r="48"/><circle class="ring-arc" id="h-ring-arc" cx="59" cy="59" r="48" transform="rotate(-90 59 59)"/></svg>
-      <span class="ring-t"><b id="h-ring-n"></b><small>40주 가운데</small></span>
+    <div class="today-top">
+      <div class="today-t"><span class="today-k">오늘</span><span class="today-n" id="gl-ga"></span><span class="today-e" id="h-edd"></span></div>
+      <div class="ring" id="h-ring" role="img">
+        <svg viewBox="0 0 118 118" aria-hidden="true"><circle class="ring-bg" cx="59" cy="59" r="48"/><circle class="ring-arc" id="h-ring-arc" cx="59" cy="59" r="48" transform="rotate(-90 59 59)"/></svg>
+        <span class="ring-t"><b id="h-ring-n"></b><small>40주 가운데</small></span>
+      </div>
+    
     </div>
+    <a class="today-size" id="h-size" href="#size" hidden><svg class="fi" width="46" height="46" aria-hidden="true"><use id="h-size-ic"/></svg>
+      <span class="ts-t"><b id="h-size-t"></b> <small id="h-size-d"></small></span>
+      <svg class="ts-go" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7.5 4 6 6-6 6"/></svg></a>
   </div>
   <div class="nextc" id="h-next" role="group" aria-label="다음 일정" hidden>
     <span class="nextc-left" id="h-left"></span><span class="nextc-d" id="h-nd"></span><span class="nextc-t" id="h-nt"></span><span class="nextc-w" id="h-nw"></span>
@@ -828,6 +896,7 @@ table.stk td:first-child{word-break:keep-all;overflow-wrap:anywhere}
     <button class="sub-tab" type="button" role="tab" id="tab-why" aria-controls="why" aria-selected="false" tabindex="-1">PGT-A 배아</button>
     <button class="sub-tab" type="button" role="tab" id="tab-weekly" aria-controls="weekly" aria-selected="false" tabindex="-1">시기별 할 일</button>
     <button class="sub-tab" type="button" role="tab" id="tab-meds" aria-controls="meds" aria-selected="false" tabindex="-1">약 안내</button>
+    <button class="sub-tab" type="button" role="tab" id="tab-size" aria-controls="size" aria-selected="false" tabindex="-1">아기 크기</button>
   </div>
   <div class="sub-tabs" role="tablist" aria-label="출산 준비 항목" data-group="prep" hidden>
     <button class="sub-tab" type="button" role="tab" id="tab-support" aria-controls="support" aria-selected="true">지원금과 보험</button>
@@ -1759,6 +1828,40 @@ table.stk td:first-child{word-break:keep-all;overflow-wrap:anywhere}
   </ul></div>
   <div class="callout warn"><div class="co-h">두 약 모두 병원이 끊으라고 하기 전까지 계속 씁니다</div>피검사가 음성으로 나와도 스스로 끊지 말고 병원이 확인해 준 뒤에 끊어야 하고 양성이면 보통 8~12주까지 씁니다.<br>다만 이 병원은 첫 초음파 날 프로기노바를 남은 약까지만 쓰고 끝내라고 안내했습니다.<br>약을 끊은 뒤 며칠 동안 피가 조금 비치는 것은 흔한 일이지만 생리처럼 양이 많으면 병원에 연락하셔야 합니다.</div>
   <div class="callout"><div class="co-h">담당 선생님 말씀이 이 페이지보다 우선입니다</div>이 페이지는 일반적인 내용을 모은 참고 자료라서 약의 용량과 끊는 때, 검사 날짜는 담당 선생님 말씀을 따르시면 됩니다.<br>걱정되는 증상이 있으면 망설이지 말고 병원에 물어보시기 바랍니다.<br>내년 7월에 두 분이 건강하게 아기를 만나시기를 바랍니다.</div>
+</section>
+
+<section class="panel tabp" id="size" role="tabpanel" aria-labelledby="tab-size" tabindex="0" hidden>
+  <h2>아기 크기</h2>
+  <p class="sec-desc">주수마다 아기가 보통 얼마나 큰지를 크기가 비슷한 과일로 보여 드립니다. 과일은 대략의 비교이고 아기마다 크기가 달라서 병원에서 측정해 준 크기가 가장 정확합니다. 아래 과일 칸에서는 이번 주가 연노랑으로 표시되고 날짜가 지나면 저절로 다음 주로 넘어갑니다.</p>
+  <div class="sz-now" id="sz-now" hidden>
+    <span class="sz-k" id="sz-k"></span>
+    <div class="sz-row"><svg class="fi" width="92" height="92" aria-hidden="true"><use id="sz-ic"/></svg><div><b class="sz-n" id="sz-n"></b><span class="sz-d" id="sz-d"></span></div></div>
+    <div class="sz-meas" id="sz-meas" hidden><b id="sz-mv"></b> <small id="sz-md"></small></div>
+    <div class="sz-next" id="sz-next" hidden><svg class="fi" width="26" height="26" aria-hidden="true"><use id="sz-nic"/></svg><span id="sz-nt"></span></div>
+  </div>
+  <h3>초기 4~13주</h3>
+  <p class="sz-note">머리에서 엉덩이까지의 길이로 적었습니다.</p>
+  <ol class="sz-grid" id="sz-g1"></ol>
+  <h3>중기 14~27주</h3>
+  <p class="sz-note">14주부터는 머리에서 발끝까지의 키와 몸무게로 적었습니다.</p>
+  <ol class="sz-grid" id="sz-g2"></ol>
+  <h3>후기 28~40주</h3>
+  <p class="sz-note">중기와 같은 방법으로 측정한 키와 몸무게입니다.</p>
+  <ol class="sz-grid" id="sz-g3"></ol>
+  <details class="fold" id="size-src">
+    <summary>숫자의 출처와 과일을 고른 기준<span class="fold-n">자료 2개</span></summary>
+    <div class="fold-b">
+      <p>과일 옆에 적은 숫자는 그 주수 아기의 보통 크기입니다. 아기마다 조금씩 달라서 병원에서 측정해 준 값이 이 숫자와 다를 수 있고 크기가 날짜에 맞는지는 진료 때 선생님이 봐 주십니다.</p>
+      <ul>
+        <li>13주까지는 머리에서 엉덩이까지의 길이를 적고 그 길이와 비슷한 과일을 골랐습니다.</li>
+        <li>14주부터는 머리에서 발끝까지의 키와 초음파로 추정하는 몸무게를 적고 몸무게가 비슷한 과일을 골랐습니다. 13주에서 14주로 넘어갈 때는 측정하는 범위가 엉덩이까지에서 발끝까지로 바뀌기 때문에 숫자가 갑자기 커 보입니다.</li>
+        <li>4주와 5주는 그만큼 작은 과일이 없어서 딸기씨와 참깨로 했고 28주 뒤로는 몸무게가 맞는 과일이 드물어서 단호박, 양배추, 무, 배추, 늙은호박 같은 채소를 넣었습니다.</li>
+        <li>아래 출처의 성장표에는 8주 몸무게가 20g으로 적혀 있는데 길이가 1.6cm인 아기의 무게로는 맞지 않아서 13주까지는 몸무게를 적지 않았습니다.</li>
+        <li>과일은 크기를 어림해서 고른 대략의 비교라서 실제 과일과는 조금 다를 수 있습니다.</li>
+      </ul>
+      <p class="meta">출처: 8~13주 길이와 14주부터의 키, 몸무게는 <a href="https://www.babycenter.com/pregnancy/your-body/growth-chart-fetal-length-and-weight-week-by-week_1290794">BabyCenter 주수별 성장표</a>의 값이고 이 표는 미국 Hadlock 연구를 씁니다. 5~7주 길이는 <a href="https://pubmed.ncbi.nlm.nih.gov/1732970/">Hadlock 1992 연구</a>의 식으로 계산했습니다. 미국에서 측정한 연구의 값이라 참고로 보시면 됩니다.</p>
+    </div>
+  </details>
 </section>
 
 <section class="panel tabp" id="support" role="tabpanel" aria-labelledby="tab-support" tabindex="0" hidden>
@@ -3185,6 +3288,8 @@ table.stk td:first-child{word-break:keep-all;overflow-wrap:anywhere}
 
 </div>
 </div>
+<!-- 과일 그림 37개. 아기 크기 화면과 홈의 크기 줄이 use 로 가져다 쓴다 -->
+<svg class="fdefs" aria-hidden="true" focusable="false"><defs><symbol id="f-seed" viewBox="0 0 48 48"><path class="c-tn" d="M24 19.5c2.4 2.4 3.5 4.6 3.5 6.5a3.5 3.5 0 0 1-7 0c0-1.9 1.1-4.1 3.5-6.5z" transform="rotate(14 24 25)"/></symbol><symbol id="f-sesame" viewBox="0 0 48 48"><path class="c-tn" d="M24 12c5.4 5.4 8 10.3 8 14.5a8 8 0 0 1-16 0c0-4.2 2.6-9.1 8-14.5z" transform="rotate(18 24 24)"/><ellipse class="f-hl" cx="21.5" cy="25" rx="1.5" ry="3.6" transform="rotate(18 21.5 25)"/></symbol><symbol id="f-aril" viewBox="0 0 48 48"><path class="c-rd" d="M24 9c7.5 0 13 6 12.5 14.5C36 32 30.5 39.5 24 39.5S12 32 11.5 23.5C11 15 16.5 9 24 9z"/><ellipse class="c-pk" cx="24" cy="26.5" rx="4.4" ry="7.6" opacity=".55"/><ellipse class="f-hl" cx="17.5" cy="18.5" rx="2.4" ry="4.2" transform="rotate(28 17.5 18.5)"/></symbol><symbol id="f-blueberry" viewBox="0 0 48 48"><circle class="c-bl" cx="24" cy="26" r="15.5"/><path class="c-nv" d="M24 12.5l2.1 3.3 3.9-.4-2 3.4 2 3.4-3.9-.4-2.1 3.3-2.1-3.3-3.9.4 2-3.4-2-3.4 3.9.4z"/><circle class="c-bl" cx="24" cy="18.8" r="1.9"/><ellipse class="f-hl" cx="15.6" cy="25" rx="2.3" ry="4.6" transform="rotate(24 15.6 25)"/></symbol><symbol id="f-raspberry" viewBox="0 0 48 48"><circle class="c-rs" cx="18" cy="17" r="4.9"/><circle class="c-rs" cx="24" cy="15.5" r="4.9"/><circle class="c-rs" cx="30" cy="17" r="4.9"/><circle class="c-rs" cx="14.5" cy="23.5" r="4.9"/><circle class="c-rs" cx="21" cy="22.5" r="4.9"/><circle class="c-rs" cx="27" cy="22.5" r="4.9"/><circle class="c-rs" cx="33.5" cy="23.5" r="4.9"/><circle class="c-rs" cx="17" cy="30" r="4.9"/><circle class="c-rs" cx="24" cy="29.5" r="4.9"/><circle class="c-rs" cx="31" cy="30" r="4.9"/><circle class="c-rs" cx="20.5" cy="36.5" r="4.9"/><circle class="c-rs" cx="27.5" cy="36.5" r="4.9"/><circle class="c-rs" cx="24" cy="41" r="4.9"/><circle class="f-hl" cx="16.6" cy="15.5" r="1.2"/><circle class="f-hl" cx="28.6" cy="15.5" r="1.2"/><circle class="f-hl" cx="19.6" cy="21" r="1.2"/><circle class="f-hl" cx="32.1" cy="22" r="1.2"/><circle class="f-hl" cx="22.6" cy="28" r="1.2"/><circle class="f-hl" cx="19.1" cy="35" r="1.2"/><circle class="f-hl" cx="22.6" cy="39.5" r="1.2"/><path class="c-gn" d="M24 13.5c-3.4-.6-6.4-2.8-7.4-6c3 0 5.4 1 7.4 3c2-2 4.4-3 7.4-3c-1 3.2-4 5.400-7.4 6z"/></symbol><symbol id="f-cherry" viewBox="0 0 48 48"><path class="s-gn" d="M16 25.5C17 17 21 11 27 7M31.5 23.5c0-6.5-1.2-11.500-4.5-16.5"/><path class="c-gn" d="M0 0C2.5-4.5 8-6 12.5-3.5C10 1 4.5 2.5 0 0Z" transform="translate(27 7) rotate(8) scale(1.1)"/><circle class="c-ch" cx="15.5" cy="33" r="9.5"/><circle class="c-ch" cx="32" cy="32" r="9.5"/><ellipse class="f-hl" cx="11.5" cy="30" rx="1.7" ry="3.2" transform="rotate(24 11.5 30)"/><ellipse class="f-hl" cx="28" cy="29" rx="1.7" ry="3.2" transform="rotate(24 28 29)"/></symbol><symbol id="f-strawberry" viewBox="0 0 48 48"><path class="c-rd" d="M24 43.5C15 38.5 8.5 29.500 8.5 21.5c0-6 5-9.5 10.5-8.5c2 .4 3.8 1.3 5 2.6c1.2-1.300 3-2.200 5-2.600c5.500-1 10.500 2.500 10.500 8.500c0 8-6.500 17-15.500 22z"/><ellipse class="c-cr" cx="16.5" cy="22" rx="0.95" ry="1.55"/><ellipse class="c-cr" cx="24" cy="20.5" rx="0.95" ry="1.55"/><ellipse class="c-cr" cx="31.5" cy="22" rx="0.95" ry="1.55"/><ellipse class="c-cr" cx="20" cy="28" rx="0.95" ry="1.55"/><ellipse class="c-cr" cx="28" cy="28" rx="0.95" ry="1.55"/><ellipse class="c-cr" cx="24" cy="34.5" rx="0.95" ry="1.55"/><ellipse class="c-cr" cx="17.5" cy="32.5" rx="0.95" ry="1.55"/><ellipse class="c-cr" cx="30.5" cy="32.5" rx="0.95" ry="1.55"/><path class="c-gn" d="M24 17.5l-9.500-4.700 6.800-.600L18.800 6.500 24 10.900l5.200-4.400-2.500 5.700 6.800.600z"/></symbol><symbol id="f-apricot" viewBox="0 0 48 48"><circle class="c-ap" cx="24" cy="28" r="15.5"/><ellipse class="c-rd" cx="33.5" cy="26" rx="5" ry="7.5" opacity=".22"/><path class="s-do" d="M25.5 13.5c-5.500 6.500-6.500 18-2 29"/><path class="s-br" d="M25.5 13V7.5"/><path class="c-gn" d="M0 0C2.5-4.5 8-6 12.5-3.5C10 1 4.5 2.5 0 0Z" transform="translate(25.5 9.5) rotate(12) scale(1)"/><ellipse class="f-hl" cx="15.5" cy="24" rx="2.2" ry="4.4" transform="rotate(24 15.5 24)"/></symbol><symbol id="f-plum" viewBox="0 0 48 48"><ellipse class="c-pl" cx="24" cy="28" rx="14.5" ry="15.5"/><path class="s-pd" d="M25 13c-4.500 7-5 18-1.500 30"/><path class="s-br" d="M25 13c0-3 1-5 2.500-7"/><path class="c-gn" d="M0 0C2.5-4.5 8-6 12.5-3.5C10 1 4.5 2.5 0 0Z" transform="translate(26.5 8) rotate(-4) scale(0.85)"/><ellipse class="f-hl" cx="15.5" cy="23.5" rx="2.2" ry="4.6" transform="rotate(22 15.5 23.5)"/></symbol><symbol id="f-peach" viewBox="0 0 48 48"><path class="c-pe" d="M24 14c-4.500-3.500-11.500-2.500-14.500 3.500c-3.300 6.800-.300 16.200 6 21.500c3 2.500 6 4 8.500 4s5.500-1.500 8.500-4c6.300-5.300 9.300-14.700 6-21.500C35.500 11.500 28.500 10.500 24 14z"/><path class="c-pk" d="M24 14c4.500-3.500 11.500-2.500 14.500 3.500c3.300 6.800.300 16.200-6 21.500c-3 2.500-6 4-8.500 4c5.500-7.500 6-20 0-29z" opacity=".75"/><path class="s-rd" d="M24 14c-3.200 7.500-3.200 20.500 0 29" opacity=".4"/><path class="c-gn" d="M23.5 13.5c-1.500-5 1.500-9.500 7-10.500c1.500 5-1.500 9.500-7 10.500z"/></symbol><symbol id="f-mandarin" viewBox="0 0 48 48"><ellipse class="c-or" cx="24" cy="27.5" rx="17" ry="14.5"/><path class="c-gn" d="M24 10.5l1.700 3.300 3.700.400-2.800 2.500.800 3.600L24 18.500l-3.400 1.800.800-3.600-2.800-2.500 3.700-.400z"/><circle class="c-do" cx="15" cy="27" r="0.8"/><circle class="c-do" cx="20" cy="34" r="0.8"/><circle class="c-do" cx="30" cy="33" r="0.8"/><circle class="c-do" cx="34" cy="26" r="0.8"/><circle class="c-do" cx="26" cy="29" r="0.8"/><ellipse class="f-hl" cx="13.5" cy="23" rx="2.2" ry="4" transform="rotate(30 13.5 23)"/></symbol><symbol id="f-kiwi" viewBox="0 0 48 48"><ellipse class="c-br" cx="24" cy="25" rx="18" ry="15.5"/><ellipse class="c-lg" cx="24" cy="25" rx="15.4" ry="12.9"/><ellipse class="c-cr" cx="24" cy="25" rx="5.2" ry="3.7"/><circle class="c-sd" cx="32.7" cy="26.7" r="0.9"/><circle class="c-sd" cx="30.38" cy="29.66" r="0.9"/><circle class="c-sd" cx="26.35" cy="31.37" r="0.9"/><circle class="c-sd" cx="21.69" cy="31.38" r="0.9"/><circle class="c-sd" cx="17.65" cy="29.68" r="0.9"/><circle class="c-sd" cx="15.31" cy="26.72" r="0.9"/><circle class="c-sd" cx="15.3" cy="23.3" r="0.9"/><circle class="c-sd" cx="17.62" cy="20.34" r="0.9"/><circle class="c-sd" cx="21.65" cy="18.63" r="0.9"/><circle class="c-sd" cx="26.31" cy="18.62" r="0.9"/><circle class="c-sd" cx="30.35" cy="20.32" r="0.9"/><circle class="c-sd" cx="32.69" cy="23.28" r="0.9"/></symbol><symbol id="f-lemon" viewBox="0 0 48 48"><g transform="rotate(-18 24 26)"><ellipse class="c-yl" cx="24" cy="26" rx="14.5" ry="11.5"/><path class="c-yl" d="M11.5 21.500L4.500 26l7 4.500zM36.5 21.500l7 4.500-7 4.500z"/><ellipse class="f-hl" cx="17.5" cy="21.5" rx="4.2" ry="1.9" transform="rotate(-20 17.5 21.5)"/></g><path class="c-gn" d="M0 0C2.5-4.5 8-6 12.5-3.5C10 1 4.5 2.5 0 0Z" transform="translate(34 14) rotate(-38) scale(0.95)"/></symbol><symbol id="f-persimmon" viewBox="0 0 48 48"><rect class="c-ps" x="7" y="15" width="34" height="27" rx="13"/><path class="c-gn" d="M24 19c-2.800-5-8.800-6-12-3.300c2.200 4.500 7.200 6 12 3.300zM24 19c2.800-5 8.800-6 12-3.300c-2.200 4.500-7.200 6-12 3.300z"/><path class="c-gn" d="M24 18c-3.200 2.200-4.300 5.500-3.200 9c3.200-1.200 4.800-4.500 3.200-9zM24 18c3.200 2.200 4.300 5.500 3.200 9c-3.200-1.200-4.800-4.500-3.200-9z"/><path class="c-br" d="M22.4 10.5h3.200v7.500h-3.200z"/><ellipse class="f-hl" cx="13" cy="30" rx="2" ry="4.4" transform="rotate(10 13 30)"/></symbol><symbol id="f-avocado" viewBox="0 0 48 48"><path class="c-dg" d="M24 3.500c5.500 0 8.600 5 9.600 10.500c1 5.400 5.400 9.800 5.400 16.800C39 39.100 32.300 45 24 45S9 39.100 9 30.800c0-7 4.400-11.400 5.400-16.800C15.400 8.500 18.500 3.500 24 3.500z"/><path class="c-av" d="M24 7.500c3.900 0 6 3.900 6.900 8.300c.900 4.600 4.600 8.600 4.600 14.600c0 6.300-5.200 10.800-11.500 10.800S12.500 36.700 12.500 30.400c0-6 3.700-10 4.600-14.600C18 11.400 20.100 7.500 24 7.500z"/><circle class="c-br" cx="24" cy="30.5" r="7.2"/><ellipse class="f-hl" cx="21.5" cy="28" rx="1.8" ry="2.8" transform="rotate(20 21.5 28)"/></symbol><symbol id="f-apple" viewBox="0 0 48 48"><path class="c-rd" d="M24 16c-3-3-8.500-4-12.500-.800c-5 4-5.200 12.500-2.300 19.300c2.200 5.200 6 9 9.300 9c2 0 3.300-1 5.500-1s3.500 1 5.500 1c3.300 0 7.100-3.800 9.300-9c2.900-6.800 2.700-15.300-2.300-19.300c-4-3.200-9.500-2.200-12.500.800z"/><path class="s-br" d="M24 16c0-3.500.800-6.500 2.500-9"/><path class="c-gn" d="M0 0C2.5-4.5 8-6 12.5-3.5C10 1 4.5 2.5 0 0Z" transform="translate(26 10.5) rotate(-18) scale(1)"/><ellipse class="f-hl" cx="15" cy="25" rx="2.2" ry="5" transform="rotate(14 15 25)"/></symbol><symbol id="f-mango" viewBox="0 0 48 48"><path class="c-mg" d="M9 29c0-10.500 8.500-19 19-19c8 0 12.500 5 12.500 11.500c0 10.500-9.500 20-20 20c-7 0-11.500-5.500-11.500-12.500z"/><ellipse class="c-rd" cx="31" cy="18.5" rx="5.5" ry="4" opacity=".4" transform="rotate(-35 31 18.5)"/><path class="c-br" d="M26.500 7.500h3.200v4h-3.200z"/><path class="c-gn" d="M0 0C2.5-4.5 8-6 12.5-3.5C10 1 4.5 2.5 0 0Z" transform="translate(29 8.5) rotate(-12) scale(0.9)"/><ellipse class="f-hl" cx="15.5" cy="27" rx="2.4" ry="5.4" transform="rotate(30 15.5 27)"/></symbol><symbol id="f-chamoe" viewBox="0 0 48 48"><ellipse class="c-yl" cx="24" cy="26" rx="18.5" ry="13"/><path class="s-cr" d="M6.500 26C15 15.500 33 15.500 41.500 26M6.500 26C15 21.500 33 21.500 41.500 26M6.500 26C15 30.500 33 30.500 41.500 26M6.500 26C15 36.500 33 36.500 41.500 26"/><path class="c-br" d="M41.500 24.300h3.300v3.400h-3.300z"/></symbol><symbol id="f-grapefruit" viewBox="0 0 48 48"><circle class="c-mg" cx="24" cy="25" r="18"/><circle class="c-cr" cx="24" cy="25" r="15.6"/><circle class="c-gf" cx="24" cy="25" r="13.8"/><path class="s-cr" d="M24 25L36.21 30.02"/><path class="s-cr" d="M24 25L29.08 37.18"/><path class="s-cr" d="M24 25L18.98 37.21"/><path class="s-cr" d="M24 25L11.82 30.08"/><path class="s-cr" d="M24 25L11.79 19.98"/><path class="s-cr" d="M24 25L18.92 12.82"/><path class="s-cr" d="M24 25L29.02 12.79"/><path class="s-cr" d="M24 25L36.18 19.92"/><circle class="c-cr" cx="24" cy="25" r="1.8"/></symbol><symbol id="f-pear" viewBox="0 0 48 48"><ellipse class="c-pr" cx="24" cy="28.5" rx="16.5" ry="15"/><circle class="c-br" cx="15" cy="26" r="0.75" opacity=".45"/><circle class="c-br" cx="19" cy="33" r="0.75" opacity=".45"/><circle class="c-br" cx="24" cy="24" r="0.75" opacity=".45"/><circle class="c-br" cx="28" cy="35" r="0.75" opacity=".45"/><circle class="c-br" cx="32" cy="27" r="0.75" opacity=".45"/><circle class="c-br" cx="22" cy="39" r="0.75" opacity=".45"/><circle class="c-br" cx="34" cy="33" r="0.75" opacity=".45"/><circle class="c-br" cx="17" cy="20" r="0.75" opacity=".45"/><circle class="c-br" cx="29" cy="20" r="0.75" opacity=".45"/><path class="s-br" d="M24 14c0-4 1-7 3-9.500"/><ellipse class="f-hl" cx="14.5" cy="24" rx="2.2" ry="4.6" transform="rotate(26 14.5 24)"/></symbol><symbol id="f-grapes" viewBox="0 0 48 48"><path class="s-br" d="M24 11V4.500"/><path class="c-gn" d="M0 0C2.5-4.5 8-6 12.5-3.5C10 1 4.5 2.5 0 0Z" transform="translate(24 6) rotate(-8) scale(1)"/><circle class="c-gp" cx="9.5" cy="16" r="4.75"/><circle class="c-gp" cx="19.2" cy="16" r="4.75"/><circle class="c-gp" cx="28.8" cy="16" r="4.75"/><circle class="c-gp" cx="38.5" cy="16" r="4.75"/><circle class="c-gp" cx="14.3" cy="24.3" r="4.75"/><circle class="c-gp" cx="24" cy="24.3" r="4.75"/><circle class="c-gp" cx="33.7" cy="24.3" r="4.75"/><circle class="c-gp" cx="19.2" cy="32.6" r="4.75"/><circle class="c-gp" cx="28.8" cy="32.6" r="4.75"/><circle class="c-gp" cx="24" cy="40.9" r="4.75"/><circle class="f-hl" cx="8" cy="14.4" r="1.15"/><circle class="f-hl" cx="17.7" cy="14.4" r="1.15"/><circle class="f-hl" cx="27.3" cy="14.4" r="1.15"/><circle class="f-hl" cx="37" cy="14.4" r="1.15"/><circle class="f-hl" cx="12.8" cy="22.7" r="1.15"/><circle class="f-hl" cx="22.5" cy="22.7" r="1.15"/><circle class="f-hl" cx="32.2" cy="22.7" r="1.15"/><circle class="f-hl" cx="17.7" cy="31" r="1.15"/><circle class="f-hl" cx="27.3" cy="31" r="1.15"/><circle class="f-hl" cx="22.5" cy="39.3" r="1.15"/></symbol><symbol id="f-coconut" viewBox="0 0 48 48"><circle class="c-br" cx="24" cy="25.5" r="17.5"/><circle class="c-sd" cx="19" cy="17" r="2.1"/><circle class="c-sd" cx="27.5" cy="16.5" r="2.1"/><circle class="c-sd" cx="23.5" cy="23.5" r="2.1"/><path class="s-tn" d="M11.500 31c3 3.200 6.500 5.200 10 6.200M29.500 38c3.200-1.500 5.700-3.800 7.500-7M11 20.500c-1 2.200-1.500 4.500-1.400 6.800M33 14.500c2 1.600 3.500 3.700 4.400 6" opacity=".55"/></symbol><symbol id="f-papaya" viewBox="0 0 48 48"><g transform="rotate(28 24 24)"><path class="c-mg" d="M24 2.500c4.500 0 6.500 5 7.500 10c1.200 6 4.500 11 4.500 18c0 8.500-5.400 14-12 14s-12-5.500-12-14c0-7 3.300-12 4.500-18C17.500 7.500 19.500 2.500 24 2.500z"/><path class="c-or" d="M24 6.500c3 0 4.400 4 5.200 8.300c1 5.200 3.800 9.600 3.800 15.700c0 6.500-4 10.700-9 10.700s-9-4.200-9-10.700c0-6.100 2.800-10.500 3.800-15.700C19.600 10.500 21 6.500 24 6.500z"/><ellipse class="c-do" cx="24" cy="29.5" rx="4.3" ry="9.3"/><circle class="c-sd" cx="24" cy="22.5" r="1.15"/><circle class="c-sd" cx="22.6" cy="26" r="1.15"/><circle class="c-sd" cx="25.5" cy="28" r="1.15"/><circle class="c-sd" cx="23" cy="30.5" r="1.15"/><circle class="c-sd" cx="25.2" cy="33" r="1.15"/><circle class="c-sd" cx="23.6" cy="36" r="1.15"/></g></symbol><symbol id="f-bananas" viewBox="0 0 48 48"><path class="c-mg" d="M22.500 8C16 16 11.500 26 12.500 37.500c.300 2.600 3.600 3 4.300.500C18.500 28.500 21.500 18.500 26.500 10z"/><path class="c-mg" d="M22.500 8C16 16 11.500 26 12.500 37.500c.300 2.600 3.600 3 4.300.500C18.500 28.500 21.500 18.500 26.500 10z" transform="matrix(-1 0 0 1 48 0)"/><path class="c-yl" d="M21.200 9C20.200 19.500 20.200 30 21.700 40c.400 2.600 4.200 2.600 4.600 0c1.500-10 1.500-20.500.500-31z"/><path class="c-br" d="M20 3.500h8l-1.200 7.500h-5.600z"/><circle class="c-br" cx="14.6" cy="38.6" r="1.5"/><circle class="c-br" cx="24" cy="41.6" r="1.5"/><circle class="c-br" cx="33.4" cy="38.6" r="1.5"/></symbol><symbol id="f-kabocha" viewBox="0 0 48 48"><ellipse class="c-dg" cx="13.5" cy="29.5" rx="9.5" ry="12"/><ellipse class="c-dg" cx="34.5" cy="29.5" rx="9.5" ry="12"/><ellipse class="c-gn" cx="19" cy="29.5" rx="8" ry="13"/><ellipse class="c-gn" cx="29" cy="29.5" rx="8" ry="13"/><ellipse class="c-dg" cx="24" cy="29.5" rx="6.5" ry="13.5"/><path class="c-tn" d="M21.800 9.500h4.400l.800 8h-6z"/></symbol><symbol id="f-pineapple" viewBox="0 0 48 48"><path class="c-dg" d="M24 20C20.500 14 20.500 8.500 24 3c3.500 5.500 3.500 11 0 17z" transform="rotate(-62 24 20)"/><path class="c-dg" d="M24 20C20.500 14 20.500 8.500 24 3c3.500 5.500 3.500 11 0 17z" transform="rotate(62 24 20)"/><path class="c-gn" d="M24 20C20.500 14 20.500 8.500 24 3c3.500 5.500 3.500 11 0 17z" transform="rotate(-31 24 20)"/><path class="c-gn" d="M24 20C20.500 14 20.500 8.500 24 3c3.500 5.500 3.500 11 0 17z" transform="rotate(31 24 20)"/><path class="c-dg" d="M24 20C20.500 14 20.500 8.500 24 3c3.500 5.500 3.500 11 0 17z"/><rect class="c-mg" x="12.5" y="18" width="23" height="27.500" rx="10.5"/><circle class="c-do" cx="18" cy="24" r="1.25"/><circle class="c-do" cx="24" cy="24" r="1.25"/><circle class="c-do" cx="30" cy="24" r="1.25"/><circle class="c-do" cx="21" cy="28.5" r="1.25"/><circle class="c-do" cx="27" cy="28.5" r="1.25"/><circle class="c-do" cx="18" cy="33" r="1.25"/><circle class="c-do" cx="24" cy="33" r="1.25"/><circle class="c-do" cx="30" cy="33" r="1.25"/><circle class="c-do" cx="21" cy="37.5" r="1.25"/><circle class="c-do" cx="27" cy="37.5" r="1.25"/><circle class="c-do" cx="24" cy="41.8" r="1.25"/></symbol><symbol id="f-melon" viewBox="0 0 48 48"><circle class="c-ml" cx="24" cy="28" r="16.5"/><path class="s-cr" d="M24 11.500c-7 5-7 28 0 33M24 11.500c7 5 7 28 0 33M8.500 23c8 4 23 4 31 0M8.500 33c8-4 23-4 31 0M12 15.500c7 6 17 6 24 0M12.500 40c7-5 16-5 23 0" opacity=".9"/><path class="s-ol" d="M24 11.500V6M19 6h10"/></symbol><symbol id="f-cabbage" viewBox="0 0 48 48"><circle class="c-lg" cx="24" cy="26" r="17.5"/><circle class="c-av" cx="22" cy="24" r="9.5"/><path class="s-gn" d="M8.500 31c3-13 13-20 27-16M13 40c1-11 9-18 22-16M22 14.500c-7 3-10 10-8 18M30 12c5 5 7 12 4 20" opacity=".8"/></symbol><symbol id="f-applemelon" viewBox="0 0 48 48"><circle class="c-dg" cx="24" cy="28" r="14"/><path class="s-xg" d="M24 15.6L21.02 18.7L16.18 21.8L16.47 24.9L13.9 28L16.47 31.1L16.18 34.2L21.02 37.3L24 40.4" style="stroke-width:2.2"/><path class="s-xg" d="M24 15.6L25 18.7L23 21.8L25 24.9L23 28L25 31.1L23 34.2L25 37.3L24 40.4" style="stroke-width:2.2"/><path class="s-xg" d="M24 15.6L28.98 18.7L29.83 21.8L33.53 24.9L32.1 28L33.53 31.1L29.83 34.2L28.98 37.3L24 40.4" style="stroke-width:2.2"/><path class="s-ol" d="M24 14c0-3.500 2-5.500 5-6"/><ellipse class="f-hl" cx="15.5" cy="24" rx="1.8" ry="4" transform="rotate(24 15.5 24)"/></symbol><symbol id="f-radish" viewBox="0 0 48 48"><path class="c-gn" d="M24 15.500c-1.500-5.500-5-9.500-9.500-11c-.500 5.500 3.500 9.800 9.500 11zM24 15.500c1.500-5.500 5-9.500 9.500-11c.500 5.500-3.500 9.800-9.500 11zM24 15.500c-2-4.500-2-8.500 0-12.500c2 4 2 8 0 12.500z"/><path class="c-wt" d="M16.500 18c0-3.500 15-3.500 15 0c1 10-1 20-7.500 27.500c-6.500-7.500-8.500-17.500-7.500-27.500z"/><path class="c-lg" d="M16.500 18c0-3.500 15-3.500 15 0c.100 1.300.200 2.600.200 3.900c-5 1.600-10.400 1.600-15.400 0c0-1.300.100-2.600.200-3.900z" opacity=".8"/><path class="s-tn" d="M19.500 28h4M25 34h3.500M21.500 39h3" opacity=".7"/></symbol><symbol id="f-napa" viewBox="0 0 48 48"><path class="c-gn" d="M24 3.500c3 0 4 3 7 3s4.500 2 5.500 6c2 8.500 1 20.500-4 28.500c-3 4.300-14 4.300-17 0c-5-8-6-20-4-28.500c1-4 2.500-6 5.500-6s4-3 7-3z"/><path class="c-cy" d="M24 9c2.300 0 3 2.300 5.200 2.300c2.200 0 3.300 1.500 4 4.500c1.500 6.500.800 16.500-3 23c-2.200 3.300-10.200 3.300-12.400 0c-3.800-6.500-4.500-16.500-3-23c.700-3 1.800-4.500 4-4.500C21 11.300 21.700 9 24 9z"/><path class="s-wt" d="M24 43c-1.200-10-5-20-9-27M24 43c0-11 0-21 0-30M24 43c1.200-10 5-20 9-27"/></symbol><symbol id="f-honeydew" viewBox="0 0 48 48"><circle class="c-hd" cx="24" cy="27.5" r="17"/><path class="s-lg" d="M24 11c-8 5-8 28 0 33M24 11c8 5 8 28 0 33" opacity=".7"/><circle class="c-ol" cx="24" cy="11.2" r="1.9"/><ellipse class="f-hl" cx="14" cy="22.5" rx="2.4" ry="5.4" transform="rotate(26 14 22.5)"/></symbol><symbol id="f-boksubak" viewBox="0 0 48 48"><ellipse class="c-gn" cx="24" cy="26.5" rx="19" ry="14.5"/><path class="s-dg" d="M24 13.6L18.72 16.83L11.69 20.05L11.31 23.27L7.98 26.5L11.31 29.73L11.69 32.95L18.72 36.17L24 39.4" style="stroke-width:2.8"/><path class="s-dg" d="M24 13.6L21.71 16.83L16.82 20.05L17.72 23.27L14.82 26.5L17.72 29.73L16.82 32.95L21.71 36.17L24 39.4" style="stroke-width:2.8"/><path class="s-dg" d="M24 13.6L25.2 16.83L22.8 20.05L25.2 23.27L22.8 26.5L25.2 29.73L22.8 32.95L25.2 36.17L24 39.4" style="stroke-width:2.8"/><path class="s-dg" d="M24 13.6L28.69 16.83L28.79 20.05L32.68 23.27L30.78 26.5L32.68 29.73L28.79 32.95L28.69 36.17L24 39.4" style="stroke-width:2.8"/><path class="s-dg" d="M24 13.6L31.68 16.83L33.91 20.05L39.09 23.27L37.62 26.5L39.09 29.73L33.91 32.95L31.68 36.17L24 39.4" style="stroke-width:2.8"/><path class="s-ol" d="M24 12c0-3.500 2-5.500 5.500-6"/></symbol><symbol id="f-durian" viewBox="0 0 48 48"><path class="c-ol" d="M24 9L27.35 13.02L32.13 11.06L33.28 16.22L38.4 16.77L37.09 21.89L41.37 24.83L37.9 28.74L40.36 33.38L35.52 35.18L35.6 40.47L30.51 39.75L28.19 44.48L24 41.4L19.81 44.48L17.49 39.75L12.4 40.47L12.48 35.18L7.64 33.38L10.1 28.74L6.63 24.83L10.91 21.89L9.6 16.77L14.72 16.22L15.87 11.06L20.65 13.02Z"/><path class="c-od" d="M18 18.1l2.200 3.800h-4.400z"/><path class="c-od" d="M30 18.1l2.200 3.800h-4.400z"/><path class="c-od" d="M24 24.1l2.200 3.800h-4.400z"/><path class="c-od" d="M16 29.1l2.200 3.800h-4.400z"/><path class="c-od" d="M32 29.1l2.200 3.800h-4.400z"/><path class="c-od" d="M24 35.1l2.200 3.800h-4.400z"/><path class="c-od" d="M20 12.1l2.200 3.800h-4.400z"/><path class="c-od" d="M28 12.1l2.200 3.800h-4.400z"/><path class="c-br" d="M22.300 3.500h3.400v6.500h-3.400z"/></symbol><symbol id="f-pumpkin" viewBox="0 0 48 48"><ellipse class="c-or" cx="10.5" cy="30" rx="8.5" ry="11"/><ellipse class="c-or" cx="37.5" cy="30" rx="8.5" ry="11"/><ellipse class="c-ap" cx="17" cy="30" rx="8" ry="12.5"/><ellipse class="c-ap" cx="31" cy="30" rx="8" ry="12.5"/><ellipse class="c-or" cx="24" cy="30" rx="7" ry="13"/><path class="c-ol" d="M21.500 18c.300-4-.500-6.500-2.800-8.500l4.300-2.300c2.300 3 3.300 6.500 3 10.800z"/></symbol><symbol id="f-halfmelon" viewBox="0 0 48 48"><circle class="c-dg" cx="24" cy="25.5" r="19"/><circle class="c-hd" cx="24" cy="25.5" r="16.8"/><circle class="c-wr" cx="24" cy="25.5" r="14.8"/><ellipse class="c-sd" cx="31.64" cy="27.86" rx="1.05" ry="2" transform="rotate(107.19 31.64 27.86)"/><ellipse class="c-sd" cx="26.92" cy="32.95" rx="1.05" ry="2" transform="rotate(158.62 26.92 32.95)"/><ellipse class="c-sd" cx="19.99" cy="32.42" rx="1.05" ry="2" transform="rotate(210.05 19.99 32.42)"/><ellipse class="c-sd" cx="16.09" cy="26.69" rx="1.05" ry="2" transform="rotate(261.47 16.09 26.69)"/><ellipse class="c-sd" cx="18.14" cy="20.05" rx="1.05" ry="2" transform="rotate(-47.1 18.14 20.05)"/><ellipse class="c-sd" cx="24.6" cy="17.52" rx="1.05" ry="2" transform="rotate(4.33 24.6 17.52)"/><ellipse class="c-sd" cx="30.61" cy="21" rx="1.05" ry="2" transform="rotate(55.76 30.61 21)"/></symbol><symbol id="f-watermelon" viewBox="0 0 48 48"><circle class="c-gn" cx="24" cy="26.5" r="19.5"/><path class="s-dg" d="M24 8.6L18.75 13.07L11.19 17.55L11.14 22.02L7.39 26.5L11.14 30.98L11.19 35.45L18.75 39.92L24 44.4" style="stroke-width:3.3"/><path class="s-dg" d="M24 8.6L21.82 13.07L16.46 17.55L17.72 22.02L14.41 26.5L17.72 30.98L16.46 35.45L21.82 39.92L24 44.4" style="stroke-width:3.3"/><path class="s-dg" d="M24 8.6L25.4 13.07L22.6 17.55L25.4 22.02L22.6 26.5L25.4 30.98L22.6 35.45L25.4 39.92L24 44.4" style="stroke-width:3.3"/><path class="s-dg" d="M24 8.6L28.98 13.07L28.74 17.55L33.08 22.02L30.79 26.5L33.08 30.98L28.74 35.45L28.98 39.92L24 44.4" style="stroke-width:3.3"/><path class="s-dg" d="M24 8.6L32.05 13.07L34.01 17.55L39.66 22.02L37.81 26.5L39.66 30.98L34.01 35.45L32.05 39.92L24 44.4" style="stroke-width:3.3"/><path class="s-ol" d="M24 7.500c0-3 2-5 5.500-5.500"/><ellipse class="f-hl" cx="13" cy="20.5" rx="2.2" ry="5" transform="rotate(30 13 20.5)"/></symbol></defs></svg>
 <dialog class="al-dlg" id="al-dlg" aria-labelledby="al-dt">
   <div class="al-dh">
     <div class="al-dt" id="al-dt"></div>
@@ -3886,12 +3991,81 @@ if(DLG){
   });
 }
 
+/* 아기 크기 — 주수마다 크기가 비슷한 과일. [주수, 그림 이름, 과일, 길이나 키(cm), 몸무게(g)]
+   13주까지는 머리에서 엉덩이까지 길이, 14주부터는 머리에서 발끝까지 키와 초음파로 추정하는 몸무게다.
+   8~13주 길이와 14주부터의 키, 몸무게는 BabyCenter 주수별 성장표(Hadlock 연구) 값이고 5~7주 길이는 Hadlock 1992 식으로 계산했다.
+   과일은 13주까지 길이가, 14주부터 몸무게가 비슷한 것으로 골랐다. 그림은 본문 끝 svg 의 symbol(f-이름)에 있다 */
+var FRUIT=[[4,'seed','딸기씨',''],[5,'sesame','참깨','0.1~0.3'],[6,'aril','석류알','0.4~0.9'],[7,'blueberry','블루베리','1.0~1.5'],[8,'raspberry','산딸기','1.6~2.2'],
+  [9,'cherry','체리','2.3~3.0'],[10,'strawberry','딸기','3.1~4.0'],[11,'apricot','살구','4.1~5.2'],[12,'plum','자두','5.4~6.5'],[13,'peach','복숭아','6.7~7.8'],
+  [14,'mandarin','귤',15,93],[15,'kiwi','키위',17,117],[16,'lemon','레몬',19,146],[17,'persimmon','단감',20,181],[18,'avocado','아보카도',22,223],
+  [19,'apple','사과',24,273],[20,'mango','망고',26,331],[21,'chamoe','참외',27,399],[22,'grapefruit','자몽',29,478],[23,'pear','배',31,568],
+  [24,'grapes','포도 한 송이',32,670],[25,'coconut','코코넛',34,785],[26,'papaya','파파야',35,913],[27,'bananas','바나나 한 송이',37,1055],[28,'kabocha','단호박',38,1210],
+  [29,'pineapple','파인애플',39,1379],[30,'melon','멜론',41,1559],[31,'cabbage','양배추',42,1751],[32,'applemelon','애플수박',43,1953],[33,'radish','무',44,2162],
+  [34,'napa','배추',45,2377],[35,'honeydew','허니듀멜론',46,2595],[36,'boksubak','복수박',47,2813],[37,'durian','두리안',48,3028],[38,'pumpkin','늙은호박',49,3236],
+  [39,'halfmelon','수박 반 통',50,3435],[40,'watermelon','수박',51,3619]];
+/* 병원에서 측정한 크기 — 진료에서 값을 받으면 {d:'2026-11-30',v:'1.2cm'} 처럼 날짜순으로 넣는다. 가장 최근 값이 이번 주 칸에 나온다 */
+var MEAS=[];
+function fruitAt(w){ return FRUIT[Math.max(4,Math.min(40,w))-4]; }
+function wtS(g){ return g<1000?g+'g':(Math.round(g/100)/10).toFixed(1)+'kg'; }
+function fruitIcon(key,px){
+  var NS='http://www.w3.org/2000/svg', v=document.createElementNS(NS,'svg'), u=document.createElementNS(NS,'use');
+  v.setAttribute('class','fi'); v.setAttribute('width',px); v.setAttribute('height',px); v.setAttribute('aria-hidden','true');
+  u.setAttribute('href','#f-'+key); v.appendChild(u); return v;
+}
+function renderSize(){
+  var now=new Date(), today=new Date(now.getFullYear(),now.getMonth(),now.getDate()), g=ga(today);
+  /* 4주가 되기 전에는 홈의 크기 줄과 이번 주 칸을 숨긴다. 40주가 지나면 40주 과일에 머문다 */
+  var f=(g.n>=28)?fruitAt(g.w):null, early=f&&f[0]<=13;
+  $('#h-size').hidden=!f; $('#sz-now').hidden=!f;
+  function tx(t){ return document.createTextNode(t); }
+  if(f){
+    var num=f[0]===4?'':(early?f[3]+'cm':f[3]+'cm, '+wtS(f[4]));
+    $('#h-size-ic').setAttribute('href','#f-'+f[1]);
+    $('#h-size-t').textContent='지금 아기는 '+f[2]+'만 합니다';
+    /* 좁은 화면에서 줄이 바뀔 때 숫자와 「40주 크기 보기」 사이에서만 바뀌게 두 조각으로 넣는다 */
+    var hd=$('#h-size-d'), go=document.createElement('span'); hd.textContent=''; go.textContent='40주 크기 보기';
+    if(num){ var nb=document.createElement('span'); nb.textContent='보통 '+num+','; hd.appendChild(nb); hd.appendChild(tx(' ')); }
+    hd.appendChild(go);
+    $('#sz-k').textContent='이번 주, '+f[0]+'주';
+    $('#sz-ic').setAttribute('href','#f-'+f[1]);
+    $('#sz-n').textContent=f[2];
+    var d=$('#sz-d'); d.textContent='';
+    if(f[0]===4) d.textContent='초음파로 길이를 측정하기 전입니다';
+    else{
+      d.appendChild(tx(early?'머리에서 엉덩이까지 ':'머리에서 발끝까지 보통 '+f[3]+'cm ')); d.appendChild(document.createElement('br'));
+      d.appendChild(tx(early?'보통 '+f[3]+'cm':'몸무게 보통 '+wtS(f[4])));
+    }
+    var m=null; MEAS.forEach(function(x){ var dt=pd(x.d); if(dt&&dt<=today) m={dt:dt,v:x.v}; });
+    $('#sz-meas').hidden=!m;
+    if(m){ $('#sz-mv').textContent='병원에서 측정한 크기 '+m.v; $('#sz-md').textContent=md(m.dt)+' 진료'; }
+    var nf=f[0]<40?fruitAt(f[0]+1):null;
+    $('#sz-next').hidden=!nf;
+    if(nf){ $('#sz-nic').setAttribute('href','#f-'+nf[1]); $('#sz-nt').textContent='다음 주에는 '+nf[2]+'만 해집니다'; }
+  }
+  [['#sz-g1',4,13],['#sz-g2',14,27],['#sz-g3',28,40]].forEach(function(r){
+    var ol=$(r[0]); ol.textContent='';
+    for(var w=r[1];w<=r[2];w++){
+      var x=fruitAt(w), li=document.createElement('li');
+      var wl=document.createElement('span'); wl.className='sz-w'; wl.textContent=w+'주';
+      if(f&&x===f){ li.className='now'; var tg=document.createElement('span'); tg.className='sz-tag'; tg.textContent='지금'; wl.appendChild(tx(' ')); wl.appendChild(tg); }
+      var pic=document.createElement('span'); pic.className='sz-ic'; pic.appendChild(fruitIcon(x[1],Math.round(37+(w-4)*0.72)));
+      var nm=document.createElement('b'); nm.textContent=x[2];
+      var sm=document.createElement('small');
+      if(w===4) sm.textContent='아직 측정 전';
+      else if(w<=13) sm.textContent=x[3]+'cm';
+      else{ sm.appendChild(tx(x[3]+'cm ')); sm.appendChild(document.createElement('br')); sm.appendChild(tx(wtS(x[4]))); }
+      li.appendChild(wl); li.appendChild(tx(' ')); li.appendChild(pic); li.appendChild(nm); li.appendChild(tx(' ')); li.appendChild(sm);
+      ol.appendChild(li);
+    }
+  });
+}
+
 function fillDates(){ $$('.dd').forEach(function(s){ s.textContent=D[s.getAttribute('data-k')]||''; }); }
-function renderAll(){ compute(); var EV=events(); fillDates(); renderScale(); renderGantt(); renderPlans(); renderTimeline(EV); renderRiskTable(); lastW=-1; renderChart(); renderAlbum(); }
-/* 탭 — 화면 열두 개 가운데 하나만 보인다. 탭 다섯 개로 고르고, 화면이 둘 이상인 탭은 항목 줄에서 고른다.
+function renderAll(){ compute(); var EV=events(); fillDates(); renderScale(); renderSize(); renderGantt(); renderPlans(); renderTimeline(EV); renderRiskTable(); lastW=-1; renderChart(); renderAlbum(); }
+/* 탭 — 화면 열세 개 가운데 하나만 보인다. 탭 다섯 개로 고르고, 화면이 둘 이상인 탭은 항목 줄에서 고른다.
    주소의 # 로도 열 수 있고, 안쪽 링크가 숨은 화면을 가리키면 그 화면을 먼저 연다 */
 var GROUPS=[{id:'home',panels:['top']},{id:'plan',panels:['timeline','leave']},
-            {id:'preg',panels:['risk','why','weekly','meds']},
+            {id:'preg',panels:['risk','why','weekly','meds','size']},
             {id:'prep',panels:['support','care','helper','hospital']},{id:'photo',panels:['album']}];
 var NAVT=$$('.nav-tab'), SUBT=$$('.sub-tab'), SUBROWS=$$('.sub-tabs'), SUBBAR=$('.subbar'), PANELS=$$('.tabp');
 /* 화면 안 차례 — 지금 화면의 절 제목(화면 제목을 뺀 h2 와 h3, 펼쳐보기 안은 빼고)을 왼쪽에 모은다. 절이 셋 미만이면 두지 않는다.
