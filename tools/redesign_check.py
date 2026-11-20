@@ -500,6 +500,16 @@ def nav(pw, path):
             fails.append('%s: 이름이 두 줄이 되거나 넘치는 탭 %d개' % (size, r['wrap']))
         if r['over'] > 0:
             fails.append('%s: 가로로 %dpx 밀린다' % (size, r['over']))
+    # 4-2. 휴대폰에서 탭 안 항목 단추가 옆으로 밀지 않아도 모두 보인다
+    for size in ('phone', (360, 640), (320, 568)):
+        p = open_page(pw, path, size=size)
+        for g in SUBS:
+            p.click('#nav-' + g)
+            p.wait_for_timeout(60)
+            cut = p.evaluate("""g => [...document.querySelectorAll('.sub-tabs[data-group="' + g + '"] .sub-tab')].filter(b => {
+              const r = b.getBoundingClientRect(); return r.left < -0.5 || r.right > innerWidth + 0.5 || b.scrollWidth > b.clientWidth + 1; }).map(b => b.textContent.trim())""", g)
+            if cut:
+                fails.append('%s: %s 탭의 항목 단추가 화면 밖으로 나간다 %s' % (size, g, cut))
     # 5. 맨 아래 내용이 탭에 가려지지 않는다
     p = open_page(pw, path, size='phone', hash='hospital')
     p.evaluate("() => window.scrollTo(0, document.documentElement.scrollHeight)")
@@ -598,6 +608,9 @@ def print_(pw, path):
         fails.append('인쇄에서 빠지는 화면: %s' % r['hid'])
     if r['menu']:
         fails.append('인쇄에 메뉴가 나오거나 메뉴가 없다: %s' % r['menu'])
+    gap = page.evaluate("""() => { const a = document.querySelector('.today').getBoundingClientRect(), b = document.getElementById('h-next').getBoundingClientRect(); return b.top - a.bottom; }""")
+    if gap < 8:
+        fails.append('홈이 아닌 화면에서 인쇄하면 홈의 오늘 칸과 다음 일정 칸 사이가 %.0fpx 로 붙는다' % gap)
     return fails
 
 
@@ -876,6 +889,51 @@ def sizes(pw, path):
         got = p.evaluate("([id, s]) => { const e = document.querySelector('#' + id + ' ' + s); return e ? parseFloat(getComputedStyle(e).fontSize) : null; }", [pid, sel])
         if got is None or got < px - 0.01:
             fails.append('#%s %s 글자가 %s px (개편 전 %s px)' % (pid, sel, got, px))
+    return fails
+
+
+# ---------- 미뤄 두었다가 고친 것 ----------
+@check('aria')
+def aria(pw, path):
+    """화면 읽기 도구가 쓰는 표시."""
+    fails = []
+    p = open_page(pw, path, hash='risk')
+    r = p.evaluate("""() => { const h = [...document.querySelectorAll('h1')];
+      return {n: h.length, off: h.filter(e => e.closest('[hidden]') || getComputedStyle(e).display === 'none' || getComputedStyle(e).visibility === 'hidden').length,
+        tabs: [...document.querySelectorAll('.nav-tab')].map(b => [b.id, b.getAttribute('aria-controls') || '']),
+        ids: [...document.querySelectorAll('.tabp')].map(x => x.id)}; }""")
+    if r['n'] != 1 or r['off']:
+        fails.append('h1 이 %d개이고 그중 %d개는 홈이 아닌 화면에서 읽히지 않는다 (하나가 늘 읽혀야 한다)' % (r['n'], r['off']))
+    want = {'nav-home': ['top'], 'nav-plan': ['timeline', 'leave'], 'nav-preg': ['risk', 'why', 'weekly', 'meds'],
+            'nav-prep': ['support', 'care', 'helper', 'hospital'], 'nav-photo': ['album']}
+    for tid, ctl in r['tabs']:
+        if ctl.split() != want.get(tid):
+            fails.append('%s 의 aria-controls 가 「%s」 (기대 %s)' % (tid, ctl, ' '.join(want.get(tid, []))))
+    return fails
+
+
+@check('leftovers')
+def leftovers(pw, path):
+    """개편 뒤 남은 옛 주석과 쓰지 않는 규칙."""
+    src = pathlib.Path(path).read_text(encoding='utf-8')
+    css = src[src.find('<style>'):src.find('</style>')]
+    fails = ['「%s」가 남았다' % w for w in ('9 사진과 영상', '막대 — 3절', '굵은 선으로 나눈다', 'scroll-behavior') if w in src]
+    if re.search(r'\nh2\{[^}]*display:flex', css):
+        fails.append('제목(h2)에 번호 칸용 flex 가 남았다')
+    return fails
+
+
+@check('robust')
+def robust(pw, path):
+    """내용에 문단 하나가 끼어도 모양 규칙이 풀리지 않는다."""
+    fails = []
+    p = open_page(pw, path, size='pc', hash='support')
+    js = "() => { const t = document.querySelector('#cert-todo ~ table.stk'); return t ? getComputedStyle(t.rows[1].cells[2]).minWidth : null; }"
+    before = p.evaluate(js)
+    p.evaluate("() => { const x = document.createElement('p'); x.textContent = '끼운 문단'; document.getElementById('cert-todo').after(x); }")
+    after = p.evaluate(js)
+    if before != '348px' or after != '348px':
+        fails.append('임신확인서 표의 기한 칸 최소폭이 %s 였다가 문단을 끼우면 %s' % (before, after))
     return fails
 
 

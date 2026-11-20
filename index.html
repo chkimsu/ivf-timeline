@@ -97,7 +97,7 @@ h1{font-size:clamp(27px,2.6vw,38px);line-height:1.14;letter-spacing:-.032em;font
 .theme-b[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(120,80,40,.16)}
 .sub{font-size:17px;line-height:1.85;margin:0;color:var(--ink2)}
 .meta{color:var(--ink2);font-size:15px;line-height:1.75;margin-top:18px}
-h2{font-size:30px;line-height:1.25;letter-spacing:-.03em;font-weight:800;margin:6px 4px 10px;display:flex;align-items:baseline;gap:11px;text-wrap:balance}
+h2{font-size:30px;line-height:1.25;letter-spacing:-.03em;font-weight:800;margin:6px 4px 10px;text-wrap:balance}
 @media(max-width:760px){h2{font-size:25px}}
 .sec-desc{color:var(--ink2);font-size:16.5px;margin:6px 4px 26px;line-height:1.85}
 h3{font-size:18.5px;line-height:1.35;letter-spacing:-.015em;font-weight:800;margin:34px 4px 14px}
@@ -108,6 +108,8 @@ li{margin:3px 0}
 .wrap a{color:var(--a)} .wrap a:visited{color:var(--a)}
 a:focus-visible,summary:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,svg:focus-visible{outline:2.5px solid var(--a);outline-offset:3px}
 b,strong{font-weight:750}
+/* 화면에는 안 보이고 읽기 도구에만 읽히는 글. 페이지 제목(h1)에 쓴다 */
+.sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 /* 주의 표시 — 색이 안 보여도 구분되게 글머리에 주의 아이콘을 둔다. 낱말은 더하지 않는다 */
 h4.warn::before,.callout.warn::before{content:"";width:18px;height:18px;background:currentColor;-webkit-mask:var(--warn-icon) center/contain no-repeat;mask:var(--warn-icon) center/contain no-repeat}
 h4.warn::before{display:inline-block;vertical-align:-3px;margin-right:6px}
@@ -115,8 +117,9 @@ h4.warn::before{display:inline-block;vertical-align:-3px;margin-right:6px}
 
 /* 메뉴 — 탭 다섯 개로 화면을 고른다. 900px 아래는 화면 아래에 붙고 900px 이상은 위쪽 흰 띠에 놓인다.
    화면이 둘 이상인 탭(일정, 임신 중, 출산 준비)은 본문 맨 위 항목 줄(.subbar)에서 고른다.
+   휴대폰에서는 항목 단추를 두 칸으로 놓아 모두 보이게 하고 위에 붙여 두지 않는다. PC 에서는 한 줄로 놓고 메뉴 띠 아래에 붙여 둔다.
    --stick 은 위에 붙어 있는 것의 높이다. 페이지 안 링크로 갈 때 그만큼 띄운다 */
-:root{--nav-h:64px;--stick:72px}
+:root{--nav-h:64px;--stick:0px}
 @media(min-width:900px){:root{--stick:136px}}
 body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .nav-logo,.nav-theme{display:none}
@@ -130,12 +133,12 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .nav-tab:hover{color:var(--a)}
 .nav-tab[aria-selected="true"]{background:var(--a-bg);color:var(--a);font-weight:800}
 .nav-tab:focus-visible,.sub-tab:focus-visible,.nav-logo:focus-visible{outline:2.5px solid var(--a);outline-offset:-2px}
-.subbar{position:sticky;top:0;z-index:80;background:var(--ground);padding:10px 0}
+.subbar{background:var(--ground);padding:2px 0 10px}
 .subbar[hidden],.sub-tabs[hidden]{display:none}
-.sub-tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none}
+.sub-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:2px 2px 4px;scrollbar-width:none}
 .sub-tabs::-webkit-scrollbar{display:none}
-.sub-tab{appearance:none;-webkit-appearance:none;font:inherit;margin:0;border:0;cursor:pointer;flex:none;min-height:44px;padding:8px 17px;
-  border-radius:var(--r-pill);background:var(--card);box-shadow:var(--edge);font-size:15.5px;font-weight:700;line-height:1.3;color:var(--ink2);white-space:nowrap}
+.sub-tab{appearance:none;-webkit-appearance:none;font:inherit;margin:0;border:0;cursor:pointer;min-width:0;min-height:44px;padding:8px 10px;
+  border-radius:var(--r-pill);background:var(--card);box-shadow:var(--edge);font-size:15.5px;font-weight:700;line-height:1.3;color:var(--ink2);text-align:center;word-break:keep-all}
 .sub-tab:hover{color:var(--a)}
 .sub-tab[aria-selected="true"]{background:var(--ink);color:var(--card);box-shadow:none}
 @media(min-width:900px){
@@ -149,14 +152,16 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
   .nav-tab{flex:none;flex-direction:row;gap:7px;min-height:44px;padding:8px 16px;border-radius:var(--r-pill);font-size:15.5px;letter-spacing:-.01em;color:var(--ink2)}
   .nav-tab svg{width:19px;height:19px}
   .nav-theme{display:inline-flex;margin-left:10px}
-  .subbar{top:var(--nav-h)}
+  .subbar{position:sticky;top:var(--nav-h);z-index:80;padding:10px 0}
+  .sub-tabs{display:flex;overflow-x:auto}
+  .sub-tab{flex:none;padding:8px 17px;white-space:nowrap}
 }
 .tabbox{min-width:0}
 .tabp{scroll-margin-top:var(--stick)}
 .tabp [id]{scroll-margin-top:calc(var(--stick) + 12px)}
 .tabp[hidden]{display:none}
 .tabp:focus-visible{outline:2px solid var(--a-bd);outline-offset:6px;border-radius:var(--r-lg)}
-@media print{.nav,.subbar,.theme{display:none}body{padding-bottom:0}.tabp[hidden]{display:block}}
+@media print{.nav,.subbar,.theme{display:none}body{padding-bottom:0}.tabp[hidden]{display:block}.home[hidden]{display:grid}}
 
 
 /* 눈금줄 — 큰 숫자와 그 뜻. 칸마다 흰 둥근 카드 */
@@ -174,7 +179,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .home>.fold{margin:0}
 .home>p.meta{margin:0}
 .home-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;padding:2px 4px 0}
-.home-head h1{margin:0;font-size:19px;line-height:1.3;letter-spacing:-.02em;font-weight:800;color:var(--ink2)}
+.home-title{font-size:19px;line-height:1.3;letter-spacing:-.02em;font-weight:800;color:var(--ink2)}
 .today{background:var(--hero);border-radius:var(--r-xl);padding:18px 20px 18px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .today-t{display:flex;flex-direction:column;min-width:0}
 .today-k,.today-e{font-size:15.5px;font-weight:700;line-height:1.5;letter-spacing:-.02em;color:var(--ink2);word-break:keep-all}
@@ -217,9 +222,8 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .gl-list li.next .gl-tag{background:var(--y);color:var(--card)}
 .gl-foot{font-size:15.5px;line-height:1.7;color:var(--ink2);margin:14px 6px 0}
 @media(min-width:900px){
-  /* 제목은 위쪽 띠의 이름이 보여 준다. h1 은 읽기 도구에만 남기고 밝기 단추는 위쪽 띠의 것만 쓴다 */
-  .home-head{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
-  .home-head .theme{display:none}
+  /* 제목은 위쪽 띠의 이름이, 밝기 단추는 위쪽 띠의 것이 보여 준다 */
+  .home-head{display:none}
 }
 /* 두 칸은 1100px 부터다. 그보다 좁으면 왼쪽 칸에서 두 자리 주수(「38주 2일」)가 고리와 겹친다 */
 @media(min-width:1100px){
@@ -319,7 +323,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 .ez-t2 td:first-child{font-weight:800;color:var(--ink)}
 @media(max-width:900px){.ez-cards{grid-template-columns:1fr}}
 @media(max-width:760px){.ez-bars{gap:3px;height:170px}.ez-v{font-size:10.5px}.ez-v small{display:none}.ez-x{font-size:11px}}
-/* 남편 휴가 계획 — 같은 칸 안에서 굵은 선으로 나눈다 */
+/* 남편 휴가 계획 — 같은 화면 안에서 넓은 여백으로 나눈다 */
 .hl{margin-top:60px}
 .hl-h{font-size:clamp(21px,2vw,27px);line-height:1.3;letter-spacing:-.02em;font-weight:800;margin:0 0 14px}
 .hl-h span{color:var(--a)}
@@ -466,7 +470,7 @@ td .s{color:var(--ink2);font-size:15.5px;line-height:1.7;margin-top:3px}
 table.stk td:first-child{word-break:keep-all;overflow-wrap:anywhere}
 /* 긴 글이 든 열의 최소폭 — 글자 15.5px 로 한 줄 20자와 좌우 여백. 좁은 칸에 긴 글이 갇히지 않게 한다 */
 /* 표가 세로 카드로 펴지는 폭에서는 걸지 않는다. 걸면 좁은 화면에서 가로로 밀린다 */
-@container (min-width:1041px){#cert-todo + p + table.stk td:nth-child(3){min-width:348px}}
+@container (min-width:1041px){#cert-todo ~ table.stk:not(#cert-todo ~ table.stk ~ table.stk) td:nth-child(3){min-width:348px}}
 /* 흰 카드(펼쳐보기) 안에 든 표와 카드는 아래 턱 대신 가는 테두리로 구분한다 */
 .fold-b table,.fold-b .pts>li,.fold-b .wk>div,.fold-b .step,.fold-b .med{box-shadow:0 0 0 1px var(--hair)}
 
@@ -521,9 +525,8 @@ table.stk td:first-child{word-break:keep-all;overflow-wrap:anywhere}
 .callout.warn{background:var(--b-bg)}
 .callout ul{margin:6px 0 0}
 .callout li{font-size:16px;line-height:1.8}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
-/* 배아 10개 그림과 이식 100번 막대 — 3절 */
+/* 배아 10개 그림과 이식 100번 막대 — PGT-A 배아 화면 */
 .emb{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 8px}
 .emb i{display:block;width:34px;height:34px;border-radius:50%;background:var(--a-fill);border:2px solid var(--a-fill)}
 .emb i.x{background:var(--c-bg);border-color:var(--c-bd)}
@@ -631,7 +634,7 @@ table.stk td:first-child{word-break:keep-all;overflow-wrap:anywhere}
 .hv-r{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:5px 0;border-bottom:1px solid var(--hair2)}
 .hv-n{font-weight:800;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums}
 .steps>.step:has(.hv:hover),.steps>.step:has(.hv.on),.steps>.step.hv-up{z-index:2}
-/* 9 사진과 영상 */
+/* 사진과 영상 화면 */
 .al-bar{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 0}
 .al-bar[hidden]{display:none}
 .al-f{appearance:none;-webkit-appearance:none;font:inherit;font-size:15.5px;font-weight:700;line-height:1.3;min-height:44px;padding:9px 17px;border:0;border-radius:var(--r-pill);background:var(--card);box-shadow:var(--edge);color:var(--ink2);cursor:pointer;display:inline-flex;align-items:baseline;gap:7px}
@@ -719,11 +722,11 @@ table.stk td:first-child{word-break:keep-all;overflow-wrap:anywhere}
 <nav class="nav" id="nav" aria-label="메뉴">
   <a class="nav-logo" href="#top">시험관 임신 일정표</a>
   <div class="nav-tabs" role="tablist" aria-label="메뉴">
-    <button class="nav-tab" type="button" role="tab" id="nav-home" data-group="home" aria-selected="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5 10 3l7 6.5V17H3z"/></svg><span>홈</span></button>
-    <button class="nav-tab" type="button" role="tab" id="nav-plan" data-group="plan" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="3"/><path d="M3 8h14M7 2v4M13 2v4"/></svg><span>일정</span></button>
-    <button class="nav-tab" type="button" role="tab" id="nav-preg" data-group="preg" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17s-6.5-4-6.5-8.5A3.5 3.5 0 0 1 10 6.5a3.5 3.5 0 0 1 6.5 2C16.5 13 10 17 10 17z"/></svg><span>임신 중</span></button>
-    <button class="nav-tab" type="button" role="tab" id="nav-prep" data-group="prep" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="7" width="13" height="10" rx="2.5"/><path d="M7 7V5.5a3 3 0 0 1 6 0V7"/></svg><span>출산 준비</span></button>
-    <button class="nav-tab" type="button" role="tab" id="nav-photo" data-group="photo" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="3"/><circle cx="7.5" cy="8.5" r="1.5"/><path d="m4 14 4-4 3 3 2-2 3 3"/></svg><span>사진</span></button>
+    <button class="nav-tab" type="button" role="tab" id="nav-home" data-group="home" aria-controls="top" aria-selected="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5 10 3l7 6.5V17H3z"/></svg><span>홈</span></button>
+    <button class="nav-tab" type="button" role="tab" id="nav-plan" data-group="plan" aria-controls="timeline leave" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="3"/><path d="M3 8h14M7 2v4M13 2v4"/></svg><span>일정</span></button>
+    <button class="nav-tab" type="button" role="tab" id="nav-preg" data-group="preg" aria-controls="risk why weekly meds" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17s-6.5-4-6.5-8.5A3.5 3.5 0 0 1 10 6.5a3.5 3.5 0 0 1 6.5 2C16.5 13 10 17 10 17z"/></svg><span>임신 중</span></button>
+    <button class="nav-tab" type="button" role="tab" id="nav-prep" data-group="prep" aria-controls="support care helper hospital" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="7" width="13" height="10" rx="2.5"/><path d="M7 7V5.5a3 3 0 0 1 6 0V7"/></svg><span>출산 준비</span></button>
+    <button class="nav-tab" type="button" role="tab" id="nav-photo" data-group="photo" aria-controls="album" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="3"/><circle cx="7.5" cy="8.5" r="1.5"/><path d="m4 14 4-4 3 3 2-2 3 3"/></svg><span>사진</span></button>
   </div>
   <div class="theme nav-theme" role="group" aria-label="화면 밝기">
     <button type="button" class="theme-b" data-theme-set="light" aria-pressed="false">밝게</button>
@@ -731,10 +734,11 @@ table.stk td:first-child{word-break:keep-all;overflow-wrap:anywhere}
   </div>
 </nav>
 <div class="wrap">
+<h1 class="sr">시험관 임신 일정표</h1>
 
 <section class="panel tabp home" id="top" role="tabpanel" aria-labelledby="nav-home" tabindex="0">
   <div class="home-head">
-    <h1>시험관 임신 일정표</h1>
+    <div class="home-title" aria-hidden="true">시험관 임신 일정표</div>
     <div class="theme" role="group" aria-label="화면 밝기">
       <button type="button" class="theme-b" data-theme-set="light" aria-pressed="false">밝게</button>
       <button type="button" class="theme-b" data-theme-set="dark" aria-pressed="false">어둡게</button>
@@ -3771,7 +3775,7 @@ function watchChart(){
   new ResizeObserver(kick).observe($('#chart'));
 }
 
-/* 9 사진과 영상. 아래 목록은 tools/album.py 가 날짜순으로 고쳐 쓴다. 손으로 고쳐도 된다.
+/* 사진과 영상 화면. 아래 목록은 tools/album.py 가 날짜순으로 고쳐 쓴다. 손으로 고쳐도 된다.
    d 날짜, k 종류, t 제목, n 설명, m 파일 (f 큰 사진이나 영상, th 작은 사진, w 와 h 크기, v 영상이면 1, dur 영상 길이 초, alt 사진 설명) */
 var ALBUM=/*ALBUM*/[
 {"d": "2026-10-28", "k": "배아", "t": "이식한 배아", "n": "이식하는 날 병원에서 받은 배아 사진을 찍었습니다. 5일 키운 배반포로 PGT-A 검사에서 정상이 나왔습니다.", "m": [{"f": "album/2026-10-28-embryo-1.jpg", "th": "album/th/2026-10-28-embryo-1.jpg", "w": 1216, "h": 1600, "alt": "이식한 배아를 현미경으로 찍은 흑백 사진. 둥근 배반포가 가운데에 있습니다."}, {"f": "album/2026-10-28-embryo-2.jpg", "th": "album/th/2026-10-28-embryo-2.jpg", "w": 1190, "h": 1600, "alt": "이식한 배아를 현미경으로 찍은 흑백 사진. 둥근 배반포가 가운데에 있습니다."}]},
