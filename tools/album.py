@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""9번 탭 「사진과 영상」에 사진과 영상을 더한다.
+"""「사진과 영상」 화면에 사진과 영상을 더한다.
 
 원본은 앨범-원본/ 에 둔다. 그 폴더는 .gitignore 에 있어 공개 저장소에 올라가지 않는다.
 이 도구는 원본의 크기를 줄이고 사진 속 정보(찍은 기기, 시각, 위치)를 지운 사본을
@@ -155,7 +155,7 @@ def cmd_list(_):
 
 
 def main():
-    ap = argparse.ArgumentParser(description='9번 탭 「사진과 영상」에 파일을 더한다')
+    ap = argparse.ArgumentParser(description='「사진과 영상」 화면에 파일을 더한다')
     sub = ap.add_subparsers(dest='cmd', required=True)
     p = sub.add_parser('add')
     p.add_argument('--date', required=True)

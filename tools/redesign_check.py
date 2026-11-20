@@ -26,8 +26,18 @@ PANELS = ['timeline', 'leave', 'risk', 'why', 'weekly', 'meds', 'support', 'care
 SCREENS = ['top'] + PANELS
 SIZES = {'phone': (390, 844), 'tablet': (1024, 768), 'pc': (1440, 900)}
 
-# 비교하기 전에 기준선 글에 적용하는 정규식 치환. 메뉴를 가리키는 문구를 고칠 때(Task 8) 채운다.
-ALLOWED = []
+# 비교하기 전에 기준선 글에 적용하는 정규식 치환. 개편에서 글을 고친 곳은 이것뿐이다 —
+# 왼쪽 차례와 항목 번호가 없어져서 그것을 가리키던 문구를 새 메뉴 이름으로 바꿨다.
+NAMES = '전체 일정|휴가 계획|유산 위험|PGT-A 배아|시기별 할 일|약 안내|지원금과 보험|조리원과 어린이집|산후도우미|분만 병원|사진과 영상'
+ALLOWED = [
+    (r'^\d+(?:-\d+)?(?=[가-힣A-Z])', ''),                                    # 화면 제목 앞의 번호
+    (r'(「?)(?:\d+(?:-\d+)? )?(%s)(」?) 탭' % NAMES, r'\1\2\3 화면'),            # 「3 PGT-A 배아 탭」 → 「PGT-A 배아 화면」
+    (r'6번 탭', '「지원금과 보험」 화면'),
+    (r'같은 탭', '같은 화면'),
+    (r'왼쪽 차례에서 주제를 고르면 그 내용이 열립니다\. 화면이 좁으면 왼쪽 위 「▸\s*차례」를 누릅니다\.',
+     '메뉴에서 주제를 고르면 그 내용이 열립니다.'),
+    (r'왼쪽 차례의 각 항목', '메뉴의 각 화면'),
+]
 
 CHECKS = {}
 
@@ -742,6 +752,31 @@ def dark_fills(pw, path):
                 seen.setdefault(m, []).append(pid)
         fails += ['%s 어둡게 밝은 칸 %s: %s' % (size, m, ' '.join(v[:4])) for m, v in seen.items()]
     return fails
+
+
+# ---------- 메뉴를 가리키는 문구 ----------
+@check('wording')
+def wording(pw, path):
+    fails = []
+    page = open_page(pw, path, size='phone')
+    for pid in SCREENS:
+        go(page, pid)
+        t = norm(page.evaluate(JS_TEXT, pid))
+        for w in ('탭', '왼쪽 차례', '▸ 차례'):
+            if w in t:
+                i = t.find(w)
+                fails.append('#%s: 「%s」가 남았다. 「…%s…」' % (pid, w, t[max(0, i - 24):i + 12]))
+    n = page.evaluate("() => document.querySelectorAll('h2 .no').length")
+    if n:
+        fails.append('제목 앞 번호 칸이 %d개 남았다' % n)
+    return fails
+
+
+@check('album_marks')
+def album_marks(pw, path):
+    src = pathlib.Path(path).read_text(encoding='utf-8')
+    n = len(re.findall(r'/\*ALBUM\*/(.*?)/\*/ALBUM\*/', src, re.S))
+    return [] if n == 1 else ['사진 목록 표시(/*ALBUM*/ … /*/ALBUM*/)가 %d번 나온다. tools/album.py 가 이 표시로 목록을 찾는다' % n]
 
 
 def shots(args):
